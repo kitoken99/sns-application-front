@@ -3,7 +3,7 @@ export async function fetchProfiles({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/my-profiles", {
       headers: {
-        Authorization: `Bearer ${rootGetters.getToken}`,
+        Authorization: `Bearer ${rootGetters.auth.getToken}`,
       },
     })
     .then((response) => {

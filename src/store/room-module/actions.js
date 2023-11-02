@@ -3,7 +3,7 @@ export async function fetchFriends({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/friends", {
       headers: {
-        Authorization: `Bearer ${rootGetters.getToken}`,
+        Authorization: `Bearer ${rootGetters.auth.getToken}`,
       },
     })
     .then((response) => {
@@ -18,7 +18,7 @@ export async function fetchGroups({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/groups", {
       headers: {
-        Authorization: `Bearer ${rootGetters.getToken}`,
+        Authorization: `Bearer ${rootGetters.auth.getToken}`,
       },
     })
     .then((response) => {
@@ -35,7 +35,7 @@ export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
   await axios
     .get(process.env.API + "/api/room/" + id, {
       headers: {
-        Authorization: `Bearer ${rootGetters.getToken}`,
+        Authorization: `Bearer ${rootGetters.auth.getToken}`,
       },
     })
     .then((response) => {
@@ -93,5 +93,5 @@ export function messageRecieved({ commit, getters }, { data }) {
   if(getters.getCurrentRoomId!==data.message.room_id){
     commit('addNotRead', data)
   }
-  
+
 }
