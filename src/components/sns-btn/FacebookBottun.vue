@@ -1,7 +1,7 @@
 <template>
   <div class="box" @click="onAuth('facebook')">
     <div class="mouseover">
-      <img src="src/assets/Facebook_Logo_Primary.png" class="img" />
+      <img src="~/assets/Facebook_Logo_Primary.png" class="img" />
     </div>
   </div>
 </template>

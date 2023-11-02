@@ -83,7 +83,7 @@ export default {
 
           if (response.status == 201) {
             store.dispatch("auth/saveToken", response.data.data.token);
-            // router.push("/home");
+            router.push("/home");
             console.log(response.data);
           }
         } catch (error) {

@@ -1,8 +1,8 @@
 <template>
   <div class="box" @click="onAuth('google')">
-    <img src="src/assets/btn_google_light_normal_ios.svg" class="img" />
-    <img src="src/assets/btn_google_light_focus_ios.svg" class="img" />
-    <img src="src/assets/btn_google_light_pressed_ios.svg" class="img" />
+    <img src="~assets/btn_google_light_normal_ios.svg" class="img" />
+    <img src="~assets/btn_google_light_focus_ios.svg" class="img" />
+    <img src="~assets/btn_google_light_pressed_ios.svg" class="img" />
   </div>
 </template>
 <script>

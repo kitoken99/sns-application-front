@@ -3,7 +3,7 @@
     <div class="mouseover">
       <img src="~assets/btn_base.png" class="img" />
     </div>
-    <img src="src/assets/btn_press.png" class="img" />
+    <img src="~assets/btn_press.png" class="img" />
   </div>
 </template>
 
