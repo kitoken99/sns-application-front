@@ -14,7 +14,7 @@
         <q-card-section class="text-center q-pa-none">
           <p class="text-grey-6">
             Not reigistered?
-            <router-link to="/register">Created an Account</router-link>
+            <!-- <router-link to="/register">Created an Account</router-link> -->
           </p>
         </q-card-section>
       </q-card>
