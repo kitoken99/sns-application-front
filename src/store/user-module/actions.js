@@ -3,7 +3,7 @@ export async function fetchUser({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/user", {
       headers: {
-        Authorization: `Bearer ${rootGetters.getToken}`,
+        Authorization: `Bearer ${rootGetters.auth.getToken}`,
       },
     })
     .then((response) => {

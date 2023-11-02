@@ -1,13 +1,13 @@
 <template>
   <div class="main-container">
     <div>
-      <!-- <SideBar /> -->
+      <SideBar />
     </div>
     <div>
-      <!-- <MidContent /> -->
+      <MidContent />
     </div>
     <div style="flex: 1">
-      <!-- <ChatRoom /> -->
+      <ChatRoom />
     </div>
   </div>
 </template>
@@ -15,16 +15,16 @@
 import { onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import Pusher from 'pusher-js';
-// import SideBar from "src/components/home/SideBar.vue";
-// import MidContent from "src/components/home/MidContent.vue";
-// import ChatRoom from "src/components/home/ChatRoom.vue";
+import SideBar from "src/components/home/SideBar.vue";
+import MidContent from "src/components/home/MidContent.vue";
+import ChatRoom from "src/components/home/ChatRoom.vue";
 export default {
   name: "HomePage",
-  // components: {
-  //   SideBar,
-  //   MidContent,
-  //   ChatRoom,
-  // },
+  components: {
+    SideBar,
+    MidContent,
+    ChatRoom,
+  },
   setup() {
 
     const store = useStore();
