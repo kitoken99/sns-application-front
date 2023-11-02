@@ -3,7 +3,7 @@ export async function fetchProfiles({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/my-profiles", {
       headers: {
-        Authorization: `Bearer ${rootGetters.auth.getToken}`,
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },
     })
     .then((response) => {
@@ -30,7 +30,7 @@ export async function createProfile(
       },
       {
         headers: {
-          Authorization: `Bearer ${rootGetters.auth.getToken}`,
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
           "content-type": "multipart/form-data",
         },
       }
@@ -51,7 +51,7 @@ export async function findProfile({ commit, rootGetters }, { email }) {
   await axios
     .get(process.env.API + "/api/profile", {
       headers: {
-        Authorization: `Bearer ${rootGetters.auth.getToken}`,
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },
       params: {
         email: email,
