@@ -68,7 +68,7 @@ export async function postMessage({ commit, rootGetters }, { message }) {
       },
       {
         headers: {
-          Authorization: `Bearer ${rootGetters.getToken}`,
+          Authorization: `Bearer ${rootGetters.auth.getToken}`,
         },
       }
     )

@@ -28,7 +28,7 @@ export async function updateUser(
       },
       {
         headers: {
-          Authorization: `Bearer ${rootGetters.getToken}`,
+          Authorization: `Bearer ${rootGetters.auth.getToken}`,
         },
       }
     )
