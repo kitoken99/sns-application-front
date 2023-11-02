@@ -9,8 +9,9 @@
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev",
-    "build": "quasar build"
+    "dev": "dotenv -e .env.development quasar dev",
+    "build": "dotenv -e .env.production quasar build",
+    "deploy": "vercel"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
