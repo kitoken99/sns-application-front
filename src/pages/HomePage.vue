@@ -29,40 +29,38 @@ export default {
 
     const store = useStore();
 
-    // Pusher.logToConsole = true;
-
     var pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY , {
       cluster: process.env.MIX_PUSHER_APP_CLUSTER
     });
 
-    // const pusherDisConnect = (room_id) => {
-    //   var channel = pusher.unsubscribe(`channel-${room_id}`);
-    // };
-    // const pusherConnect = (room_id) => {
-    //   var channel = pusher.subscribe(`channel-${room_id}`);
-    //   channel.bind("App\\Events\\MessageRecieved", function (data) {
-    //     store.dispatch("room/messageRecieved", { data: data });
-    //   });
-    // };
-    // watch(
-    //   () => store.getters["room/getRooms"],
-    //   (newVal, oldVal) => {
-    //     oldVal.forEach((value) => {
-    //       pusherDisConnect(value.room_id);
-    //     });
-    //     newVal.forEach((value) => {
-    //       pusherConnect(value.room_id);
-    //     });
-    //   }
-    // );
+    const pusherDisConnect = (room_id) => {
+      var channel = pusher.unsubscribe(`channel-${room_id}`);
+    };
+    const pusherConnect = (room_id) => {
+      var channel = pusher.subscribe(`channel-${room_id}`);
+      channel.bind("App\\Events\\MessageRecieved", function (data) {
+        store.dispatch("room/messageRecieved", { data: data });
+      });
+    };
+    watch(
+      () => store.getters["room/getRooms"],
+      (newVal, oldVal) => {
+        oldVal.forEach((value) => {
+          pusherDisConnect(value.room_id);
+        });
+        newVal.forEach((value) => {
+          pusherConnect(value.room_id);
+        });
+      }
+    );
 
-    // onMounted(async () => {
-    //   store.dispatch("user/fetchUser");
-    //   await store.dispatch("profile/fetchProfiles");
-    //   await store.dispatch("room/fetchFriends");
-    //   await store.dispatch("room/fetchGroups");
-    //   store.dispatch("room/fetchRooms")
-    // });
+    onMounted(async () => {
+      store.dispatch("user/fetchUser");
+      await store.dispatch("profile/fetchProfiles");
+      await store.dispatch("room/fetchFriends");
+      await store.dispatch("room/fetchGroups");
+      store.dispatch("room/fetchRooms")
+    });
   },
 };
 </script>

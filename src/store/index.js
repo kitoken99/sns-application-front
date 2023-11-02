@@ -2,6 +2,10 @@ import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
 import createPersistedState from "vuex-persistedstate";
 import auth from "./auth";
+import user from "./user-module";
+import profile from "./profile-module";
+import room from "./room-module";
+
 // import example from './module-example'
 
 /*
@@ -24,7 +28,10 @@ export default store(function (/* { ssrContext } */) {
     ],
 
     modules: {
-      auth
+      auth,
+      user,
+      profile,
+      room,
     },
 
     // enable strict mode (adds overhead!)
