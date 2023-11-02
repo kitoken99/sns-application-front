@@ -1,7 +1,7 @@
 <template>
   <div class="box" @click="onAuth('line')">
     <div class="mouseover">
-      <img src="https://front-ec3xmagbl-kitoken99s-projects.vercel.app/assets/btn_base.png" class="img" />
+      <img src="https://front-6cm1nw17o-kitoken99s-projects.vercel.app/assets/btn_base.png" class="img" />
     </div>
     <img src="src/assets/btn_press.png" class="img" />
   </div>
