@@ -1,6 +1,7 @@
 import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
-
+import createPersistedState from "vuex-persistedstate";
+import auth from "./auth";
 // import example from './module-example'
 
 /*
@@ -14,8 +15,16 @@ import { createStore } from 'vuex'
 
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
+    plugins: [
+      createPersistedState({
+        key: "accessToken",
+        paths: ["auth"],
+        storage: window.sessionStorage,
+      }),
+    ],
+
     modules: {
-      // example
+      auth
     },
 
     // enable strict mode (adds overhead!)
