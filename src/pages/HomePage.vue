@@ -14,6 +14,7 @@
 <script>
 import { onMounted, watch } from "vue";
 import { useStore } from "vuex";
+import Pusher from 'pusher-js';
 // import SideBar from "src/components/home/SideBar.vue";
 // import MidContent from "src/components/home/MidContent.vue";
 // import ChatRoom from "src/components/home/ChatRoom.vue";
@@ -30,9 +31,9 @@ export default {
 
     // Pusher.logToConsole = true;
 
-    // var pusher = new Pusher('7109cd140aa7d1069ea7', {
-    //   cluster: 'ap3'
-    // });
+    var pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY , {
+      cluster: process.env.MIX_PUSHER_APP_CLUSTER
+    });
 
     // const pusherDisConnect = (room_id) => {
     //   var channel = pusher.unsubscribe(`channel-${room_id}`);
