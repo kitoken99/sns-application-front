@@ -69,7 +69,11 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        API: process.env.API,
+        MIX_PUSHER_APP_KEY: process.env.MIX_PUSHER_APP_KEY,
+        MIX_PUSHER_APP_CLUSTER: process.env.MIX_PUSHER_APP_CLUSTER,
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
