@@ -17,7 +17,7 @@ const routes = [
   },
   {
     path: "/login/:provider/callback",
-    component: () => import("layouts/AuthLayout.vue"),
+    component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", component: () => import("pages/AuthCallbackPage.vue") },
     ],
