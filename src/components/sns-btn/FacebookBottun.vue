@@ -8,7 +8,6 @@
 
 <script>
 import { useStore} from 'vuex'
-import { useRouter } from "vue-router";
 export default {
   name: "FacebookButton",
   props: {
@@ -17,7 +16,7 @@ export default {
       default: "100px",
     },
   },
-  setup(props) {
+  setup() {
     const router = useRouter();
     const store = useStore();
     const onAuth = (provider) => {

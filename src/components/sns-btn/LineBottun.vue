@@ -8,8 +8,7 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
-import { useStore} from "vue-store";
+import { useStore } from "vuex";
 export default {
   name: "LineButton",
   props: {
@@ -19,7 +18,6 @@ export default {
     },
   },
   setup() {
-    const router = useRouter();
     const store = useStore();
     const onAuth = (provider) => {
       store.dispatch("auth/socialAuth", provider);
