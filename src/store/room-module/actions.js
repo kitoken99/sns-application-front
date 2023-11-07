@@ -15,7 +15,7 @@ export async function fetchProfiles({ commit, rootGetters }) {
 }
 
 
-export async function fetchFriends({ commit, rootGetters }) {
+export async function fetchFriendship({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/friendship", {
       headers: {
@@ -23,7 +23,7 @@ export async function fetchFriends({ commit, rootGetters }) {
       },
     })
     .then((response) => {
-      commit("setFriends", response.data);
+      commit("setFriendship", response.data);
     })
     .catch((error) => {
       console.log(error);

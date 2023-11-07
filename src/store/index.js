@@ -5,6 +5,7 @@ import auth from "./auth";
 import user from "./user-module";
 import profile from "./profile-module";
 import room from "./room-module";
+import state from "./show-state-module"
 
 // import example from './module-example'
 
@@ -32,6 +33,7 @@ export default store(function (/* { ssrContext } */) {
       user,
       profile,
       room,
+      state,
     },
 
     // enable strict mode (adds overhead!)

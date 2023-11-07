@@ -2,12 +2,15 @@ export function setProfiles(state, profiles) {
   state.profiles = profiles;
 }
 
-
-
-
-export function setFriends(state, friends) {
-  state.friends = friends;
+export function setFriendship(state, friendship) {
+  state.friendship = friendship;
 }
+
+
+
+
+
+
 export function setGroups(state, groups) {
   state.groups = groups;
 }

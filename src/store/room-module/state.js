@@ -1,7 +1,7 @@
 export default function () {
   return {
     profiles: {},
-    friends: [],
+    friendship: {},
     groups: [],
     rooms: {},
     current_room_id: "",

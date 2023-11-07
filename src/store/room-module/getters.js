@@ -1,15 +1,34 @@
-export function getFriend(state){
-  return state.friends;
+export function getFriends(state, getters, rootState){
+  const main_profile_id = Object.keys(rootState.profile.profiles)[0];
+  if(!state.friendship[main_profile_id]){
+    return [];
+  }
+  const friendship = state.friendship[main_profile_id];
+  const friends = [];
+  Object.keys(friendship).forEach(key =>{
+    if(!friendship[key]){
+      friends.push(state.profiles[key])
+    }else{
+      friends.push(state.profiles[key][friendship[key]]);
+    }
+  });
+  return friends;
 }
 export function getCurrentFriends(state, getters, rootState) {
-  // if (rootState.profile.current_profile.is_main) {
-  //   return Object.values(state.friends);
-  // }
-  // const response = Object.values(state.friends).filter(friend => {
-  //   return friend.my_profile_id === rootState.profile.current_profile.id;
-  // });
-
-  return state.friends;
+  const profile_id = rootState.profile.current_profile_id;
+  if(!state.friendship[profile_id]){
+    return [];
+  }
+  const friendship = state.friendship[profile_id];
+  const friends = [];
+  Object.keys(friendship).forEach(key =>{
+    if(!friendship[key]){
+      friends.push(state.profiles[key])
+    }else{
+      friends.push(state.profiles[key][friendship[key]]);
+    }
+  });
+  return friends;
 }
 
 
