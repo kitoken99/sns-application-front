@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useRouter } from "vue-router";
-
 export async function fetchUser({ commit, rootGetters }) {
   const router = useRouter();
   await axios

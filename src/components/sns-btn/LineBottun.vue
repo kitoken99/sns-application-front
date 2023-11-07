@@ -23,7 +23,6 @@ export default {
       store.dispatch("auth/socialAuth", provider);
     };
     return {
-      router,
       onAuth,
     };
   },

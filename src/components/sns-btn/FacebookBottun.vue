@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { useStore} from 'vuex'
+import { useStore } from 'vuex'
 export default {
   name: "FacebookButton",
   props: {
@@ -17,13 +17,11 @@ export default {
     },
   },
   setup() {
-    const router = useRouter();
     const store = useStore();
     const onAuth = (provider) => {
       store.dispatch("auth/socialAuth", provider);
     };
     return {
-      router,
       onAuth,
     };
   },
