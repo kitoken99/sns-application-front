@@ -1,7 +1,7 @@
 import axios from "axios";
 export async function fetchProfiles({ commit, rootGetters }) {
   await axios
-    .get(process.env.API + "/api/my-profiles", {
+    .get(process.env.API + "/api/user/profiles", {
       headers: {
         Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },

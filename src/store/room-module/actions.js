@@ -1,7 +1,23 @@
 import axios from "axios";
+export async function fetchProfiles({ commit, rootGetters }) {
+  await axios
+    .get(process.env.API + "/api/profiles", {
+      headers: {
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+      },
+    })
+    .then((response) => {
+      commit("setProfiles", response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+
 export async function fetchFriends({ commit, rootGetters }) {
   await axios
-    .get(process.env.API + "/api/friends", {
+    .get(process.env.API + "/api/friendship", {
       headers: {
         Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },

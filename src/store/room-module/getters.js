@@ -1,15 +1,15 @@
-export function getFriends(state){
+export function getFriend(state){
   return state.friends;
 }
 export function getCurrentFriends(state, getters, rootState) {
-  if (rootState.profile.current_profile.is_main) {
-    return Object.values(state.friends);
-  }
-  const response = Object.values(state.friends).filter(friend => {
-    return friend.my_profile_id === rootState.profile.current_profile.id;
-  });
+  // if (rootState.profile.current_profile.is_main) {
+  //   return Object.values(state.friends);
+  // }
+  // const response = Object.values(state.friends).filter(friend => {
+  //   return friend.my_profile_id === rootState.profile.current_profile.id;
+  // });
 
-  return response;
+  return state.friends;
 }
 
 

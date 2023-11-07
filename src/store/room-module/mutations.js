@@ -1,3 +1,10 @@
+export function setProfiles(state, profiles) {
+  state.profiles = profiles;
+}
+
+
+
+
 export function setFriends(state, friends) {
   state.friends = friends;
 }
