@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import { useRouter } from "vue-router";
+import { useStore} from "vue-store";
 export default {
   name: "LineButton",
   props: {
@@ -18,21 +18,11 @@ export default {
       default: "100px",
     },
   },
-  setup(props) {
+  setup() {
     const router = useRouter();
+    const store = useStore();
     const onAuth = (provider) => {
-      axios
-        .get(process.env.API + "/api/login/" + provider)
-        .then((response) => {
-          // ログインが成功したときの処理
-          console.log(response.data.data);
-          const LoginUrl = response.data.data.redirect_url;
-          window.location.href = LoginUrl;
-        })
-        .catch((error) => {
-          console.log(error.responsed);
-          // エラーハンドリング
-        });
+      store.dispatch("auth/socialAuth", provider);
     };
     return {
       router,

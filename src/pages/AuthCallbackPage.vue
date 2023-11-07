@@ -23,9 +23,9 @@ export default {
           { params: route.query }
         );
         if (response.status == 201) {
-          store.dispatch("auth/saveToken", response.data.data.token);
+          store.dispatch("auth/saveToken", response.data.token);
           q.loading.hide();
-          router.push("/home");
+          router.push("/");
         }
       } catch (error) {
         q.loading.hide();
@@ -35,7 +35,7 @@ export default {
 
     // fetchDataをコンポーネントのsetup内で呼び出す
     q.loading.show({
-      message: "Doing something. Please wait...",
+      message: "Authorizing. Please wait...",
       boxClass: "bg-grey-2 text-grey-9",
       spinnerColor: "primary",
     });

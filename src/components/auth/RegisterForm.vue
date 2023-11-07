@@ -126,7 +126,7 @@ export default {
 
           if (response.status == 201) {
             store.dispatch("auth/saveToken", response.data.data.token);
-            router.push("/home");
+            router.push("/");
           }
         } catch (error) {
           if (error.response.status == 422) {

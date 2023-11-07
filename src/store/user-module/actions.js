@@ -1,5 +1,8 @@
 import axios from "axios";
+import { useRouter } from "vue-router";
+
 export async function fetchUser({ commit, rootGetters }) {
+  const router = useRouter();
   await axios
     .get(process.env.API + "/api/user", {
       headers: {
@@ -11,6 +14,9 @@ export async function fetchUser({ commit, rootGetters }) {
     })
     .catch((error) => {
       console.log(error);
+      if(error.response.status==401){
+        router.push("/login");
+      }
     });
 }
 
@@ -37,5 +43,6 @@ export async function updateUser(
     })
     .catch((error) => {
       console.log(error);
+
     });
 }

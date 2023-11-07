@@ -1,6 +1,6 @@
 const routes = [
   {
-    path: "/",
+    path: "/index",
     component: () => import("layouts/DefaultLayout.vue"),
     children: [{ path: "", component: () => import("pages/IndexPage.vue") }],
   },
@@ -23,7 +23,7 @@ const routes = [
     ],
   },
   {
-    path: "/home",
+    path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/HomePage.vue") }],
   },
