@@ -7,12 +7,12 @@ export function setFriendship(state, friendship) {
 export function setGroups(state, groups) {
   state.groups = groups;
 }
-
-
-
 export function setRooms(state, rooms) {
   state.rooms = rooms;
 }
+
+
+
 
 export function setCurrentRoomId(state, current_room_id) {
   state.current_room = {}

@@ -42,6 +42,21 @@ export async function fetchGroups({ commit, rootGetters }) {
       console.log(error);
     });
 }
+export async function fetchRooms({commit, rootGetters }) {
+  await axios
+    .get(process.env.API + "/api/rooms", {
+      headers: {
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+      },
+    })
+    .then((response) => {
+      commit("setRooms", response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 
 
 export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
@@ -92,14 +107,7 @@ export async function postMessage({ commit, rootGetters }, { message }) {
     });
 }
 
-export function fetchRooms({commit, state, getters}){
-  const rooms = [...state.friends, ...state.groups];
-  const response = {};
-  rooms.forEach((room) => {
-    response[room.room_id] = room;
-  })
-  commit("setRooms", response);
-}
+
 
 export function messageRecieved({ commit, getters }, { data }) {
   commit("changeLastMessage", data);

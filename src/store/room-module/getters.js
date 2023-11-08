@@ -58,8 +58,15 @@ export function getCurrentGroups(state, getters, rootState) {
   return response;
 }
 
-export function getRooms(state){
-  const rooms =  Object.values(state.rooms);
+//Rooms
+export function getRooms(state, getters, rootState){
+  const profile_id = parseInt(Object.keys(rootState.profile.profiles)[0]);
+  if(!state.rooms[profile_id]){
+    return [];
+  }
+  const rooms = Object.values(state.rooms).filter(room =>
+    Object.values(room.profile_id).includes(profile_id)
+  );
   rooms.sort((a, b) => {
     const dateA = new Date(a.last_updated_at);
     const dateB = new Date(b.last_updated_at);
@@ -67,22 +74,21 @@ export function getRooms(state){
   });
   return rooms;
 }
-
 export function getCurrentRooms(state, getters, rootState, rootGetters) {
-  if (rootState.profile.current_profile.is_main) {
-    return getters.getRooms;
+  if(!state.rooms[rootState.profile.current_profile_id]){
+    return [];
   }
-  const rooms = getters.getRooms;
-  const current_rooms = [];
-
-  rooms.forEach(room => {
-    if(room.my_profile_id === rootState.profile.current_profile.id){
-      current_rooms.push(room);
-    }
+  const profile_id = rootState.profile.current_profile_id;
+  const rooms = Object.values(state.rooms).filter(room =>
+    Object.values(room.profile_id).includes(profile_id)
+  );
+  rooms.sort((a, b) => {
+    const dateA = new Date(a.last_updated_at);
+    const dateB = new Date(b.last_updated_at);
+    return dateB - dateA;
   });
-  return current_rooms;
+  return rooms;
 }
-
 export function getCurrentRoomId(state) {
   return state.current_room_id;
 }

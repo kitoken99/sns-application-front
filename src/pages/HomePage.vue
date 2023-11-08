@@ -60,7 +60,7 @@ export default {
       await store.dispatch("room/fetchProfiles")
       store.dispatch("room/fetchFriendship");
       await store.dispatch("room/fetchGroups");
-      // store.dispatch("room/fetchRooms")
+      store.dispatch("room/fetchRooms")
     });
   },
 };

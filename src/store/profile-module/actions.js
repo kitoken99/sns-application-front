@@ -8,7 +8,7 @@ export async function fetchProfiles({ commit, rootGetters }) {
     })
     .then((response) => {
       commit("setProfiles", response.data);
-      commit("setCurrentProfileId", Object.keys(response.data)[0]);
+      commit("setCurrentProfileId", parseInt(Object.keys(response.data)[0]));
     })
     .catch((error) => {
       console.log(error);
