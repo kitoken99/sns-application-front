@@ -1,7 +1,7 @@
 <template>
   <q-chat-message
     :name="sender.name"
-    :text="[message.body]"
+    :text="message.body"
     :sent="message.user_id === user.id"
     :text-color="message.user_id == user.id ? 'black' : 'white'"
     :bg-color="message.user_id == user.id ? 'light-green' : 'gray'"
@@ -10,7 +10,6 @@
     <template v-slot:avatar>
       <AvatarIcon
         :image="sender.image"
-        :initial="sender.name.charAt(0)"
         size="40px"
       />
     </template>

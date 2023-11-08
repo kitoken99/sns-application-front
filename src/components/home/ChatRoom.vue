@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex; flex-direction: column; height: 100vh">
-    <div style="flex: 1">
+    <div class="chat-scroll-area">
       <q-scroll-area
         :thumb-style="thumbStyle"
         class="q-pa-md"
@@ -42,8 +42,6 @@ export default defineComponent({
     watch(
       () => store.getters["room/getCurrentRoom"],
       () => {
-        console.log(room.value);
-        console.log(store.getters["user/user"]);
         room.value = store.getters["room/getCurrentRoom"];
       }
     );
@@ -65,8 +63,8 @@ export default defineComponent({
     return {
       store,
       room,
-      shouldDisplayDate,
       formatDate,
+      shouldDisplayDate,
       thumbStyle: {
         right: "2px",
         borderRadius: "5px",
@@ -87,13 +85,10 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 }
-.hi {
-  background-color: black;
-  height: 100%;
-}
 .chat-scroll-area {
   height: 100%;
   width: 100%;
+  flex: 1;
   background-color: white;
 }
 .message-form {

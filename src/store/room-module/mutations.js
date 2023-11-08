@@ -1,3 +1,4 @@
+//データ初期取得
 export function setProfiles(state, profiles) {
   state.profiles = profiles;
 }
@@ -11,17 +12,17 @@ export function setRooms(state, rooms) {
   state.rooms = rooms;
 }
 
-
-
-
+//表示ルーム選択時
 export function setCurrentRoomId(state, current_room_id) {
   state.current_room = {}
-  state.current_messages = {}
+  state.messages = []
   state.current_room_id = current_room_id;
 }
-export function setCurrentRoom(state, messages) {
-  state.current_room = messages;
+export function setMessages(state, messages) {
+  state.messages = messages;
 }
+
+
 
 export function setNewMessage(state, newMessage) {
   state.current_room.push(newMessage);

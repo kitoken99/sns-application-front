@@ -58,17 +58,17 @@ export async function fetchRooms({commit, rootGetters }) {
 }
 
 
-
+//表示ルーム選択時
 export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
   commit("setCurrentRoomId", id);
   await axios
-    .get(process.env.API + "/api/room/" + id, {
+    .get(process.env.API + "/api/room/" + id + "/messages", {
       headers: {
         Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },
     })
     .then((response) => {
-      commit("setCurrentRoom", response.data);
+      commit("setMessages", response.data);
       commit("readContent", id);
     })
     .catch((error) => {
@@ -77,7 +77,7 @@ export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
 }
 
 export async function postMessage({ commit, rootGetters }, { message }) {
-  console.log(rootGetters["room/getCurrentRoomId"]);
+  // console.log(rootGetters["room/getCurrentRoomId"]);
   const newMessage = {
     body: message,
     room_id: rootGetters["room/getCurrentRoomId"],
@@ -85,7 +85,7 @@ export async function postMessage({ commit, rootGetters }, { message }) {
     created_at: new Date().toISOString(),
   };
   console.log(newMessage);
-  commit("setNewMessage", newMessage);
+  // commit("setNewMessage", newMessage);
   await axios
     .post(
       process.env.API +

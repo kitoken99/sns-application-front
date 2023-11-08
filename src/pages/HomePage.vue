@@ -68,5 +68,7 @@ export default {
 <style>
 .main-container {
   display: flex;
+  max-width: 1000px;
+  width: 100%;
 }
 </style>
