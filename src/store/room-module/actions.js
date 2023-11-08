@@ -57,7 +57,6 @@ export async function fetchRooms({commit, rootGetters }) {
     });
 }
 
-
 //表示ルーム選択時
 export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
   commit("setCurrentRoomId", id);
@@ -76,16 +75,16 @@ export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
     });
 }
 
+//メッセージ送信時
 export async function postMessage({ commit, rootGetters }, { message }) {
-  // console.log(rootGetters["room/getCurrentRoomId"]);
+  if(!message)return;
   const newMessage = {
     body: message,
     room_id: rootGetters["room/getCurrentRoomId"],
     user_id: rootGetters["user/getUser"].id,
     created_at: new Date().toISOString(),
   };
-  console.log(newMessage);
-  // commit("setNewMessage", newMessage);
+  commit("setNewMessage", newMessage);
   await axios
     .post(
       process.env.API +
@@ -101,19 +100,44 @@ export async function postMessage({ commit, rootGetters }, { message }) {
         },
       }
     )
-    .then((response) => {})
+    .then((response) => {
+
+    })
     .catch((error) => {
       console.log(error);
     });
 }
 
-
-
-export function messageRecieved({ commit, getters }, { data }) {
+//メッセージ受信時
+export async function messageRecieved({ commit, getters, rootGetters }, { data }) {
   commit("changeLastMessage", data);
-
   if(getters.getCurrentRoomId!==data.message.room_id){
     commit('addNotRead', data)
+  }else{
+    if(rootGetters['user/getUser'].id != data.message.user_id){
+      commit('addMessage', data)
+      console.log(data.message.id);
+      await axios
+    .post(
+      process.env.API +
+        "/api/message/read" ,
+      {
+        id: data.message.id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    }
   }
+
 
 }

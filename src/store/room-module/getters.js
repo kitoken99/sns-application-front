@@ -61,9 +61,6 @@ export function getCurrentGroups(state, getters, rootState) {
 //Rooms
 export function getRooms(state, getters, rootState){
   const profile_id = parseInt(Object.keys(rootState.profile.profiles)[0]);
-  if(!state.rooms[profile_id]){
-    return [];
-  }
   const rooms = Object.values(state.rooms).filter(room =>
     Object.values(room.profile_id).includes(profile_id)
   );
@@ -75,9 +72,6 @@ export function getRooms(state, getters, rootState){
   return rooms;
 }
 export function getCurrentRooms(state, getters, rootState, rootGetters) {
-  if(!state.rooms[rootState.profile.current_profile_id]){
-    return [];
-  }
   const profile_id = rootState.profile.current_profile_id;
   const rooms = Object.values(state.rooms).filter(room =>
     Object.values(room.profile_id).includes(profile_id)

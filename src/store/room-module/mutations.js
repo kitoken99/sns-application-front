@@ -21,17 +21,18 @@ export function setCurrentRoomId(state, current_room_id) {
 export function setMessages(state, messages) {
   state.messages = messages;
 }
-
-
-
-export function setNewMessage(state, newMessage) {
-  state.current_room.push(newMessage);
-}
-
 export function readContent(state, id) {
   state.rooms[id].not_read = 0;
 }
 
+
+//メッセージ送信時
+export function setNewMessage(state, newMessage) {
+  state.messages.push(newMessage);
+}
+
+
+//メッセージ受信時
 export function changeLastMessage(state, data) {
   if (state.rooms[data.message.room_id]) {
     state.rooms[data.message.room_id].last_message = data.message;
@@ -42,4 +43,7 @@ export function addNotRead(state, data) {
   if (state.rooms[data.message.room_id]) {
     state.rooms[data.message.room_id].not_read++;
   }
+}
+export function addMessage(state, data) {
+  state.messages.push(data.message);
 }

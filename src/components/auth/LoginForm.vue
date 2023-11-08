@@ -82,13 +82,10 @@ export default {
           });
 
           if (response.status == 201) {
-            store.dispatch("auth/saveToken", response.data.data.token);
+            store.dispatch("auth/saveToken", response.data.token);
             router.push("/");
-            console.log(response.data);
           }
         } catch (error) {
-          console.log(error.response.status);
-          console.log(error.response);
           if (error.response.status == 422) {
             const errorMessages = error.response.data.errors;
             if (errorMessages.email) {
