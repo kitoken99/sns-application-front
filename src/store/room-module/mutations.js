@@ -1,19 +1,14 @@
 export function setProfiles(state, profiles) {
   state.profiles = profiles;
 }
-
 export function setFriendship(state, friendship) {
   state.friendship = friendship;
 }
-
-
-
-
-
-
 export function setGroups(state, groups) {
   state.groups = groups;
 }
+
+
 
 export function setRooms(state, rooms) {
   state.rooms = rooms;

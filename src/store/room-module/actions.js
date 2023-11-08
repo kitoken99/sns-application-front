@@ -1,4 +1,5 @@
 import axios from "axios";
+//データ初期取得
 export async function fetchProfiles({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/profiles", {
@@ -13,8 +14,6 @@ export async function fetchProfiles({ commit, rootGetters }) {
       console.log(error);
     });
 }
-
-
 export async function fetchFriendship({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/friendship", {
@@ -29,7 +28,6 @@ export async function fetchFriendship({ commit, rootGetters }) {
       console.log(error);
     });
 }
-
 export async function fetchGroups({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/groups", {

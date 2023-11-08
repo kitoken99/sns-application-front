@@ -57,9 +57,9 @@ export default {
     onMounted(async () => {
       await store.dispatch("user/fetchUser");
       store.dispatch("profile/fetchProfiles");
-      store.dispatch("room/fetchProfiles")
-      await store.dispatch("room/fetchFriendship");
-      // await store.dispatch("room/fetchGroups");
+      await store.dispatch("room/fetchProfiles")
+      store.dispatch("room/fetchFriendship");
+      await store.dispatch("room/fetchGroups");
       // store.dispatch("room/fetchRooms")
     });
   },
