@@ -91,7 +91,7 @@ export function getCurrentRoomId(state) {
 export function getCurrentRoom(state, getters, rootState) {
   if(!state.rooms[state.current_room_id]){
     return {
-      messages: [],
+      messages: null,
       members: {},
     }
   }
@@ -125,6 +125,12 @@ export function getCurrentRoom(state, getters, rootState) {
     const prevMessageDate = Math.floor(new Date(prevMessage.created_at).getTime()/m_second_for_min);
     return messageDate - prevMessageDate < time_differense;
   };
+  if(state.messages==null){
+    return {
+      messages: null,
+      members: members,
+    };
+  }
   Object.keys(state.messages).forEach(key => {
     if(key!=0 && messages[message_id-1]["user_id"] == state.messages[key]["user_id"] ){
     if(isDateDifferent(state.messages[key])){

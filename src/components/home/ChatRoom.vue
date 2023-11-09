@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex; flex-direction: column; height: 100vh">
-    <div class="chat-scroll-area">
+    <q-card class="chat-scroll-area" flat>
       <q-scroll-area
         :thumb-style="thumbStyle"
         class="q-px-md"
@@ -19,7 +19,14 @@
           />
         </div>
       </q-scroll-area>
-    </div>
+      <q-inner-loading
+        style="background-color: white;"
+        :showing="isLoading"
+        label="Please wait..."
+        label-class="text-teal"
+        label-style="font-size: 1.1em"
+      />
+      </q-card>
     <div class="row justify-center">
     <q-input
       class="message-input"
@@ -40,7 +47,7 @@
 </template>
 
 <script>
-import { ref, defineComponent, watch, onUpdated } from "vue";
+import { ref, defineComponent, watch, nextTick } from "vue";
 import { useStore } from "vuex";
 
 import MessageBox from "./chat-room/MessageBox.vue";
@@ -54,7 +61,7 @@ export default defineComponent({
     const room = ref(store.getters["room/getCurrentRoom"]);
     const newMessage = ref(null);
     const scrollRef = ref();
-    const isLoading = ref(true);
+    const isLoading = ref(false);
     const scrollBottom = () =>{
       scrollRef.value.setScrollPercentage("vertical", 1.0)
       isLoading.value=false;
@@ -83,16 +90,14 @@ export default defineComponent({
       () => store.getters["room/getCurrentRoom"],
       async() => {
         room.value = await store.getters["room/getCurrentRoom"];
-        console.log(isLoading.value)
-        console.log(room.value)
-        if(isLoading.value)setTimeout(scrollBottom, 110);
+        if(isLoading.value&&room.value["messages"])setTimeout(scrollBottom, 110);
       }
     );
     watch(
       () => store.getters["room/getCurrentRoomId"],
       () => {
         newMessage.value=null;
-        isLoading.value = true;
+        if(store.getters["room/getCurrentRoomId"])isLoading.value = true;
       })
 
 
@@ -104,6 +109,7 @@ export default defineComponent({
       shouldDisplayDate,
       onSubmit,
       newMessage,
+      isLoading,
       thumbStyle: {
         right: "2px",
         borderRadius: "5px",
@@ -138,5 +144,8 @@ export default defineComponent({
 }
 .message-bottun {
   width: 15%;
+}
+.q-card{
+  border-radius: 0;
 }
 </style>

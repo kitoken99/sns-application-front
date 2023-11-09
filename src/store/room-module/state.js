@@ -5,6 +5,6 @@ export default function () {
     groups: {},
     rooms: {},
     current_room_id: "",
-    messages: [],
+    messages: null,
   };
 }

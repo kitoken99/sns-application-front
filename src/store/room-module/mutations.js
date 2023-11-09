@@ -14,8 +14,8 @@ export function setRooms(state, rooms) {
 
 //表示ルーム選択時
 export function setCurrentRoomId(state, current_room_id) {
-  state.current_room = {}
-  state.messages = []
+  state.members = {};
+  state.messages = null;
   state.current_room_id = current_room_id;
 }
 export function setMessages(state, messages) {
