@@ -1,3 +1,10 @@
+export function getIsAuthorized(state) {
+  return state.isAuthorized
+}
+export function getIsFetched(state) {
+  return state.isFetched
+}
+
 export function getIsShowMiddleContent(state) {
   return state.isShowMiddleContent;
 }

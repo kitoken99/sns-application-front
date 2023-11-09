@@ -24,11 +24,9 @@ export default {
         );
         if (response.status == 201) {
           store.dispatch("auth/saveToken", response.data.token);
-          q.loading.hide();
           router.push("/");
         }
       } catch (error) {
-        q.loading.hide();
         router.push("/login");
       }
     };

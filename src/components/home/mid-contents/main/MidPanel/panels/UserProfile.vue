@@ -1,5 +1,5 @@
 <template>
-  <AvatarIcon :image="user.image" :initial="user.name" size="12em" />
+  <AvatarIcon :image="user.image" size="12em" />
   <div>
     {{ user.name }}
   </div>

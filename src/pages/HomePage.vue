@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div v-show="store.getters['state/getIsAuthorized']" class="main-container">
     <div>
       <SideBar />
     </div>
@@ -14,6 +14,7 @@
 <script>
 import { onMounted, watch } from "vue";
 import { useStore } from "vuex";
+import { useQuasar } from "quasar";
 import Pusher from 'pusher-js';
 import SideBar from "src/components/home/SideBar.vue";
 import MidContent from "src/components/home/MidContent.vue";
@@ -26,9 +27,8 @@ export default {
     ChatRoom,
   },
   setup() {
-
     const store = useStore();
-
+    const q = useQuasar();
     var pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY , {
       cluster: process.env.MIX_PUSHER_APP_CLUSTER
     });
@@ -55,13 +55,24 @@ export default {
     );
 
     onMounted(async () => {
-      await store.dispatch("user/fetchUser");
-      store.dispatch("profile/fetchProfiles");
-      await store.dispatch("room/fetchProfiles")
+      store.dispatch("user/fetchUser");
+      await store.dispatch("profile/fetchProfiles");
+      q.loading.hide();
+      store.dispatch("state/switchIsAuthorized", true)
+      store.dispatch("room/fetchProfiles")
       store.dispatch("room/fetchFriendship");
-      await store.dispatch("room/fetchGroups");
-      store.dispatch("room/fetchRooms")
+      store.dispatch("room/fetchGroups");
+      await store.dispatch("room/fetchRooms")
+      store.dispatch("state/switchIsFetched", true)
     });
+    q.loading.show({
+      message: "Authorizing. Please wait...",
+      boxClass: "bg-grey-2 text-grey-9",
+      spinnerColor: "primary",
+    });
+    return {
+      store,
+    }
   },
 };
 </script>

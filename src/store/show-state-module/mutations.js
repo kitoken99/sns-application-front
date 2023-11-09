@@ -1,3 +1,12 @@
+export function switchIsAuthorized(state, toggle) {
+  state.isAuthorized = toggle;
+}
+export function switchIsFetched(state, toggle) {
+  state.isFetched = toggle;
+}
+
+
+
 export function initMiddleContent(state) {
   state.isShowMiddleContent = false;
   state.isShowSetting = false;

@@ -23,11 +23,16 @@
 </template>
 
 <script>
+import { useQuasar } from "quasar";
 import LoginForm from "src/components/auth/LoginForm.vue";
 import SocialLoginBottuns from "src/components/auth/SocialLoginBottuns.vue";
 export default {
   name: "LoginPage",
   components: { LoginForm, SocialLoginBottuns },
+  setup(){
+    const q = useQuasar();
+    q.loading.hide();
+  }
 };
 </script>
 

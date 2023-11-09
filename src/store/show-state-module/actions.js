@@ -1,3 +1,13 @@
+export function switchIsAuthorized({commit}, state){
+  commit('switchIsAuthorized', state);
+}
+export function switchIsFetched({commit}, state){
+  commit('switchIsFetched', state);
+}
+
+
+
+
 export function showMiddleContent({ commit }, profile_id) {
   commit("initMainContent");
   commit("initMiddleContent");

@@ -1,5 +1,8 @@
 export default function () {
   return {
+    isAuthorized: false,
+    isFetched: false,
+
     //真ん中のコンテンツ
     isShowMiddleContent: true,
     isShowSetting: false,

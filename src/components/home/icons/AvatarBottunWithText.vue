@@ -2,7 +2,7 @@
   <div>
     <q-btn round>
       <div class="inline rounded-borders cursor-pointer icon-circle">
-        <AvatarIcon :image="image" :initial="initial" :size="size" />
+        <AvatarIcon :image="image" :size="size" />
         <q-tooltip>
           {{ text }}
         </q-tooltip>
@@ -19,10 +19,6 @@ export default defineComponent({
   components: { AvatarIcon },
   props: {
     image: {
-      type: String,
-      default: "",
-    },
-    initial: {
       type: String,
       default: "",
     },

@@ -1,25 +1,16 @@
 <template>
-  <q-avatar v-if="shouldDisplayImage()" :size="size">
+  <q-avatar v-if="store.getters['state/getIsFetched']" :size="size">
     <img :src="'data:image/png;base64,' + image" />
   </q-avatar>
-  <q-avatar
-    v-if="!shouldDisplayImage()"
-    color="primary"
-    text-color="white"
-    :size="size"
-    >{{ initial }}</q-avatar
-  >
+  <q-skeleton v-if="!store.getters['state/getIsFetched']" type="QAvatar" :size="size"/>
 </template>
 <script>
 import { defineComponent } from "vue";
+import { useStore } from "vuex";
 export default defineComponent({
   name: "AvatarIcon",
   props: {
     image: {
-      type: String,
-      default: "",
-    },
-    initial: {
       type: String,
       default: "",
     },
@@ -28,17 +19,12 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const shouldDisplayImage = () => {
-      if (props.image == "") {
-        return false;
-      }
-      return true;
-    };
+  setup(){
+    const store = useStore();
     return {
-      shouldDisplayImage,
-    };
-  },
+      store,
+    }
+  }
 });
 </script>
 <style></style>

@@ -1,6 +1,6 @@
 <template>
   <q-btn round>
-    <AvatarIcon :image="image" :initial="initial" :size="size" />
+    <AvatarIcon :image="image" :size="size" />
   </q-btn>
 </template>
 
@@ -12,10 +12,6 @@ export default defineComponent({
   components: { AvatarIcon },
   props: {
     image: {
-      type: String,
-      default: "",
-    },
-    initial: {
       type: String,
       default: "",
     },

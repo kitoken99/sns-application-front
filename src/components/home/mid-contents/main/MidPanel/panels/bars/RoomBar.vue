@@ -17,7 +17,6 @@
           {{ last_message.body }}
         </q-item-label>
       </q-item-section>
-      <q-item-section side bottom> </q-item-section>
       <q-item-section side top v-if="not_read != 0" caption>
         {{ not_read }} new messages
       </q-item-section>
