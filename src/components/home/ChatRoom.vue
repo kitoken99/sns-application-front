@@ -3,8 +3,9 @@
     <div class="chat-scroll-area">
       <q-scroll-area
         :thumb-style="thumbStyle"
-        class="q-pa-md"
+        class="q-px-md"
         style="height: 100%"
+        ref="scrollRef"
       >
         <div v-for="(message, index) in room.messages" v-bind:key="message.id">
           <q-chat-message
@@ -19,33 +20,51 @@
         </div>
       </q-scroll-area>
     </div>
-    <div>
-      <ChatForm />
-    </div>
+    <div class="row justify-center">
+    <q-input
+      class="message-input"
+      v-model="newMessage"
+      bg-color="white"
+      outlined
+      autogrow
+    />
+    <q-btn
+      class="message-bottun"
+      label="送信"
+      type="submit"
+      color="primary"
+      @click="onSubmit"
+    />
+  </div>
   </div>
 </template>
 
 <script>
-import { ref, defineComponent, watch } from "vue";
+import { ref, defineComponent, watch, onUpdated } from "vue";
 import { useStore } from "vuex";
 
 import MessageBox from "./chat-room/MessageBox.vue";
-import ChatForm from "./chat-room/ChatForm.vue";
+
 export default defineComponent({
   name: "ChatRoom",
-  components: { MessageBox, ChatForm },
+  components: { MessageBox },
 
   setup() {
     const store = useStore();
     const room = ref(store.getters["room/getCurrentRoom"]);
-
-    watch(
-      () => store.getters["room/getCurrentRoom"],
-      () => {
-        room.value = store.getters["room/getCurrentRoom"];
-      }
-    );
-
+    const newMessage = ref(null);
+    const scrollRef = ref();
+    const isLoading = ref(true);
+    const scrollBottom = () =>{
+      scrollRef.value.setScrollPercentage("vertical", 1.0)
+      isLoading.value=false;
+    }
+    const onSubmit = async() => {
+      await store.dispatch("room/addMessage", { message: newMessage.value });
+      scrollBottom()
+      store.dispatch("room/postMessage", { message: newMessage.value });
+      newMessage.value = null;
+    };
     const shouldDisplayDate = (message, index) => {
       if (index == 0) {
         return true;
@@ -60,11 +79,31 @@ export default defineComponent({
       return formattedDate;
     };
 
+    watch(
+      () => store.getters["room/getCurrentRoom"],
+      async() => {
+        room.value = await store.getters["room/getCurrentRoom"];
+        console.log(isLoading.value)
+        console.log(room.value)
+        if(isLoading.value)setTimeout(scrollBottom, 110);
+      }
+    );
+    watch(
+      () => store.getters["room/getCurrentRoomId"],
+      () => {
+        newMessage.value=null;
+        isLoading.value = true;
+      })
+
+
     return {
       store,
       room,
+      scrollRef,
       formatDate,
       shouldDisplayDate,
+      onSubmit,
+      newMessage,
       thumbStyle: {
         right: "2px",
         borderRadius: "5px",

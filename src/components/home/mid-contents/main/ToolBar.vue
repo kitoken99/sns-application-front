@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar">
-    <q-skeleton v-if="!store.getters['state/getIsFetched']" type="QToolba" style="height: 61px;"/>
+    <q-skeleton v-if="!store.getters['state/getIsFetched']" type="QToolbar" style="height: 61px;"/>
     <q-toolbar v-if="store.getters['state/getIsFetched']">
       <AvatarBottun :image="profile.image" size="50px" />
       <div class="q-pt-sm q-pl-sm">

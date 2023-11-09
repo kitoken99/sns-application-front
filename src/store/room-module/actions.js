@@ -76,7 +76,7 @@ export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
 }
 
 //メッセージ送信時
-export async function postMessage({ commit, rootGetters }, { message }) {
+export function addMessage({ commit, rootGetters }, { message }) {
   if(!message)return;
   const newMessage = {
     body: message,
@@ -85,6 +85,9 @@ export async function postMessage({ commit, rootGetters }, { message }) {
     created_at: new Date().toISOString(),
   };
   commit("setNewMessage", newMessage);
+}
+export async function postMessage({ commit, rootGetters }, { message }) {
+  if(!message)return;
   await axios
     .post(
       process.env.API +
