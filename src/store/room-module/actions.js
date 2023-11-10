@@ -163,13 +163,11 @@ export async function addFriend({ commit, rootGetters }) {
       }
     )
     .then((response) => {
-      console.log(response.data);
       const main_profile_id = Object.keys(rootGetters["profile/getProfiles"])[0];
       commit("addProfile", response.data.profile);
       commit("addFriendship", {data: response.data.friendship, main_profile_id: main_profile_id});
       commit("addRoom", response.data.room);
-      commit("state/initMiddleContent", null, { root: true });
-      commit("state/showMiddleContent", null, { root: true });
+      commit("state/switchMainContent", "main", { root: true });
     })
     .catch((error) => {
       console.log(error);

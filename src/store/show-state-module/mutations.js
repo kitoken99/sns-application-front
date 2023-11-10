@@ -1,12 +1,7 @@
 export function initState(state){
-  state.isShowMiddleContent= true;
-    state.isShowSetting= false;
-    state.isShowAddProfile= false;
-    state.isShowRoom= true;
-    state.isShowAddFriend= false;
-    state.isShowAddGroup= false;
-    state.isShowProfileSetting= false;
-    state.findUserPanelState= "form";
+  state.middleContent="main"
+  state.mainContent="main"
+  state.findUserPanelState= "form";
 }
 export function switchIsAuthorized(state, toggle) {
   state.isAuthorized = toggle;
@@ -16,43 +11,12 @@ export function switchIsFetched(state, toggle) {
 }
 
 
-
-export function initMiddleContent(state) {
-  state.isShowMiddleContent = false;
-  state.isShowSetting = false;
-  state.isShowAddProfile = false;
-  state.findUserPanelState = "form";
+export function switchMiddleContent(state, toggle) {
+  state.middleContent=toggle;
 }
-export function showMiddleContent(state) {
-  state.isShowMiddleContent = true;
+export function switchMainContent(state, toggle) {
+  state.mainContent=toggle;
 }
-export function showSetting(state) {
-  state.isShowSetting = true;
-}
-export function showAddProfile(state) {
-  state.isShowAddProfile = true;
-}
-
-export function initMainContent(state) {
-  state.isShowRoom = false;
-  state.isShowAddFriend = false;
-  state.isShowProfileSetting = false;
-  state.isShowAddGroup = false;
-  state.findUserPanelState = "form";
-}
-export function showRoom(state) {
-  state.isShowRoom = true;
-}
-export function showAddFriend(state) {
-  state.isShowAddFriend = true;
-}
-export function showAddGroup(state) {
-  state.isShowAddGroup = true;
-}
-export function showProfileSetting(state) {
-  state.isShowProfileSetting = true;
-}
-
 export function switchFindUserPanelState(state, findUserState) {
   state.findUserPanelState = findUserState;
 }

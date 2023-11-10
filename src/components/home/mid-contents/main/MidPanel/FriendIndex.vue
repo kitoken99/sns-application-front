@@ -5,7 +5,6 @@
         v-model="tab"
         animated
         style="height: 100%"
-        v-show="store.getters['state/getIsShowRoom']"
       >
         <q-tab-panel name="profile">
           <FriendPanel class="panel" />
@@ -21,7 +20,6 @@
     <q-separator />
     <div>
       <q-tabs
-        v-show="store.getters['state/getIsShowRoom']"
         v-model="tab"
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
         align="justify"

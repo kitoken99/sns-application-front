@@ -1,18 +1,18 @@
 <template>
   <div style="width: 350px; height: 100%; background-color: white;">
     <div
-      v-show="store.getters['state/getIsShowMiddleContent']"
+      v-show="store.getters['state/getMiddleContent']=='main'"
       class="mid-content"
     >
 
       <MidMain />
     </div>
     <AddProfile
-      v-show="store.getters['state/getIsShowAddProfile']"
+      v-show="store.getters['state/getMiddleContent']=='addProfile'"
       class="mid-content"
     />
     <SettingPage
-      v-show="store.getters['state/getIsShowSetting']"
+      v-show="store.getters['state/getMiddleContent']=='setting'"
       class="mid-content"
     />
   </div>

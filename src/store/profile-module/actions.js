@@ -37,9 +37,11 @@ export async function createProfile(
     )
     .then((response) => {
       commit("addProfile", response.data);
+      commit("addProfile", response.data, response.data.id, { root: true });
+      commit("room/addFriendshipForProfile", response.data.id, { root: true });
+      commit("room/addGroupsForProfile", response.data.id, { root: true });
       commit("setCurrentProfileId", response.data.id);
-      commit("state/initMiddleContent", null, { root: true });
-      commit("state/showMiddleContent", null, { root: true });
+      commit("state/switchMiddleContent", "main", { root: true });
     })
     .catch((error) => {
       console.log(error);

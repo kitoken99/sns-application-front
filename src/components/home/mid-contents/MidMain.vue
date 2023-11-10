@@ -1,7 +1,6 @@
 <template>
     <div
       class="mid-content"
-      v-show="store.getters['state/getIsShowMiddleContent']"
     >
       <Toolbar />
 

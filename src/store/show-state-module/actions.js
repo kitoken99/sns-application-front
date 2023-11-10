@@ -8,36 +8,36 @@ export function switchIsFetched({commit}, state){
   commit('switchIsFetched', state);
 }
 
-
-
-
+//middleContent
 export function showMiddleContent({ commit }, profile_id) {
-  commit("initMainContent");
-  commit("initMiddleContent");
+  commit("switchMiddleContent", "main")
+  commit("switchMainContent", "main")
+  commit("switchFindUserPanelState", "form");
   commit("profile/setCurrentProfileId", profile_id, { root: true });
-  commit("showRoom");
-  commit("showMiddleContent");
 }
 export function showSetting({ commit }) {
-  commit("initMainContent");
-  commit("initMiddleContent");
-  commit("showSetting");
+  commit ("switchMiddleContent", "setting")
+  commit("switchMainContent", "main")
+  commit("switchFindUserPanelState", "form");
 }
 export function showAddProfile({ commit }) {
-  commit("initMainContent");
-  commit("initMiddleContent");
-  commit("showAddProfile");
+  commit ("switchMiddleContent", "addProfile")
+  commit("switchMainContent", "main")
+  commit("switchFindUserPanelState", "form");
 }
+
+
+//mainContent
 export function showAddFriend({ commit }) {
-  commit("initMainContent");
-  commit("showAddFriend");
+  commit("switchMainContent", "addFriend")
   commit("switchFindUserPanelState", "form");
 }
 export function showAddGroup({ commit }) {
-  commit("initMainContent");
-  commit("showAddGroup");
-  // commit("switchFindUserPanelState", "form");
+  commit("switchMainContent", "addGroup")
+  commit("switchFindUserPanelState", "form");
 }
+
+
 export function switchFindUserPanelState({ commit }, findUserState) {
   commit("switchFindUserPanelState", findUserState);
 }

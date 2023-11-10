@@ -4,15 +4,10 @@ export default function () {
     isFetched: false,
 
     //真ん中のコンテンツ
-    isShowMiddleContent: true,
-    isShowSetting: false,
-    isShowAddProfile: false,
+    middleContent: "main",
 
     //ツールバー下コンテンツ
-    isShowRoom: true,
-    isShowAddFriend: false,
-    isShowAddGroup: false,
-    isShowProfileSetting: false,
+    mainContent: "main",
 
     //ユーザーファインディング
     findUserPanelState: "form",

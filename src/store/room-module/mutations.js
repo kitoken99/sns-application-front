@@ -49,6 +49,14 @@ export function addMessage(state, data) {
   state.messages.push(data.message);
 }
 
+//プロファイル追加
+export function addFriendshipForProfile(state, id){
+  state.friendship[id] = {}
+}
+export function addGroupsForProfile(state, id){
+  state.groups[id] = {}
+}
+
 
 //友達追加
 export function addProfile(state, profile) {

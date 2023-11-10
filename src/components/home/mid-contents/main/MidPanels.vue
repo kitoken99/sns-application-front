@@ -1,9 +1,9 @@
 <template>
-  <FriendIndex v-show="store.getters['state/getIsShowRoom']" />
+  <FriendIndex v-show="store.getters['state/getMainContent']=='main'" />
 
-  <AddFriend v-show="store.getters['state/getIsShowAddFriend']" />
+  <AddFriend v-show="store.getters['state/getMainContent']=='addFriend'" />
 
-  <AddGroup v-show="store.getters['state/getIsShowAddGroup']" />
+  <AddGroup v-show="store.getters['state/getMainContent']=='addGroup'" />
 </template>
 <script>
 import { defineComponent } from "vue";
