@@ -62,13 +62,13 @@ export default defineComponent({
     const newMessage = ref(null);
     const scrollRef = ref();
     const isLoading = ref(false);
-    const scrollBottom = () =>{
-      scrollRef.value.setScrollPercentage("vertical", 1.0)
+    const scrollBottom =() =>{
+      scrollRef.value.setScrollPercentage( 'vertical', 1)
       isLoading.value=false;
     }
     const onSubmit = async() => {
       await store.dispatch("room/addMessage", { message: newMessage.value });
-      scrollBottom()
+      setTimeout(scrollBottom, 110);
       store.dispatch("room/postMessage", { message: newMessage.value });
       newMessage.value = null;
     };
