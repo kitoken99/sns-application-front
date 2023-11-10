@@ -8,9 +8,15 @@ export function getFriends(state, getters, rootState){
   const friends = [];
   Object.keys(friendship).forEach(key =>{
     if(!friendship[key]){
-      friends.push(state.profiles[key])
+      if(state.profiles[key]){{
+        friends.push(state.profiles[key])
+      }
+    }
     }else{
-      friends.push(state.profiles[key][friendship[key]]);
+      if(state.profiles[key]){{
+        friends.push(state.profiles[key][friendship[key]]);
+      }
+    }
     }
   });
   return friends;
@@ -26,7 +32,10 @@ export function getCurrentFriends(state, getters, rootState) {
     if(!friendship[key]){
       friends.push(state.profiles[key])
     }else{
-      friends.push(state.profiles[key][friendship[key]]);
+      if(state.profiles[key]){
+        friends.push(state.profiles[key][friendship[key]]);
+      }
+
     }
   });
   return friends;

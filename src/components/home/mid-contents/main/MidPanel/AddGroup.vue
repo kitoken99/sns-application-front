@@ -61,7 +61,7 @@
           style="width: 100%; height: 300px"
         >
           <div
-            v-for="friend in store.getters['friend/getFriends']"
+            v-for="friend in store.getters['room/getFriends']"
             v-bind:key="friend.id"
           >
             <q-item
@@ -88,6 +88,7 @@
                     v-model="selected_friend_list[friend.user_id]"
                     checked-icon="check"
                     unchecked-icon="none"
+                    indeterminate-icon="none"
                   />
                 </q-item-section>
               </Transition>
@@ -174,10 +175,10 @@ export default defineComponent({
       console.log(selected_friend_list.value);
     };
     watch(
-      () => store.getters["friend/getFriends"],
+      () => store.getters["room/getFriends"],
       () => {
         const list = {};
-        store.getters["friend/getFriends"].forEach((friend) => {
+        store.getters["room/getFriends"].forEach((friend) => {
           list[friend.user_id] = false;
         });
         selected_friend_list.value = list;
