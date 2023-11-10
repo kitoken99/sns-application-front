@@ -66,3 +66,5 @@ export async function findProfile({ commit, rootGetters }, { email }) {
       console.log(error);
     });
 }
+
+

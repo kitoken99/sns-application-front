@@ -7,17 +7,10 @@ export function getFriends(state, getters, rootState){
   const friendship = state.friendship[main_profile_id];
   const friends = [];
   Object.keys(friendship).forEach(key =>{
-    if(!friendship[key]){
-      if(state.profiles[key]){{
-        friends.push(state.profiles[key])
+    if(friendship[key].state != "deleted"){
+        friends.push(state.profiles[key][friendship[key].profile_id])
       }
-    }
-    }else{
-      if(state.profiles[key]){{
-        friends.push(state.profiles[key][friendship[key]]);
-      }
-    }
-    }
+
   });
   return friends;
 }
@@ -29,13 +22,22 @@ export function getCurrentFriends(state, getters, rootState) {
   const friendship = state.friendship[profile_id];
   const friends = [];
   Object.keys(friendship).forEach(key =>{
-    if(!friendship[key]){
-      friends.push(state.profiles[key])
-    }else{
-      if(state.profiles[key]){
-        friends.push(state.profiles[key][friendship[key]]);
-      }
-
+    if(friendship[key].state == "accepted"){
+      friends.push(state.profiles[key][friendship[key].profile_id])
+    }
+  });
+  return friends;
+}
+export function getUnAcceptedFriends(state, getters, rootState) {
+  const profile_id = rootState.profile.current_profile_id;
+  if(!state.friendship[profile_id]){
+    return [];
+  }
+  const friendship = state.friendship[profile_id];
+  const friends = [];
+  Object.keys(friendship).forEach(key =>{
+    if(friendship[key].state == "unaccepted"){
+      friends.push(state.profiles[key][friendship[key].profile_id])
     }
   });
   return friends;

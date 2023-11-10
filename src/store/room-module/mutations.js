@@ -48,3 +48,21 @@ export function addNotRead(state, data) {
 export function addMessage(state, data) {
   state.messages.push(data.message);
 }
+
+
+//友達追加
+export function addProfile(state, profile) {
+  if(!state.profiles[profile.user_id])state.profiles[profile.user_id]={}
+  state.profiles[profile.user_id][profile.id] = profile;
+}
+export function addFriendship(state, {data, main_profile_id}) {
+  const friendship = {
+    "profile_id": data.friend_profile_id,
+    "state": data.state
+  }
+  state.friendship[data.profile_id][data.friend_user_id] = friendship;
+  state.friendship[main_profile_id][data.friend_user_id] = friendship;
+}
+export function addRoom(state, data) {
+    state.rooms[data.room_id] = data;
+}

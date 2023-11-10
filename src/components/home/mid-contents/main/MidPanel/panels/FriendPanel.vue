@@ -54,6 +54,33 @@
         </q-card-section>
       </q-card>
     </q-expansion-item>
+    <q-expansion-item>
+      <template v-slot:header>
+        <q-item-section avatar>
+          <q-avatar icon="person" color="grey-4" text-color="white" />
+        </q-item-section>
+        <q-item-section> unaccepted friends</q-item-section>
+        <q-item-section side>
+          <div class="row items-center">
+            {{ store.getters["room/getUnAcceptedFriends"].length }}
+          </div>
+        </q-item-section>
+      </template>
+      <q-card>
+        <q-card-section>
+          <div
+            v-for="(friend, index) in store.getters['room/getUnAcceptedFriends']"
+            v-bind:key="friend.id"
+          >
+            <MemberBar :member="friend" />
+            <q-separator
+              v-if="index < store.getters['room/getUnAcceptedFriends'].length"
+              inset="item"
+            />
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-expansion-item>
   </q-scroll-area>
 </template>
 <script>

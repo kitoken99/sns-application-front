@@ -25,7 +25,7 @@ export default defineComponent({
     const store = useStore();
     const user = ref(store.getters["profile/getFoundProfile"]);
     const addFriend = () => {
-      store.dispatch("friend/addFriend");
+      store.dispatch("room/addFriend");
     };
     return {
       user,

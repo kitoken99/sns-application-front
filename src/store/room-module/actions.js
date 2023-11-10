@@ -145,3 +145,33 @@ export async function messageRecieved({ commit, getters, rootGetters }, { data }
 
 
 }
+
+//友達追加
+export async function addFriend({ commit, rootGetters }) {
+  await axios
+    .post(
+      process.env.API + "/api/friendship",
+      {
+        friend_id: rootGetters["profile/getFoundProfile"].user_id,
+        friend_profile_id: rootGetters["profile/getFoundProfile"].id,
+        profile_id: rootGetters["profile/getCurrentProfileId"],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response.data);
+      const main_profile_id = Object.keys(rootGetters["profile/getProfiles"])[0];
+      commit("addProfile", response.data.profile);
+      commit("addFriendship", {data: response.data.friendship, main_profile_id: main_profile_id});
+      commit("addRoom", response.data.room);
+      commit("state/initMiddleContent", null, { root: true });
+      commit("state/showMiddleContent", null, { root: true });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
