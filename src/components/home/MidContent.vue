@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 350px; height: 100%">
+  <div style="width: 350px; height: 100%; background-color: white;">
     <div
       v-show="store.getters['state/getIsShowMiddleContent']"
       class="mid-content"

@@ -1,12 +1,11 @@
 <template>
   <p class="text-h6">Delete your account</p>
-  <div class="row justify-center q-mb-xl">
+  <div class="row justify-center">
     <q-btn
         push
         label="Delete this Account"
-        class="q-mt-md"
         color="negative"
-        style="width: 250px"
+        style="width: 290px"
         @click="confirm = true"
       >
       </q-btn>
@@ -32,13 +31,26 @@
 <script>
 import { defineComponent, ref} from "vue";
 import { useStore } from "vuex";
+import { useQuasar } from 'quasar'
+import { useRouter } from "vue-router";
 export default defineComponent({
   name: "DeleteAccountBtn",
   setup() {
     const store = useStore();
     const confirm =  ref(false);
-    const onDelete = () => {
-      store.dispatch("user/deleteAccount");
+    const $q = useQuasar();
+    const router = useRouter();
+    const onDelete = async () => {
+      const status = await store.dispatch("user/deleteAccount");
+      if(status=="201"){
+        store.dispatch("auth/removeToken");
+        router.push("/login");
+      }else{
+        $q.notify({
+          type: 'negative',
+          message: 'failed to create password'
+        })
+      }
     };
     return {
       confirm,
