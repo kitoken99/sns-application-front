@@ -1,3 +1,6 @@
+export function initState({commit}){
+  commit('initState');
+}
 export function switchIsAuthorized({commit}, state){
   commit('switchIsAuthorized', state);
 }

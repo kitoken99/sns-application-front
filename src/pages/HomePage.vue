@@ -55,6 +55,7 @@ export default {
     );
 
     onMounted(async () => {
+      store.dispatch("state/initState");
       store.dispatch("user/fetchUser");
       await store.dispatch("profile/fetchProfiles");
       q.loading.hide();

@@ -1,3 +1,13 @@
+export function initState(state){
+  state.isShowMiddleContent= true;
+    state.isShowSetting= false;
+    state.isShowAddProfile= false;
+    state.isShowRoom= true;
+    state.isShowAddFriend= false;
+    state.isShowAddGroup= false;
+    state.isShowProfileSetting= false;
+    state.findUserPanelState= "form";
+}
 export function switchIsAuthorized(state, toggle) {
   state.isAuthorized = toggle;
 }

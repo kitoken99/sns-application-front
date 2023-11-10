@@ -125,7 +125,7 @@ export default {
           });
 
           if (response.status == 201) {
-            store.dispatch("auth/saveToken", response.data.data.token);
+            store.dispatch("auth/saveToken", response.data.token);
             router.push("/");
           }
         } catch (error) {
