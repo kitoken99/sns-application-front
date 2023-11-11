@@ -10,7 +10,7 @@
     >
     </q-btn>
     <q-dialog v-model="confirm" persistent>
-      <q-card>
+      <q-card class="q-pa-md">
         <q-card-section class="row items-center">
           <q-avatar icon="priority_high" color="negative" text-color="white" />
           <div class="q-ml-md">

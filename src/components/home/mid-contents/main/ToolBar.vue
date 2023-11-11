@@ -20,14 +20,14 @@
         round
         dense
         icon="group_add"
-        @click="store.dispatch('state/showAddGroup')"
+        @click="store.dispatch('state/switchMainContent', 'add_group')"
       />
       <q-btn
         flat
         round
         dense
         icon="person_add"
-        @click="store.dispatch('state/showAddFriend')"
+        @click="store.dispatch('state/switchProfilePanel', 'find_profile')"
       />
     </q-toolbar>
   </div>

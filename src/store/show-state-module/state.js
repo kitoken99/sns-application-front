@@ -10,7 +10,6 @@ export default function () {
     mainContent: "main",
 
     //ユーザーファインディング
-    profilePanelState: "form",
-
+    profilePanel: "profile",
   };
 }

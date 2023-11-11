@@ -1,7 +1,7 @@
 export function initState(state) {
   state.middleContent = "main";
   state.mainContent = "main";
-  state.findUserPanelState = "profile";
+  state.profilePanel = "profile";
 }
 
 export function switchIsAuthorized(state, toggle) {
@@ -17,7 +17,6 @@ export function switchMiddleContent(state, toggle) {
 export function switchMainContent(state, toggle) {
   state.mainContent = toggle;
 }
-
-export function switchProfilePanel(state, profilePanelState) {
-  state.profilePanelState = profilePanelState;
+export function switchProfilePanel(state, profilePanel) {
+  state.profilePanel = profilePanel;
 }

@@ -8,7 +8,7 @@
       <q-input filled v-model="user.name" label="name" style="width: 290px" />
       <q-input filled v-model="user.email" label="email" style="width: 290px" />
       <div class="q-pt-md" style="width: 290px">
-        <q-date v-model="user.birth_day" class="q-mx-auto" />
+        <q-date v-model="user.birthday" class="q-mx-auto" />
         <div class="q-pt-md row justify-end">
           <q-btn
             push
@@ -51,14 +51,14 @@ export default defineComponent({
 
     const submitting = ref(false);
     const resetBirthday = () => {
-      user.value.birth_day = null;
+      user.value.birthday = null;
     };
     const onSubmit = async () => {
       submitting.value = true;
       let status = await store.dispatch("user/updateUser", {
         name: user.value.name,
         email: user.value.email,
-        birthday: user.value.birth_day,
+        birthday: user.value.birthday,
       });
       submitting.value = false;
       if (status == 200) {
@@ -80,8 +80,8 @@ export default defineComponent({
       () => {
         user.value = { ...store.getters["user/getUser"] };
         console.log(user.value);
-        if (user.value.birth_day) {
-          user.value.birth_day = user.value.birth_day.replace(/-/g, "/");
+        if (user.value.birthday) {
+          user.value.birthday = user.value.birthday.replace(/-/g, "/");
         }
         console.log(user.value);
       }

@@ -11,21 +11,25 @@
         navigation
         padding
         arrows
-        style="height: 100%;"
+        style="height: 100%"
       >
         <q-carousel-slide
           v-for="profile in Object.values(profiles)"
           v-bind:key="profile.id"
           :name="profile.id"
-          class="column no-wrap flex-center "
+          class="column no-wrap flex-center"
         >
-          <div class="q-my-md text-center q-gutter-y-lg">
-            <AvatarIcon :image="profile.image" size="12em" />
+          <div class="text-center q-gutter-y-md">
+            <AvatarIcon :image="profile.image" size="8em" />
             <div>
               <p class="text-h5">{{ profile.name }}</p>
             </div>
-            <div >
-              <p><span v-show="profile.show_barthday">{{ profile.birthday }}</span> </p>
+            <div>
+              <p>
+                <span v-show="profile.show_barthday">{{
+                  profile.birthday
+                }}</span>
+              </p>
             </div>
             <div>
               <q-scroll-area style="height: 7em; width: 200px">
@@ -39,10 +43,19 @@
       </q-carousel>
     </q-card-section>
     <q-card-actions align="around">
-      <q-btn flat v-show="details.state=='mine'" @click="store.dispatch('state/showMyProfileSetting');">setting</q-btn>
-      <q-btn flat v-show="details.state=='accepted'">talk</q-btn>
-      <q-btn flat v-show="details.state=='unaccepted'">add</q-btn>
-      <q-btn flat v-show="details.state === 'unaccepted' || details.state === 'accepted'">block</q-btn>
+      <q-btn
+        flat
+        v-show="details.state == 'mine'"
+        @click="onMyProfileSetting(slide)"
+        >setting</q-btn
+      >
+      <q-btn flat v-show="details.state == 'accepted'">talk</q-btn>
+      <q-btn flat v-show="details.state == 'unaccepted'">add</q-btn>
+      <q-btn
+        flat
+        v-show="details.state === 'unaccepted' || details.state === 'accepted'"
+        >block</q-btn
+      >
       <q-btn flat v-show="details.state === 'blocked'">unblock</q-btn>
     </q-card-actions>
   </q-card>
@@ -69,17 +82,22 @@ export default defineComponent({
         details.value = store.getters["room/getFocusedUser"].details;
       }
     );
+    const onMyProfileSetting = (id) => {
+      store.dispatch("profile/setCurrentProfileId", id);
+      store.dispatch("state/switchProfilePanel", "my_setting");
+    };
     return {
       store,
       profiles,
       slide,
       details,
+      onMyProfileSetting,
     };
   },
 });
 </script>
 <style>
-.q-card__section--vert{
+.q-card__section--vert {
   padding: 0;
 }
 </style>

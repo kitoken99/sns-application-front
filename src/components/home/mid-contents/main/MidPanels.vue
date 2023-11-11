@@ -1,20 +1,16 @@
 <template>
   <FriendIndex v-show="store.getters['state/getMainContent'] == 'main'" />
 
-  <AddFriend v-show="store.getters['state/getMainContent'] == 'addFriend'" />
-
-  <AddGroup v-show="store.getters['state/getMainContent'] == 'addGroup'" />
+  <AddGroup v-show="store.getters['state/getMainContent'] == 'add_group'" />
 </template>
 <script>
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
-import AddFriend from "./MidPanel/AddFriend.vue";
 import AddGroup from "./MidPanel/AddGroup.vue";
 import FriendIndex from "./MidPanel/FriendIndex.vue";
-
 export default defineComponent({
   name: "MidMain",
-  components: { AddFriend, AddGroup, FriendIndex },
+  components: { AddGroup, FriendIndex },
   setup() {
     const store = useStore();
     return {

@@ -7,19 +7,19 @@
       :image="profile.image"
       size="50px"
       :text="profile.account_type"
-      @click="store.dispatch('state/showMiddleContent', profile.id)"
+      @click="onClickAvatar(profile.id)"
     />
     <IconBottunWithText
       class="q-mb-md"
       icon="img:src/assets/add_black_24dp.svg"
       text="new profile"
-      @click="store.dispatch('state/showAddProfile')"
+      @click="store.dispatch('state/switchMiddleContent', 'addProfile')"
     />
     <IconBottunWithText
       class="q-mb-md"
       icon="img:src/assets/settings_black_24dp.svg"
       text="setting"
-      @click="store.dispatch('state/showSetting')"
+      @click="store.dispatch('state/switchMiddleContent', 'setting')"
     />
   </div>
 </template>
@@ -34,6 +34,11 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const profiles = ref(store.getters["profile/getProfiles"]);
+    const onClickAvatar = (id) => {
+      console.log(id);
+      store.dispatch("profile/setCurrentProfileId", id);
+      store.dispatch("state/switchMiddleContent", "main");
+    };
     watch(
       () => store.getters["profile/getProfiles"],
       (newData) => {
@@ -43,6 +48,7 @@ export default defineComponent({
     return {
       profiles,
       store,
+      onClickAvatar,
     };
   },
 });

@@ -1,10 +1,10 @@
 <template>
   <div class="add-frined">
     <q-tab-panels
-      v-model="store.getters['state/getFindUserPanelState']"
+      v-model="store.getters['state/getProfilePanel']"
       style="height: 100%"
     >
-      <q-tab-panel name="form">
+      <q-tab-panel name="find-profile">
         <EmailForm />
       </q-tab-panel>
       <q-tab-panel name="loading" class="loading">
@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import EmailForm from "./panels/EmailForm.vue";
-import UserProfile from "./panels/UserProfile.vue";
+import EmailForm from "./EmailForm.vue";
+import UserProfile from "./UserProfile.vue";
 import { defineComponent, ref } from "vue";
 import { useStore } from "vuex";
 

@@ -57,7 +57,7 @@ export async function createProfile(
 }
 
 export async function findProfile({ commit, rootGetters }, { email }) {
-  commit("state/switchFindUserPanelState", "loading", { root: true });
+  commit("state/switchProfilePanel", "loading", { root: true });
   await axios
     .get(process.env.API + "/api/profile", {
       headers: {
@@ -68,11 +68,22 @@ export async function findProfile({ commit, rootGetters }, { email }) {
       },
     })
     .then((response) => {
-      commit("setFoundProfile", response.data);
-      commit("state/switchFindUserPanelState", "found", { root: true });
+      console.log(response.data)
+      commit("room/addProfile", response.data, { root: true });
+      commit("room/setFocusedUserId", response.data.user_id, {
+        root: true,
+      });
+      commit("room/setFocusedProfileId", response.data.id, {
+        root: true,
+      });
+      commit("state/switchProfilePanel", "profile", { root: true });
     })
     .catch((error) => {
-      commit("state/switchFindUserPanelState", "form", { root: true });
+      commit("state/switchProfilePanel", "find_profile", { root: true });
       console.log(error);
     });
+}
+
+export function setCurrentProfileId({ commit }, id) {
+  commit("setCurrentProfileId",id)
 }

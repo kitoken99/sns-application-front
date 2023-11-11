@@ -3,7 +3,23 @@
     <div style="flex: 1">
       <q-tab-panels v-model="tab" animated style="height: 100%">
         <q-tab-panel name="profile">
-          <ProfilePanel class="panel" />
+          <ProfilePanel
+            class="panel"
+            v-show="store.getters['state/getProfilePanel'] == 'profile'"
+          />
+          <MyProfileSetting
+            class="panel"
+            v-if="store.getters['state/getProfilePanel'] == 'my_setting'"
+          />
+          <EmailForm
+            v-if="store.getters['state/getProfilePanel'] == 'find_profile'"
+          />
+          <div
+            class="text-center loading"
+            v-if="store.getters['state/getProfilePanel'] == 'loading'"
+          >
+            <q-spinner-dots color="primary" size="30%" />
+          </div>
         </q-tab-panel>
         <q-tab-panel name="friends">
           <FriendPanel class="panel" />
@@ -34,12 +50,16 @@
 import { defineComponent, ref } from "vue";
 import { useStore } from "vuex";
 import ProfilePanel from "./panels/ProfilePanel.vue";
+import MyProfileSetting from "./panels/MyProfileSetting.vue";
+import EmailForm from "./panels/EmailForm.vue";
 import FriendPanel from "./panels/FriendPanel.vue";
 import TalkPanel from "./panels/TalkPanel.vue";
 export default defineComponent({
   name: "FriendIndex",
   components: {
     FriendPanel,
+    MyProfileSetting,
+    EmailForm,
     TalkPanel,
     ProfilePanel,
   },
@@ -55,6 +75,12 @@ export default defineComponent({
 </script>
 <style>
 .panel {
+  height: 100%;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
 }
 </style>
