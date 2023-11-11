@@ -74,3 +74,10 @@ export function addFriendship(state, {data, main_profile_id}) {
 export function addRoom(state, data) {
     state.rooms[data.room_id] = data;
 }
+
+//グループ作成時
+export function addGroup(state, {group, profile_id}) {
+  profile_id.forEach(id => {
+    state.groups[id][group.id] = group;
+  })
+}

@@ -172,4 +172,36 @@ export async function addFriend({ commit, rootGetters }) {
     .catch((error) => {
       console.log(error);
     });
-  }
+}
+
+//グループ作成時
+export async function createGroup({ commit, rootGetters } , {
+  file, name, caption, profile_id, ids
+}) {
+  await axios
+    .post(
+      process.env.API + "/api/group",
+      {
+        name: name,
+        caption: caption,
+        image: file,
+        profile_id: profile_id,
+        ids: ids,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+          "content-type": "multipart/form-data",
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response);
+      commit("addGroup", {group: response.data.group, profile_id: response.data.profile_id});
+      commit("addRoom", response.data.room);
+      commit("state/switchMainContent", "main", { root: true });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

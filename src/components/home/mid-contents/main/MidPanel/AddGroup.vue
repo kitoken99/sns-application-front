@@ -1,12 +1,12 @@
 <template>
-  <q-scroll-area :thumb-style="thumbStyle" style="height: 100%; width: 100%">
     <q-stepper
       v-model="step"
       vertical
       header-nav
       color="primary"
       animated
-      style="height: 100%; width: 100%"
+      flat
+      class="fit"
     >
       <q-step
         :name="1"
@@ -17,7 +17,7 @@
       >
         <q-scroll-area
           :thumb-style="thumbStyle"
-          style="width: 100%; height: 300px"
+          style="height: calc(100vh - 357px)"
         >
           <div
             v-for="profile in store.getters['profile/getProfiles']"
@@ -58,7 +58,7 @@
       >
         <q-scroll-area
           :thumb-style="thumbStyle"
-          style="width: 100%; height: 300px"
+          style="width: 100%; height: calc(100vh - 357px)"
         >
           <div
             v-for="friend in store.getters['room/getFriends']"
@@ -78,9 +78,6 @@
 
               <q-item-section>
                 <q-item-label lines="1">{{ friend.name }}</q-item-label>
-                <q-item-label caption lines="2">
-                  {{ friend.account_type }}
-                </q-item-label>
               </q-item-section>
               <Transition>
                 <q-item-section avatar>
@@ -143,7 +140,6 @@
         </q-stepper-navigation>
       </q-step>
     </q-stepper>
-  </q-scroll-area>
 </template>
 
 <script>
@@ -202,26 +198,25 @@ export default defineComponent({
         preview.value = reader.result;
       };
     };
-    const onCreate = () => {
+    const onCreate = async() => {
       const ids = [];
       Object.keys(selected_friend_list.value).forEach(key => {
         if(selected_friend_list.value[key])
           ids.push(key);
       });
-      store
-        .dispatch("group/createGroup", {
+      await store
+        .dispatch("room/createGroup", {
           file: file.value,
           name: name.value,
           caption: caption.value,
           profile_id: selected_profile_id.value,
           ids: ids,
         })
-        .then(() => {
-          // name.value = null;
-          // caption.value = null;
-          // file.value = null;
-          // preview.value = null;
-        });
+          name.value = null;
+          caption.value = null;
+          file.value = null;
+          preview.value = null;
+
     };
     return {
       step,
@@ -255,4 +250,5 @@ export default defineComponent({
 .item-style {
   border-radius: 10px;
 }
+
 </style>
