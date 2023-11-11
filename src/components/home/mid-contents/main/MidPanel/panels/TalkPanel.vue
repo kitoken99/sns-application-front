@@ -30,7 +30,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const onClick = (id) => {
-      store.dispatch("room/setCurrentRoomId", { id: id });
+      store.dispatch("room/setCurrentRoomId", id );
     };
     return {
       store,

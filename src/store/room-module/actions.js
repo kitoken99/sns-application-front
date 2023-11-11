@@ -69,7 +69,7 @@ export function setFocusedUser(
 }
 
 //表示ルーム選択時
-export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
+export async function setCurrentRoomId({ commit, rootGetters }, id ) {
   if (id == rootGetters["room/getCurrentRoomId"]) return;
   commit("setCurrentRoomId", id);
   await axios

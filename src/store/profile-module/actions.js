@@ -45,7 +45,7 @@ export async function createProfile(
     )
     .then((response) => {
       commit("addProfile", response.data);
-      commit("addProfile", response.data, response.data.id, { root: true });
+      commit("room/addProfile", response.data, { root: true });
       commit("room/addFriendshipForProfile", response.data.id, { root: true });
       commit("room/addGroupsForProfile", response.data.id, { root: true });
       commit("setCurrentProfileId", response.data.id);

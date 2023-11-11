@@ -49,7 +49,7 @@
         @click="onMyProfileSetting(slide)"
         >setting</q-btn
       >
-      <q-btn flat v-show="details.state == 'accepted'">talk</q-btn>
+      <q-btn flat v-show="details.state == 'accepted'" @click="store.dispatch('room/setCurrentRoomId', details.room_id)">talk</q-btn>
       <q-btn flat v-show="details.state == 'unaccepted'|| details.state === 'not_friend'" @click="store.dispatch('room/addFriend')">add</q-btn>
       <q-btn
         flat

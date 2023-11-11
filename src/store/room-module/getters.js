@@ -134,14 +134,17 @@ export function getCurrentRoom(state, getters, rootState) {
     if (members_info[user_id])
       members[user_id] = state.profiles[user_id][members_info[user_id]];
     else {
-      if (state.friendship[rootState.profile.current_profile_id][user_id])
+      if (state.friendship[rootState.profile.current_profile_id][user_id]){
         members[user_id] =
-          state.profiles[user_id][
-            state.friendship[rootState.profile.current_profile_id][user_id]
-          ];
-      else
+        state.profiles[user_id][
+          state.friendship[rootState.profile.current_profile_id][user_id].profile_id
+        ];
+      }
+      else{
         members[user_id] =
           state.profiles[user_id][rootState.profile.current_profile_id];
+      }
+
     }
   });
   //メッセージ処理
