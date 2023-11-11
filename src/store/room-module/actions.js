@@ -42,7 +42,7 @@ export async function fetchGroups({ commit, rootGetters }) {
       console.log(error);
     });
 }
-export async function fetchRooms({commit, rootGetters }) {
+export async function fetchRooms({ commit, rootGetters }) {
   await axios
     .get(process.env.API + "/api/rooms", {
       headers: {
@@ -57,9 +57,20 @@ export async function fetchRooms({commit, rootGetters }) {
     });
 }
 
+//アバタークリック時
+export function setFocusedUser(
+  { commit, rootGetters },
+  { user_id, profile_id, isShow }
+) {
+  commit("setFocusedUserId", user_id);
+  commit("setFocusedProfileId", profile_id);
+  if (isShow) {
+  }
+}
+
 //表示ルーム選択時
 export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
-  if(id ==rootGetters["room/getCurrentRoomId"])return;
+  if (id == rootGetters["room/getCurrentRoomId"]) return;
   commit("setCurrentRoomId", id);
   await axios
     .get(process.env.API + "/api/room/" + id + "/messages", {
@@ -78,7 +89,7 @@ export async function setCurrentRoomId({ commit, rootGetters }, { id }) {
 
 //メッセージ送信時
 export function addMessage({ commit, rootGetters }, { message }) {
-  if(!message)return;
+  if (!message) return;
   const newMessage = {
     body: message,
     room_id: rootGetters["room/getCurrentRoomId"],
@@ -88,7 +99,7 @@ export function addMessage({ commit, rootGetters }, { message }) {
   commit("setNewMessage", newMessage);
 }
 export async function postMessage({ commit, rootGetters }, { message }) {
-  if(!message)return;
+  if (!message) return;
   await axios
     .post(
       process.env.API +
@@ -104,46 +115,42 @@ export async function postMessage({ commit, rootGetters }, { message }) {
         },
       }
     )
-    .then((response) => {
-
-    })
+    .then((response) => {})
     .catch((error) => {
       console.log(error);
     });
 }
 
 //メッセージ受信時
-export async function messageRecieved({ commit, getters, rootGetters }, { data }) {
+export async function messageRecieved(
+  { commit, getters, rootGetters },
+  { data }
+) {
   commit("changeLastMessage", data);
-  if(getters.getCurrentRoomId!==data.message.room_id){
-    commit('addNotRead', data)
-  }else{
-    if(rootGetters['user/getUser'].id != data.message.user_id){
-      commit('addMessage', data)
+  if (getters.getCurrentRoomId !== data.message.room_id) {
+    commit("addNotRead", data);
+  } else {
+    if (rootGetters["user/getUser"].id != data.message.user_id) {
+      commit("addMessage", data);
       console.log(data.message.id);
       await axios
-    .post(
-      process.env.API +
-        "/api/message/read" ,
-      {
-        id: data.message.id,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
-        },
-      }
-    )
-    .then((response) => {
-
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+        .post(
+          process.env.API + "/api/message/read",
+          {
+            id: data.message.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+            },
+          }
+        )
+        .then((response) => {})
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
-
-
 }
 
 //友達追加
@@ -163,9 +170,14 @@ export async function addFriend({ commit, rootGetters }) {
       }
     )
     .then((response) => {
-      const main_profile_id = Object.keys(rootGetters["profile/getProfiles"])[0];
+      const main_profile_id = Object.keys(
+        rootGetters["profile/getProfiles"]
+      )[0];
       commit("addProfile", response.data.profile);
-      commit("addFriendship", {data: response.data.friendship, main_profile_id: main_profile_id});
+      commit("addFriendship", {
+        data: response.data.friendship,
+        main_profile_id: main_profile_id,
+      });
       commit("addRoom", response.data.room);
       commit("state/switchMainContent", "main", { root: true });
     })
@@ -175,9 +187,10 @@ export async function addFriend({ commit, rootGetters }) {
 }
 
 //グループ作成時
-export async function createGroup({ commit, rootGetters } , {
-  file, name, caption, profile_id, ids
-}) {
+export async function createGroup(
+  { commit, rootGetters },
+  { file, name, caption, profile_id, ids }
+) {
   await axios
     .post(
       process.env.API + "/api/group",
@@ -197,7 +210,10 @@ export async function createGroup({ commit, rootGetters } , {
     )
     .then((response) => {
       console.log(response);
-      commit("addGroup", {group: response.data.group, profile_id: response.data.profile_id});
+      commit("addGroup", {
+        group: response.data.group,
+        profile_id: response.data.profile_id,
+      });
       commit("addRoom", response.data.room);
       commit("state/switchMainContent", "main", { root: true });
     })

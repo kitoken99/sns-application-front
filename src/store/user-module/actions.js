@@ -13,7 +13,7 @@ export async function fetchUser({ commit, rootGetters }) {
     })
     .catch((error) => {
       console.log(error);
-      if(error.response.status==401){
+      if (error.response.status == 401) {
         router.push("/login");
       }
     });
@@ -23,9 +23,8 @@ export async function updateUser(
   { commit, rootGetters },
   { name, email, birthday }
 ) {
-  try{
-   const response = await axios
-    .patch(
+  try {
+    const response = await axios.patch(
       process.env.API + "/api/user",
       {
         name: name,
@@ -37,24 +36,21 @@ export async function updateUser(
           Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
         },
       }
-    )
-      commit("setUser", response.data);
-      return response.status
-    }
-    catch(error) {
-      console.log(error);
-      return error.response.status
-
-    };
+    );
+    commit("setUser", response.data);
+    return response.status;
+  } catch (error) {
+    console.log(error);
+    return error.response.status;
+  }
 }
 
 export async function updatePassword(
   { commit, rootGetters },
-  { previous_password,  new_password, confirm_new_password }
+  { previous_password, new_password, confirm_new_password }
 ) {
-  try{
-   const response = await axios
-    .patch(
+  try {
+    const response = await axios.patch(
       process.env.API + "/api/user/password",
       {
         previous_password: previous_password,
@@ -66,35 +62,27 @@ export async function updatePassword(
           Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
         },
       }
-    )
-      console.log(response.data)
-      commit("setUser", response.data.user);
-      return response.status
-    }
-    catch(error) {
-      console.log(error);
-      return error.response.status
-
-    };
+    );
+    console.log(response.data);
+    commit("setUser", response.data.user);
+    return response.status;
+  } catch (error) {
+    console.log(error);
+    return error.response.status;
+  }
 }
 
-export async function deleteAccount({ commit, rootGetters }){
-  try{
-    const response = await axios
-     .delete(
-       process.env.API + "/api/user",
-       {
-         headers: {
-           Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
-         },
-       }
-     )
-     console.log(response)
-     return response.status
-     }
-     catch(error) {
-       console.log(error);
-       return error.response.status
-
-     };
+export async function deleteAccount({ commit, rootGetters }) {
+  try {
+    const response = await axios.delete(process.env.API + "/api/user", {
+      headers: {
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+      },
+    });
+    console.log(response);
+    return response.status;
+  } catch (error) {
+    console.log(error);
+    return error.response.status;
+  }
 }

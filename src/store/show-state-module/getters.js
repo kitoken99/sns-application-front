@@ -1,18 +1,17 @@
 export function getIsAuthorized(state) {
-  return state.isAuthorized
+  return state.isAuthorized;
 }
 export function getIsFetched(state) {
-  return state.isFetched
+  return state.isFetched;
 }
 
 export function getMiddleContent(state) {
-  return state.middleContent
+  return state.middleContent;
 }
 export function getMainContent(state) {
-  return state.mainContent
+  return state.mainContent;
 }
 
-export function getFindUserPanelState(state) {
-  return state.findUserPanelState;
+export function getProfilePanel(state) {
+  return state.profilePanel;
 }
-

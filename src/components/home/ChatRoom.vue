@@ -20,29 +20,29 @@
         </div>
       </q-scroll-area>
       <q-inner-loading
-        style="background-color: white;"
+        style="background-color: white"
         :showing="isLoading"
         label="Please wait..."
         label-class="text-teal"
         label-style="font-size: 1.1em"
       />
-      </q-card>
+    </q-card>
     <div class="row justify-center">
-    <q-input
-      class="message-input"
-      v-model="newMessage"
-      bg-color="white"
-      outlined
-      autogrow
-    />
-    <q-btn
-      class="message-bottun"
-      label="送信"
-      type="submit"
-      color="primary"
-      @click="onSubmit"
-    />
-  </div>
+      <q-input
+        class="message-input"
+        v-model="newMessage"
+        bg-color="white"
+        outlined
+        autogrow
+      />
+      <q-btn
+        class="message-bottun"
+        label="送信"
+        type="submit"
+        color="primary"
+        @click="onSubmit"
+      />
+    </div>
   </div>
 </template>
 
@@ -62,11 +62,11 @@ export default defineComponent({
     const newMessage = ref(null);
     const scrollRef = ref();
     const isLoading = ref(false);
-    const scrollBottom =() =>{
-      scrollRef.value.setScrollPercentage( 'vertical', 1)
-      isLoading.value=false;
-    }
-    const onSubmit = async() => {
+    const scrollBottom = () => {
+      scrollRef.value.setScrollPercentage("vertical", 1);
+      isLoading.value = false;
+    };
+    const onSubmit = async () => {
       await store.dispatch("room/addMessage", { message: newMessage.value });
       setTimeout(scrollBottom, 110);
       store.dispatch("room/postMessage", { message: newMessage.value });
@@ -88,18 +88,19 @@ export default defineComponent({
 
     watch(
       () => store.getters["room/getCurrentRoom"],
-      async() => {
+      async () => {
         room.value = await store.getters["room/getCurrentRoom"];
-        if(isLoading.value&&room.value["messages"])setTimeout(scrollBottom, 110);
+        if (isLoading.value && room.value["messages"])
+          setTimeout(scrollBottom, 110);
       }
     );
     watch(
       () => store.getters["room/getCurrentRoomId"],
       () => {
-        newMessage.value=null;
-        if(store.getters["room/getCurrentRoomId"])isLoading.value = true;
-      })
-
+        newMessage.value = null;
+        if (store.getters["room/getCurrentRoomId"]) isLoading.value = true;
+      }
+    );
 
     return {
       store,
@@ -145,7 +146,7 @@ export default defineComponent({
 .message-bottun {
   width: 15%;
 }
-.q-card{
+.q-card {
   border-radius: 0;
 }
 </style>

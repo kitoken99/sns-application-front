@@ -1,11 +1,9 @@
 <template>
-    <div
-      class="mid-content"
-    >
-      <Toolbar />
+  <div class="mid-content">
+    <Toolbar />
 
-      <MidPanels />
-    </div>
+    <MidPanels />
+  </div>
 </template>
 <script>
 import { defineComponent } from "vue";
@@ -23,6 +21,4 @@ export default defineComponent({
   },
 });
 </script>
-<style>
-
-</style>
+<style></style>

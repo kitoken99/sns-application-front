@@ -1,13 +1,9 @@
 <template>
   <div style="display: flex; flex-direction: column; height: 100%">
     <div style="flex: 1">
-      <q-tab-panels
-        v-model="tab"
-        animated
-        style="height: 100%"
-      >
+      <q-tab-panels v-model="tab" animated style="height: 100%">
         <q-tab-panel name="profile">
-          <FriendPanel class="panel" />
+          <ProfilePanel class="panel" />
         </q-tab-panel>
         <q-tab-panel name="friends">
           <FriendPanel class="panel" />
@@ -37,6 +33,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useStore } from "vuex";
+import ProfilePanel from "./panels/ProfilePanel.vue";
 import FriendPanel from "./panels/FriendPanel.vue";
 import TalkPanel from "./panels/TalkPanel.vue";
 export default defineComponent({
@@ -44,6 +41,7 @@ export default defineComponent({
   components: {
     FriendPanel,
     TalkPanel,
+    ProfilePanel,
   },
   setup() {
     const store = useStore();

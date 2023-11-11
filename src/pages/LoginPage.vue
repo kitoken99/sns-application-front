@@ -29,10 +29,10 @@ import SocialLoginBottuns from "src/components/auth/SocialLoginBottuns.vue";
 export default {
   name: "LoginPage",
   components: { LoginForm, SocialLoginBottuns },
-  setup(){
+  setup() {
     const q = useQuasar();
     q.loading.hide();
-  }
+  },
 };
 </script>
 

@@ -1,11 +1,16 @@
 <template>
   <div class="toolbar">
-    <q-skeleton v-if="!store.getters['state/getIsFetched']" type="QToolbar" style="height: 61px;"/>
+    <q-skeleton
+      v-if="!store.getters['state/getIsFetched']"
+      type="QToolbar"
+      style="height: 61px"
+    />
     <q-toolbar v-if="store.getters['state/getIsFetched']">
       <AvatarBottun :image="profile.image" size="50px" />
       <div class="q-pt-sm q-pl-sm">
         <p class="q-ma-none">
-          <span class="text-weight-bold text-h6">{{ profile.name }}</span><br>
+          <span class="text-weight-bold text-h6">{{ profile.name }}</span
+          ><br />
           <span class="q-ml-sm">{{ profile.account_type }}</span>
         </p>
       </div>

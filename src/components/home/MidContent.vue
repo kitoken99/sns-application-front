@@ -1,18 +1,17 @@
 <template>
-  <div style="width: 350px; height: 100%; background-color: white;">
+  <div style="width: 350px; height: 100%; background-color: white">
     <div
-      v-show="store.getters['state/getMiddleContent']=='main'"
+      v-show="store.getters['state/getMiddleContent'] == 'main'"
       class="mid-content"
     >
-
       <MidMain />
     </div>
     <AddProfile
-      v-show="store.getters['state/getMiddleContent']=='addProfile'"
+      v-show="store.getters['state/getMiddleContent'] == 'addProfile'"
       class="mid-content"
     />
     <SettingPage
-      v-show="store.getters['state/getMiddleContent']=='setting'"
+      v-show="store.getters['state/getMiddleContent'] == 'setting'"
       class="mid-content"
     />
   </div>
@@ -25,7 +24,7 @@ import AddProfile from "./mid-contents/AddProfile.vue";
 import SettingPage from "./mid-contents/SettingPage.vue";
 export default defineComponent({
   name: "MidContent",
-  components: {  MidMain, AddProfile, SettingPage },
+  components: { MidMain, AddProfile, SettingPage },
   setup() {
     const store = useStore();
     return {

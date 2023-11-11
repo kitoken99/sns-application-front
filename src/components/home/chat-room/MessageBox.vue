@@ -7,12 +7,14 @@
     :bg-color="message.user_id == user.id ? 'light-green' : 'gray'"
     :stamp="formattedCreatedAt"
   >
-    <template v-slot:avatar >
-      <div :class="{ 'q-ml-sm': message.user_id === user.id, 'q-mr-sm': message.user_id !== user.id }">
-      <AvatarIcon
-        :image="sender.image"
-        size="40px"
-      />
+    <template v-slot:avatar>
+      <div
+        :class="{
+          'q-ml-sm': message.user_id === user.id,
+          'q-mr-sm': message.user_id !== user.id,
+        }"
+      >
+        <AvatarIcon :image="sender.image" size="40px" />
       </div>
     </template>
   </q-chat-message>

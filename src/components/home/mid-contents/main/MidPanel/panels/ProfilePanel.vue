@@ -1,25 +1,85 @@
 <template>
-  <q-scroll-area> </q-scroll-area>
+  <q-card flat>
+    <q-card-section>
+      <q-carousel
+        v-model="slide"
+        transition-prev="scale"
+        transition-next="scale"
+        swipeable
+        animated
+        control-color="light-green"
+        navigation
+        padding
+        arrows
+        style="height: 100%;"
+      >
+        <q-carousel-slide
+          v-for="profile in Object.values(profiles)"
+          v-bind:key="profile.id"
+          :name="profile.id"
+          class="column no-wrap flex-center "
+        >
+          <div class="q-my-md text-center q-gutter-y-lg">
+            <AvatarIcon :image="profile.image" size="12em" />
+            <div>
+              <p class="text-h5">{{ profile.name }}</p>
+            </div>
+            <div >
+              <p><span v-show="profile.show_barthday">{{ profile.birthday }}</span> </p>
+            </div>
+            <div>
+              <q-scroll-area style="height: 7em; width: 200px">
+                <div style="overflow-wrap: break-word; width: 200px">
+                  {{ profile.caption }}
+                </div>
+              </q-scroll-area>
+            </div>
+          </div>
+        </q-carousel-slide>
+      </q-carousel>
+    </q-card-section>
+    <q-card-actions align="around">
+      <q-btn flat v-show="details.state=='mine'" @click="store.dispatch('state/showMyProfileSetting');">setting</q-btn>
+      <q-btn flat v-show="details.state=='accepted'">talk</q-btn>
+      <q-btn flat v-show="details.state=='unaccepted'">add</q-btn>
+      <q-btn flat v-show="details.state === 'unaccepted' || details.state === 'accepted'">block</q-btn>
+      <q-btn flat v-show="details.state === 'blocked'">unblock</q-btn>
+    </q-card-actions>
+  </q-card>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
+import AvatarIcon from "src/components/home/icons/AvatarIcon.vue";
 export default defineComponent({
   name: "ProfilePanel",
+  components: {
+    AvatarIcon,
+  },
   setup() {
     const store = useStore();
-    const room = ref(store.getters["p/getFoundProfile"]);
+    const profiles = ref(store.getters["room/getFocusedUser"].profiles);
+    const slide = ref(store.getters["room/getFocusedUser"].top_profile_id);
+    const details = ref(store.getters["room/getFocusedUser"].details);
+    watch(
+      () => ref(store.getters["room/getFocusedUser"]),
+      () => {
+        profiles.value = store.getters["room/getFocusedUser"].profiles;
+        slide.value = store.getters["room/getFocusedUser"].top_profile_id;
+        details.value = store.getters["room/getFocusedUser"].details;
+      }
+    );
     return {
       store,
-      thumbStyle: {
-        right: "2px",
-        borderRadius: "5px",
-        backgroundColor: "#027be3",
-        width: "5px",
-        opacity: "0.75",
-      },
+      profiles,
+      slide,
+      details,
     };
   },
 });
 </script>
-<style></style>
+<style>
+.q-card__section--vert{
+  padding: 0;
+}
+</style>

@@ -9,6 +9,14 @@ export async function fetchProfiles({ commit, rootGetters }) {
     .then((response) => {
       commit("setProfiles", response.data);
       commit("setCurrentProfileId", parseInt(Object.keys(response.data)[0]));
+      commit("room/setFocusedUserId", Object.values(response.data)[0].user_id, {
+        root: true,
+      });
+      commit(
+        "room/setFocusedProfileId",
+        parseInt(Object.keys(response.data)[0]),
+        { root: true }
+      );
     })
     .catch((error) => {
       console.log(error);
@@ -68,5 +76,3 @@ export async function findProfile({ commit, rootGetters }, { email }) {
       console.log(error);
     });
 }
-
-

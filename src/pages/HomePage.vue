@@ -15,7 +15,7 @@
 import { onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
-import Pusher from 'pusher-js';
+import Pusher from "pusher-js";
 import SideBar from "src/components/home/SideBar.vue";
 import MidContent from "src/components/home/MidContent.vue";
 import ChatRoom from "src/components/home/ChatRoom.vue";
@@ -29,8 +29,8 @@ export default {
   setup() {
     const store = useStore();
     const q = useQuasar();
-    var pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY , {
-      cluster: process.env.MIX_PUSHER_APP_CLUSTER
+    var pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY, {
+      cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     });
 
     const pusherDisConnect = (room_id) => {
@@ -59,12 +59,12 @@ export default {
       store.dispatch("user/fetchUser");
       await store.dispatch("profile/fetchProfiles");
       q.loading.hide();
-      store.dispatch("state/switchIsAuthorized", true)
-      store.dispatch("room/fetchProfiles")
+      store.dispatch("state/switchIsAuthorized", true);
+      store.dispatch("room/fetchProfiles");
       store.dispatch("room/fetchFriendship");
       store.dispatch("room/fetchGroups");
-      await store.dispatch("room/fetchRooms")
-      store.dispatch("state/switchIsFetched", true)
+      await store.dispatch("room/fetchRooms");
+      store.dispatch("state/switchIsFetched", true);
     });
     q.loading.show({
       message: "Authorizing. Please wait...",
@@ -73,7 +73,7 @@ export default {
     });
     return {
       store,
-    }
+    };
   },
 };
 </script>

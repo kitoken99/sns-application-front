@@ -69,7 +69,9 @@
       <q-card>
         <q-card-section>
           <div
-            v-for="(friend, index) in store.getters['room/getUnAcceptedFriends']"
+            v-for="(friend, index) in store.getters[
+              'room/getUnAcceptedFriends'
+            ]"
             v-bind:key="friend.id"
           >
             <MemberBar :member="friend" />

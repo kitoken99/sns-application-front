@@ -4,15 +4,19 @@
     class="q-pa-md"
     style="height: 100%; width: 100%"
   >
-  <div class="q-my-lg">
-  <p class="text-h5 text-weight-bold">User Setting</p>
-  <div class="q-gutter-y-xl" >
-    <UpdateUser />
-    <CreatePasswordForm v-show="store.getters['user/getUser'].auth_type == 'social'"/>
-    <ChangePasswordForm v-show="store.getters['user/getUser'].auth_type != 'social'"/>
-    <DeleteAccountBtn />
-  </div>
-</div>
+    <div class="q-my-lg">
+      <p class="text-h5 text-weight-bold">User Setting</p>
+      <div class="q-gutter-y-xl">
+        <UpdateUser />
+        <CreatePasswordForm
+          v-show="store.getters['user/getUser'].auth_type == 'social'"
+        />
+        <ChangePasswordForm
+          v-show="store.getters['user/getUser'].auth_type != 'social'"
+        />
+        <DeleteAccountBtn />
+      </div>
+    </div>
   </q-scroll-area>
 </template>
 
@@ -25,11 +29,16 @@ import ChangePasswordForm from "./setting-page/ChengePasswordForm.vue";
 import DeleteAccountBtn from "./setting-page/DeleteAccountBtn.vue";
 export default defineComponent({
   name: "SettingPage",
-  components: { UpdateUser, CreatePasswordForm, ChangePasswordForm, DeleteAccountBtn},
-  setup(){
+  components: {
+    UpdateUser,
+    CreatePasswordForm,
+    ChangePasswordForm,
+    DeleteAccountBtn,
+  },
+  setup() {
     const store = useStore();
 
-    return{
+    return {
       store,
       thumbStyle: {
         right: "2px",
@@ -38,8 +47,8 @@ export default defineComponent({
         width: "5px",
         opacity: "0.75",
       },
-    }
-  }
+    };
+  },
 });
 </script>
 <style></style>
