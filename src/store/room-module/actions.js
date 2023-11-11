@@ -154,13 +154,13 @@ export async function messageRecieved(
 }
 
 //友達追加
-export async function addFriend({ commit, rootGetters }) {
+export async function addFriend({ commit, state, rootGetters }) {
   await axios
     .post(
       process.env.API + "/api/friendship",
       {
-        friend_id: rootGetters["profile/getFoundProfile"].user_id,
-        friend_profile_id: rootGetters["profile/getFoundProfile"].id,
+        friend_id:state.focused_user_id,
+        friend_profile_id: state.focused_profile_id,
         profile_id: rootGetters["profile/getCurrentProfileId"],
       },
       {

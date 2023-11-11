@@ -50,7 +50,7 @@
         >setting</q-btn
       >
       <q-btn flat v-show="details.state == 'accepted'">talk</q-btn>
-      <q-btn flat v-show="details.state == 'unaccepted'">add</q-btn>
+      <q-btn flat v-show="details.state == 'unaccepted'|| details.state === 'not_friend'" @click="store.dispatch('room/addFriend')">add</q-btn>
       <q-btn
         flat
         v-show="details.state === 'unaccepted' || details.state === 'accepted'"
@@ -86,6 +86,7 @@ export default defineComponent({
       store.dispatch("profile/setCurrentProfileId", id);
       store.dispatch("state/switchProfilePanel", "my_setting");
     };
+
     return {
       store,
       profiles,
