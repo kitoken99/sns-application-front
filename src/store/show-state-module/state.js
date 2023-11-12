@@ -11,5 +11,7 @@ export default function () {
 
     //ユーザーファインディング
     profilePanel: "profile",
+
+    showProfile: true,
   };
 }

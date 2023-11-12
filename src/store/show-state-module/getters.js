@@ -15,3 +15,7 @@ export function getMainContent(state) {
 export function getProfilePanel(state) {
   return state.profilePanel;
 }
+
+export function getShowProfile(state) {
+  return state.showProfile;
+}

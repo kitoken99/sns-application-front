@@ -50,7 +50,7 @@ export function getCurrentFriends(state, getters, rootState) {
   return friends;
 }
 export function getUnAcceptedFriends(state, getters, rootState) {
-  const profile_id = rootState.profile.current_profile_id;
+  const profile_id = Object.keys(rootState.profile.profiles)[0];
   if (!state.friendship[profile_id]) {
     return [];
   }

@@ -7,7 +7,7 @@
       :image="profile.image"
       size="50px"
       :text="profile.account_type"
-      @click="onClickAvatar(profile.id)"
+      @click="onClickAvatar(profile)"
     />
     <IconBottunWithText
       class="q-mb-md"
@@ -34,10 +34,10 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const profiles = ref(store.getters["profile/getProfiles"]);
-    const onClickAvatar = (id) => {
-      console.log(id);
-      store.dispatch("profile/setCurrentProfileId", id);
+    const onClickAvatar = (profile) => {
+      store.dispatch("profile/setCurrentProfileId", profile.id);
       store.dispatch("state/switchMiddleContent", "main");
+      store.dispatch('room/setFocusedUser', { user_id: profile.user_id, profile_id: profile.id });
     };
     watch(
       () => store.getters["profile/getProfiles"],

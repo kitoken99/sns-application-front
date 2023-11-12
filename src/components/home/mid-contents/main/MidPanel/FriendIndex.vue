@@ -47,7 +47,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
 import ProfilePanel from "./panels/ProfilePanel.vue";
 import MyProfileSetting from "./panels/MyProfileSetting.vue";
@@ -66,6 +66,12 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const tab = ref("friends");
+    watch(
+      () => ref(store.getters["state/getShowProfile"]),
+      () => {
+        tab.value="profile"
+      }
+    );
     return {
       store,
       tab,

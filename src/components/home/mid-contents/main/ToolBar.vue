@@ -6,7 +6,7 @@
       style="height: 61px"
     />
     <q-toolbar v-if="store.getters['state/getIsFetched']">
-      <AvatarBottun :image="profile.image" size="50px" />
+      <AvatarBottun :image="profile.image" size="50px" @click="onAvatar()"/>
       <div class="q-pt-sm q-pl-sm">
         <p class="q-ma-none">
           <span class="text-weight-bold text-h6">{{ profile.name }}</span
@@ -42,6 +42,10 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const profile = ref(store.getters["profile/getCurrentProfile"]);
+    const onAvatar = () => {
+      store.dispatch('room/setFocusedUser', { user_id: profile.value.user_id, profile_id: profile.value.id, isShow: true });
+      store.dispatch("state/switchProfilePanel", "profile");
+    }
     watch(
       () => store.getters["profile/getCurrentProfile"],
       (newData) => {
@@ -51,6 +55,7 @@ export default defineComponent({
     return {
       store,
       profile,
+      onAvatar,
     };
   },
 });

@@ -64,7 +64,9 @@ export function setFocusedUser(
 ) {
   commit("setFocusedUserId", user_id);
   commit("setFocusedProfileId", profile_id);
+  commit("state/switchProfilePanel", "profile", { root: true });
   if (isShow) {
+    commit("state/showProfile", null, { root: true });
   }
 }
 
@@ -173,7 +175,6 @@ export async function addFriend({ commit, state, rootGetters }) {
       const main_profile_id = Object.keys(
         rootGetters["profile/getProfiles"]
       )[0];
-      commit("addProfile", response.data.profile);
       commit("addFriendship", {
         data: response.data.friendship,
         main_profile_id: main_profile_id,
