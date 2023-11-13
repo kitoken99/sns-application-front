@@ -16,5 +16,6 @@ export function switchMainContent({ commit }, state) {
 }
 export function switchProfilePanel({ commit }, state) {
   commit("switchMainContent", "main");
+  if (state == "find_profile") commit("showProfile", null);
   commit("switchProfilePanel", state);
 }

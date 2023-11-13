@@ -45,7 +45,7 @@
             v-for="(friend, index) in store.getters['room/getCurrentFriends']"
             v-bind:key="friend.id"
           >
-            <MemberBar :member="friend" @click="onAvatar(friend)"/>
+            <MemberBar :member="friend" @click="onAvatar(friend)" />
             <q-separator
               v-if="index < store.getters['room/getCurrentFriends'].length"
               inset="item"
@@ -74,7 +74,7 @@
             ]"
             v-bind:key="friend.id"
           >
-            <MemberBar :member="friend" @click="onAvatar(friend)"/>
+            <MemberBar :member="friend" @click="onAvatar(friend)" />
             <q-separator
               v-if="index < store.getters['room/getUnAcceptedFriends'].length"
               inset="item"
@@ -97,8 +97,12 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const onAvatar = (profile) => {
-      store.dispatch('room/setFocusedUser', { user_id: profile.user_id, profile_id: profile.id, isShow: true });
-    }
+      store.dispatch("room/setFocusedUser", {
+        user_id: profile.user_id,
+        profile_id: profile.id,
+        isShow: true,
+      });
+    };
     return {
       onAvatar,
       store,

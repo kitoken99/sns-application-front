@@ -71,7 +71,7 @@ export function setFocusedUser(
 }
 
 //表示ルーム選択時
-export async function setCurrentRoomId({ commit, rootGetters }, id ) {
+export async function setCurrentRoomId({ commit, rootGetters }, id) {
   if (id == rootGetters["room/getCurrentRoomId"]) return;
   commit("setCurrentRoomId", id);
   await axios
@@ -161,8 +161,7 @@ export async function addFriend({ commit, state, rootGetters }) {
     .post(
       process.env.API + "/api/friendship",
       {
-        friend_id:state.focused_user_id,
-        friend_profile_id: state.focused_profile_id,
+        friend_id: state.focused_user_id,
         profile_id: rootGetters["profile/getCurrentProfileId"],
       },
       {
@@ -177,6 +176,7 @@ export async function addFriend({ commit, state, rootGetters }) {
       )[0];
       commit("addFriendship", {
         data: response.data.friendship,
+        id: response.data.profile_id,
         main_profile_id: main_profile_id,
       });
       commit("addRoom", response.data.room);
@@ -217,6 +217,54 @@ export async function createGroup(
       });
       commit("addRoom", response.data.room);
       commit("state/switchMainContent", "main", { root: true });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+
+//プロファイルの表示設定
+export async function featuredProfile({ commit, state, rootGetters }, id) {
+  console.log(id);
+  await axios
+    .patch(
+      process.env.API + "/api/friendship/feature",
+      {
+        friend_id: state.focused_user_id,
+        profile_id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      commit("featuredProfile", {user_id: state.focused_user_id, profile_id: id});
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+//プロファイル表示許可設定
+export async function permitProfile({ commit, state, rootGetters }, list) {
+  await axios
+    .post(
+      process.env.API + "/api/friendship/permit",
+      {
+        friend_id: state.focused_user_id,
+        list: list,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      commit("permitProfile", list);
     })
     .catch((error) => {
       console.log(error);

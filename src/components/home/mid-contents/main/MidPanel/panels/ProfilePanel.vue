@@ -49,8 +49,24 @@
         @click="onMyProfileSetting(slide)"
         >setting</q-btn
       >
-      <q-btn flat v-show="details.state == 'accepted'" @click="store.dispatch('room/setCurrentRoomId', details.room_id)">talk</q-btn>
-      <q-btn flat v-show="details.state == 'unaccepted'|| details.state === 'not_friend'" @click="store.dispatch('room/addFriend')">add</q-btn>
+      <q-btn
+        flat
+        v-show="details.state == 'accepted'"
+        @click="store.dispatch('room/setCurrentRoomId', details.room_id)"
+        >talk</q-btn
+      >
+      <q-btn
+        flat
+        v-show="details.state == 'accepted'"
+        @click="onFriendSetting(slide)"
+        >setting</q-btn
+      >
+      <q-btn
+        flat
+        v-show="details.state == 'unaccepted' || details.state === 'not_friend'"
+        @click="store.dispatch('room/addFriend')"
+        >add</q-btn
+      >
       <q-btn
         flat
         v-show="details.state === 'unaccepted' || details.state === 'accepted'"
@@ -86,6 +102,9 @@ export default defineComponent({
       store.dispatch("profile/setCurrentProfileId", id);
       store.dispatch("state/switchProfilePanel", "my_setting");
     };
+    const onFriendSetting = (id) => {
+      store.dispatch("state/switchProfilePanel", "friend_setting");
+    };
 
     return {
       store,
@@ -93,6 +112,7 @@ export default defineComponent({
       slide,
       details,
       onMyProfileSetting,
+      onFriendSetting,
     };
   },
 });

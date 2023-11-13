@@ -20,6 +20,6 @@ export function switchMainContent(state, toggle) {
 export function switchProfilePanel(state, profilePanel) {
   state.profilePanel = profilePanel;
 }
-export function showProfile(state){
+export function showProfile(state) {
   state.showProfile = !state.showProfile;
 }

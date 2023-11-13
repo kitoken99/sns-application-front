@@ -68,7 +68,7 @@ export async function findProfile({ commit, rootGetters }, { email }) {
       },
     })
     .then((response) => {
-      console.log(response.data)
+      console.log(response.data);
       commit("room/addProfile", response.data, { root: true });
       commit("room/setFocusedUserId", response.data.user_id, {
         root: true,
@@ -76,6 +76,7 @@ export async function findProfile({ commit, rootGetters }, { email }) {
       commit("room/setFocusedProfileId", response.data.id, {
         root: true,
       });
+
       commit("state/switchProfilePanel", "profile", { root: true });
     })
     .catch((error) => {
@@ -85,5 +86,5 @@ export async function findProfile({ commit, rootGetters }, { email }) {
 }
 
 export function setCurrentProfileId({ commit }, id) {
-  commit("setCurrentProfileId",id)
+  commit("setCurrentProfileId", id);
 }

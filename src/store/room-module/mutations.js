@@ -65,17 +65,17 @@ export function addGroupsForProfile(state, id) {
 
 //友達追加
 export function addProfile(state, profile) {
-  console.log(profile)
+  console.log(profile);
   if (!state.profiles[profile.user_id]) state.profiles[profile.user_id] = {};
   state.profiles[profile.user_id][profile.id] = profile;
 }
-export function addFriendship(state, { data, main_profile_id }) {
+export function addFriendship(state, { data, id, main_profile_id }) {
   const friendship = {
-    profile_id: data.friend_profile_id,
+    profile_id: data.profile_id,
     state: data.state,
     room_id: data.room_id,
   };
-  state.friendship[data.profile_id][data.friend_user_id] = friendship;
+  state.friendship[id][data.friend_user_id] = friendship;
   state.friendship[main_profile_id][data.friend_user_id] = friendship;
 }
 export function addRoom(state, data) {
@@ -86,5 +86,24 @@ export function addRoom(state, data) {
 export function addGroup(state, { group, profile_id }) {
   profile_id.forEach((id) => {
     state.groups[id][group.id] = group;
+  });
+}
+
+//表示プロファイル変更時
+export function featuredProfile(state, {user_id, profile_id}){
+  Object.values(state.friendship).forEach(value => {
+    value[user_id]["profile_id"] = profile_id;
+  })
+}
+export function permitProfile(state, list) {
+  const main_profile_id = Object.keys(list)[0];
+  const friendship = state.friendship[main_profile_id][state.focused_user_id];
+  Object.keys(list).forEach((key) => {
+    if (key == main_profile_id) {
+    } else if (list[key] == true) {
+      state.friendship[key][state.focused_user_id] = friendship;
+    } else {
+      delete state.friendship[key][state.focused_user_id];
+    }
   });
 }

@@ -7,10 +7,16 @@
             class="panel"
             v-show="store.getters['state/getProfilePanel'] == 'profile'"
           />
+          <!-- my profile setting -->
           <MyProfileSetting
             class="panel"
             v-if="store.getters['state/getProfilePanel'] == 'my_setting'"
           />
+          <FriendSetting
+            class="panel"
+            v-if="store.getters['state/getProfilePanel'] == 'friend_setting'"
+          />
+          <!-- add friend -->
           <EmailForm
             v-if="store.getters['state/getProfilePanel'] == 'find_profile'"
           />
@@ -51,6 +57,7 @@ import { defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
 import ProfilePanel from "./panels/ProfilePanel.vue";
 import MyProfileSetting from "./panels/MyProfileSetting.vue";
+import FriendSetting from "./panels/FriendSetting.vue";
 import EmailForm from "./panels/EmailForm.vue";
 import FriendPanel from "./panels/FriendPanel.vue";
 import TalkPanel from "./panels/TalkPanel.vue";
@@ -59,6 +66,7 @@ export default defineComponent({
   components: {
     FriendPanel,
     MyProfileSetting,
+    FriendSetting,
     EmailForm,
     TalkPanel,
     ProfilePanel,
@@ -69,7 +77,7 @@ export default defineComponent({
     watch(
       () => ref(store.getters["state/getShowProfile"]),
       () => {
-        tab.value="profile"
+        tab.value = "profile";
       }
     );
     return {

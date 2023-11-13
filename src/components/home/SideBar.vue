@@ -37,7 +37,10 @@ export default defineComponent({
     const onClickAvatar = (profile) => {
       store.dispatch("profile/setCurrentProfileId", profile.id);
       store.dispatch("state/switchMiddleContent", "main");
-      store.dispatch('room/setFocusedUser', { user_id: profile.user_id, profile_id: profile.id });
+      store.dispatch("room/setFocusedUser", {
+        user_id: profile.user_id,
+        profile_id: profile.id,
+      });
     };
     watch(
       () => store.getters["profile/getProfiles"],

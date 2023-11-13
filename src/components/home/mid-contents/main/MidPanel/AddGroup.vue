@@ -166,7 +166,6 @@ export default defineComponent({
     };
     const switchSelectedFriend = (id) => {
       selected_friend_list.value[id] = !selected_friend_list.value[id];
-      console.log(selected_friend_list.value);
     };
     watch(
       () => store.getters["room/getFriends"],

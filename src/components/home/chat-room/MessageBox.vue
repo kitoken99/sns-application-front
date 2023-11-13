@@ -14,14 +14,25 @@
           'q-mr-sm': message.user_id !== user.id,
         }"
       >
-        <AvatarIcon :image="sender.image" size="40px" />
+        <AvatarBottun
+          :image="sender.image"
+          size="42px"
+          @click="
+            store.dispatch('room/setFocusedUser', {
+              user_id: sender.user_id,
+              profile_id: sender.id,
+              isShow: true,
+            })
+          "
+        />
       </div>
     </template>
   </q-chat-message>
 </template>
 <script>
 import { defineComponent, computed } from "vue";
-import AvatarIcon from "src/components/home/icons/AvatarIcon.vue";
+import { useStore } from "vuex";
+import AvatarBottun from "src/components/home/icons/AvatarBottun.vue";
 export default defineComponent({
   name: "MessageBox",
   props: {
@@ -35,8 +46,9 @@ export default defineComponent({
       required: true,
     },
   },
-  components: { AvatarIcon },
+  components: { AvatarBottun },
   setup(props) {
+    const store = useStore();
     const formattedCreatedAt = computed(() => {
       const createdAt = new Date(props.message.created_at);
       const formattedTime = createdAt.toLocaleTimeString("ja-JP", {
@@ -47,6 +59,7 @@ export default defineComponent({
     });
 
     return {
+      store,
       formattedCreatedAt,
     };
   },
