@@ -90,10 +90,10 @@ export function addGroup(state, { group, profile_id }) {
 }
 
 //表示プロファイル変更時
-export function featuredProfile(state, {user_id, profile_id}){
-  Object.values(state.friendship).forEach(value => {
+export function featuredProfile(state, { user_id, profile_id }) {
+  Object.values(state.friendship).forEach((value) => {
     value[user_id]["profile_id"] = profile_id;
-  })
+  });
 }
 export function permitProfile(state, list) {
   const main_profile_id = Object.keys(list)[0];

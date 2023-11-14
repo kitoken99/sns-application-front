@@ -223,10 +223,8 @@ export async function createGroup(
     });
 }
 
-
 //プロファイルの表示設定
 export async function featuredProfile({ commit, state, rootGetters }, id) {
-  console.log(id);
   await axios
     .patch(
       process.env.API + "/api/friendship/feature",
@@ -241,7 +239,10 @@ export async function featuredProfile({ commit, state, rootGetters }, id) {
       }
     )
     .then((response) => {
-      commit("featuredProfile", {user_id: state.focused_user_id, profile_id: id});
+      commit("featuredProfile", {
+        user_id: state.focused_user_id,
+        profile_id: id,
+      });
     })
     .catch((error) => {
       console.log(error);

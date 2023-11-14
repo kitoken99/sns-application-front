@@ -88,3 +88,37 @@ export async function findProfile({ commit, rootGetters }, { email }) {
 export function setCurrentProfileId({ commit }, id) {
   commit("setCurrentProfileId", id);
 }
+
+export async function updateProfile(
+  { commit, rootGetters },
+  { file, show_birthday, name, account_type, caption }
+) {
+  try {
+    if(!caption)caption = "";
+    const formData = new FormData();
+formData.append('id', rootGetters['profile/getCurrentProfileId']);
+formData.append('account_type', account_type);
+formData.append('show_birthday', show_birthday);
+formData.append('name', name);
+formData.append('caption', caption);
+formData.append('image', file);
+    const response = await axios.post(
+      process.env.API +
+        "/api/profile/" +
+        rootGetters["profile/getCurrentProfileId"],
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
+    commit("addProfile", response.data);
+    commit("room/addProfile", response.data, { root: true });
+    commit("setCurrentProfileId", response.data.id);
+    return response.status;
+  } catch (error) {
+    console.error(error);
+  }
+}
