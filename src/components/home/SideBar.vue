@@ -15,7 +15,7 @@
         icon="add"
         @click="store.dispatch('state/switchMiddleContent', 'addProfile')"
       >
-        <q-tooltip> new new profile </q-tooltip>
+        <q-tooltip> new new new profile </q-tooltip>
     </q-btn>
   </div>
   <q-btn
