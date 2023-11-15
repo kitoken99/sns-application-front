@@ -12,8 +12,8 @@
             size="100px"
             font-size="52px"
             color="grey-3"
-            text-color="white"
-            icon="img:src/assets/account_box_FILL0_wght400_GRAD0_opsz24.svg"
+            text-color="grey-5"
+            icon="add_photo_alternate"
           />
           <q-avatar v-if="preview != null" size="100px">
             <img :src="preview" />

@@ -114,8 +114,8 @@
                 size="100px"
                 font-size="52px"
                 color="grey-3"
-                text-color="white"
-                icon="directions"
+            text-color="grey-5"
+            icon="add_photo_alternate"
               />
               <q-avatar v-if="preview != null" size="100px">
                 <img :src="preview" />

@@ -9,7 +9,7 @@
       :text="profile.account_type"
       @click="onClickAvatar(profile)"
     />
-    
+
     <IconBottunWithText
       class="q-mb-md"
       icon="add"
