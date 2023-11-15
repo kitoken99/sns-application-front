@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: column; height: 100vh">
+  <div style="display: flex; flex-direction: column; height: 100vh;width: 100%;">
     <q-card class="chat-scroll-area" flat>
       <q-scroll-area
         :thumb-style="thumbStyle"

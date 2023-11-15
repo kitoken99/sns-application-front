@@ -12,7 +12,7 @@
           </div>
         </q-item-section>
       </template>
-      <q-card>
+      <q-card style="max-width: 318px">
         <q-card-section>
           <div
             v-for="(group, index) in store.getters['room/getCurrentGroups']"
@@ -39,7 +39,7 @@
           </div>
         </q-item-section>
       </template>
-      <q-card>
+      <q-card style="max-width: 318px">
         <q-card-section>
           <div
             v-for="(friend, index) in store.getters['room/getCurrentFriends']"
@@ -66,7 +66,7 @@
           </div>
         </q-item-section>
       </template>
-      <q-card>
+      <q-card style="max-width: 318px">
         <q-card-section>
           <div
             v-for="(friend, index) in store.getters[
