@@ -60,7 +60,7 @@ export default {
       await store.dispatch("profile/fetchProfiles");
       q.loading.hide();
       store.dispatch("state/switchIsAuthorized", true);
-      store.dispatch("room/fetchProfiles");
+      await store.dispatch("room/fetchProfiles");
       store.dispatch("room/fetchFriendship");
       store.dispatch("room/fetchGroups");
       await store.dispatch("room/fetchRooms");

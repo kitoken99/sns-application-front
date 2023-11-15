@@ -79,11 +79,9 @@ export default defineComponent({
       () => store.getters["user/getUser"],
       () => {
         user.value = { ...store.getters["user/getUser"] };
-        console.log(user.value);
         if (user.value.birthday) {
           user.value.birthday = user.value.birthday.replace(/-/g, "/");
         }
-        console.log(user.value);
       }
     );
     return {
