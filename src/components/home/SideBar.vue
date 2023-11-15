@@ -10,11 +10,12 @@
       @click="onClickAvatar(profile)"
     />
     <div class="q-mb-md">
-    <q-btn round @click="store.dispatch('state/switchMiddleContent', 'addProfile')">
-      <div class="inline rounded-borders cursor-pointer icon-circle">
-        <q-avatar color="grey-4" text-color="black" icon="person_add" />
+      <q-btn
+        round
+        icon="person_add"
+        @click="store.dispatch('state/switchMiddleContent', 'addProfile')"
+      >
         <q-tooltip> new profile </q-tooltip>
-      </div>
     </q-btn>
   </div>
 
