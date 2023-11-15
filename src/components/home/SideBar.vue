@@ -12,12 +12,19 @@
     <div class="q-mb-md">
       <q-btn
         round
-        icon="person_add"
+        icon="add"
         @click="store.dispatch('state/switchMiddleContent', 'addProfile')"
       >
         <q-tooltip> new profile </q-tooltip>
     </q-btn>
   </div>
+  <q-btn
+        flat
+        round
+        dense
+        icon="person_add"
+        @click="store.dispatch('state/switchProfilePanel', 'find_profile')"
+      />
 
     <IconBottunWithText
       class="q-mb-md"
