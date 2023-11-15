@@ -148,5 +148,6 @@ export default defineComponent({
 }
 .q-card {
   border-radius: 0;
+  width: 100%;
 }
 </style>
