@@ -9,12 +9,15 @@
       :text="profile.account_type"
       @click="onClickAvatar(profile)"
     />
-    <IconBottunWithText
-      class="q-mb-md"
-      icon="add"
-      text="new profile"
-      @click="store.dispatch('state/switchMiddleContent', 'addProfile')"
-    />
+    <div class="q-mb-md">
+    <q-btn round @click="store.dispatch('state/switchMiddleContent', 'addProfile')">
+      <div class="inline rounded-borders cursor-pointer icon-circle">
+        <q-avatar color="grey-4" text-color="black" icon="add" />
+        <q-tooltip> new profile </q-tooltip>
+      </div>
+    </q-btn>
+  </div>
+
     <IconBottunWithText
       class="q-mb-md"
       icon="settings"
