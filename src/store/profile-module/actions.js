@@ -94,14 +94,14 @@ export async function updateProfile(
   { file, show_birthday, name, account_type, caption }
 ) {
   try {
-    if(!caption)caption = "";
+    if (!caption) caption = "";
     const formData = new FormData();
-formData.append('id', rootGetters['profile/getCurrentProfileId']);
-formData.append('account_type', account_type);
-formData.append('show_birthday', show_birthday);
-formData.append('name', name);
-formData.append('caption', caption);
-formData.append('image', file);
+    formData.append("id", rootGetters["profile/getCurrentProfileId"]);
+    formData.append("account_type", account_type);
+    formData.append("show_birthday", show_birthday);
+    formData.append("name", name);
+    formData.append("caption", caption);
+    formData.append("image", file);
     const response = await axios.post(
       process.env.API +
         "/api/profile/" +

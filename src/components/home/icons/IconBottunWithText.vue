@@ -2,7 +2,12 @@
   <div>
     <q-btn round>
       <div class="inline rounded-borders cursor-pointer icon-circle">
-        <q-avatar color="grey-4" text-color="black" :icon="icon"  v-if="store.getters['state/getIsFetched']"/>
+        <q-avatar
+          color="grey-4"
+          text-color="black"
+          :icon="icon"
+          v-if="store.getters['state/getIsFetched']"
+        />
         <q-skeleton
           v-if="!store.getters['state/getIsFetched']"
           type="QAvatar"

@@ -33,7 +33,7 @@
             flat
             color="primary"
             label="set your birthday"
-            @click="store.dispatch('state/switchMiddleContent', 'main');"
+            @click="store.dispatch('state/switchMiddleContent', 'main')"
           />
         </div>
         <q-input
