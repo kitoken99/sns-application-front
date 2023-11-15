@@ -4,7 +4,7 @@
       <q-scroll-area
         :thumb-style="thumbStyle"
         class="q-px-md"
-        style="height: 100%"
+        style="height: 100%; width: 100%;"
         ref="scrollRef"
       >
         <div v-for="(message, index) in room.messages" v-bind:key="message.id">
