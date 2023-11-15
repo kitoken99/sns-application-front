@@ -1,5 +1,5 @@
 <template>
-  <q-card flat>
+  <q-card flat style="max-width: 318px;">
     <q-card-section>
       <q-carousel
         v-model="slide"

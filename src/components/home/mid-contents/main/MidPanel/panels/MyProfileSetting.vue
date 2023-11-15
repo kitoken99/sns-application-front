@@ -1,7 +1,7 @@
 <template>
   <q-scroll-area>
     <div style="display: flex; align-items: center">
-      <div class="text-center q-gutter-y-md q-mx-auto">
+      <div class="text-center q-gutter-y-md q-mx-auto q-mt-lg">
         <div style="width: 8em; height: 8em; margin: 0 auto">
           <q-btn style="width: 8em; height: 8em; border-radius: 50%">
             <label>
@@ -33,6 +33,7 @@
             flat
             color="primary"
             label="set your birthday"
+            @click="store.dispatch('state/switchMiddleContent', 'main');"
           />
         </div>
         <q-input

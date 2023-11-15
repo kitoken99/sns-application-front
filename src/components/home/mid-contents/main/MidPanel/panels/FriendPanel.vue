@@ -1,6 +1,6 @@
 <template>
   <q-scroll-area>
-    <q-expansion-item>
+    <q-expansion-item style="max-width: 318px;">
       <template v-slot:header>
         <q-item-section avatar>
           <q-avatar icon="group" color="grey-4" text-color="white" />
@@ -27,7 +27,7 @@
         </q-card-section>
       </q-card>
     </q-expansion-item>
-    <q-expansion-item>
+    <q-expansion-item style="max-width: 318px;">
       <template v-slot:header>
         <q-item-section avatar>
           <q-avatar icon="person" color="grey-4" text-color="white" />
@@ -54,7 +54,7 @@
         </q-card-section>
       </q-card>
     </q-expansion-item>
-    <q-expansion-item>
+    <q-expansion-item style="max-width: 318px;">
       <template v-slot:header>
         <q-item-section avatar>
           <q-avatar icon="person" color="grey-4" text-color="white" />
