@@ -2,7 +2,7 @@
   <div>
     <q-btn round>
       <div class="inline rounded-borders cursor-pointer icon-circle">
-        <q-avatar color="white" text-color="white" :icon="icon" />
+        <q-avatar color="grey-4" text-color="black" :icon="icon" />
         <q-tooltip> {{ text }} </q-tooltip>
       </div>
     </q-btn>

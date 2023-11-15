@@ -11,13 +11,13 @@
     />
     <IconBottunWithText
       class="q-mb-md"
-      icon="img:src/assets/add_black_24dp.svg"
+      icon="add"
       text="new profile"
       @click="store.dispatch('state/switchMiddleContent', 'addProfile')"
     />
     <IconBottunWithText
       class="q-mb-md"
-      icon="img:src/assets/settings_black_24dp.svg"
+      icon="settings"
       text="setting"
       @click="store.dispatch('state/switchMiddleContent', 'setting')"
     />
