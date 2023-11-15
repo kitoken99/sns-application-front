@@ -22,14 +22,14 @@
         flat
         round
         dense
-        icon="person_add"
+        icon="add"
         @click="store.dispatch('state/switchProfilePanel', 'find_profile')"
       />
 
     <IconBottunWithText
       class="q-mb-md"
       icon="settings"
-      text="setting"
+      text="setting setting"
       @click="store.dispatch('state/switchMiddleContent', 'setting')"
     />
   </div>
