@@ -1,14 +1,6 @@
 <template>
   <div v-show="store.getters['state/getIsAuthorized']" class="main-container">
-    <div>
-      <SideBar />
-    </div>
-    <div>
-      <MidContent />
-    </div>
-    <div style="flex: 1">
-      <ChatRoom />
-    </div>
+
   </div>
 </template>
 <script>
@@ -22,9 +14,7 @@ import ChatRoom from "src/components/home/ChatRoom.vue";
 export default {
   name: "HomePage",
   components: {
-    SideBar,
-    MidContent,
-    ChatRoom,
+
   },
   setup() {
     const store = useStore();
