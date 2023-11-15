@@ -9,27 +9,17 @@
       :text="profile.account_type"
       @click="onClickAvatar(profile)"
     />
-    <div class="q-mb-md">
-      <q-btn
-        round
-        icon="add"
-        @click="store.dispatch('state/switchMiddleContent', 'addProfile')"
-      >
-        <q-tooltip> new new new profile </q-tooltip>
-    </q-btn>
-  </div>
-  <q-btn
-        flat
-        round
-        dense
-        icon="add"
-        @click="store.dispatch('state/switchProfilePanel', 'find_profile')"
-      />
-
+    
+    <IconBottunWithText
+      class="q-mb-md"
+      icon="add"
+      text="new profile"
+      @click="store.dispatch('state/switchMiddleContent', 'addProfile')"
+    />
     <IconBottunWithText
       class="q-mb-md"
       icon="settings"
-      text="setting setting"
+      text="setting"
       @click="store.dispatch('state/switchMiddleContent', 'setting')"
     />
   </div>
