@@ -4,7 +4,7 @@
       <h5 class="text-h5 text-white q-my-sm">Register</h5>
     </div>
     <div class="row">
-      <q-card square bordered class="q-pa-md shadow-1">
+      <q-card square bordered class="q-pa-md shadow-1 register-card">
         <q-card-section class="column">
           <RegisterForm />
         </q-card-section>
@@ -31,7 +31,7 @@ export default {
 };
 </script>
 <style>
-.q-card {
+.register-card {
   width: 360px;
 }
 </style>

@@ -4,7 +4,7 @@
       <h5 class="text-h5 text-white q-my-md">Login</h5>
     </div>
     <div class="row">
-      <q-card square bordered class="q-pa-lg shadow-1">
+      <q-card square bordered class="q-pa-lg shadow-1 login-card">
         <q-card-section class="column">
           <LoginForm />
         </q-card-section>
@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style>
-.q-card {
+.login-card {
   width: 360px;
 }
 </style>
