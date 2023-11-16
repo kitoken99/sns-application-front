@@ -1,6 +1,4 @@
-# Quasar App (front)
-
-A Quasar Project
+![profis](https://github.com/kitoken99/sns-application-front/assets/129636942/f5be980b-2cfa-4614-a86b-7dce38b4550e)
 
 ## Install the dependencies
 
