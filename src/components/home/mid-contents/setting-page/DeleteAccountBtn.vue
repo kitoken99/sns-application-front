@@ -53,7 +53,7 @@ export default defineComponent({
       } else {
         $q.notify({
           type: "negative",
-          message: "failed to create password",
+          message: "failed to delete account",
         });
       }
     };

@@ -57,7 +57,7 @@ export async function fetchRooms({ commit, rootGetters }) {
     });
 }
 
-//アバタークリック時
+//表示プロフィール
 export function setFocusedUser(
   { commit, rootGetters },
   { user_id, profile_id, isShow }
@@ -69,6 +69,102 @@ export function setFocusedUser(
     commit("state/showProfile", null, { root: true });
   }
 }
+
+//友達との関係性
+export async function findProfile({ commit, rootGetters }, { email }) {
+  commit("state/switchProfilePanel", "loading", { root: true });
+  await axios
+    .get(process.env.API + "/api/profile", {
+      headers: {
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+      },
+      params: {
+        email: email,
+      },
+    })
+    .then((response) => {
+      commit("addProfile", response.data);
+      commit("setFocusedUserId", response.data.user_id);
+      commit("setFocusedProfileId", response.data.id);
+      commit("state/switchProfilePanel", "profile", { root: true });
+    })
+    .catch((error) => {
+      commit("state/switchProfilePanel", "find_profile", { root: true });
+      console.log(error);
+    });
+}
+export async function addFriend({ commit, state, rootState, rootGetters }) {
+  await axios
+    .post(
+      process.env.API + "/api/friendship",
+      {
+        friend_id: state.focused_user_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      const main_profile_id = rootGetters["profile/getMainProfileId"];
+      commit("addProfiles", response.data.profiles);
+      commit("addFriendship", {
+        data: response.data.friendship,
+        profile_id: rootState.profile.main_profile_id,
+      });
+      commit("addRoom", response.data.room);
+      commit("state/switchMainContent", "main", { root: true });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+export async function acceptFriend({ commit, state, rootState, rootGetters }) {
+  const friend_id = state.focused_user_id;
+  await axios
+    .patch(
+      process.env.API + "/api/friendship/accept",
+      {
+        friend_id: friend_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      commit("acceptFriend", friend_id)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+export async function blockFriend({ commit, state, rootState, rootGetters }) {
+  const friend_id = state.focused_user_id;
+  await axios
+    .patch(
+      process.env.API + "/api/friendship/block",
+      {
+        friend_id: friend_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      commit("blockFriend", friend_id)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+
+
 
 //表示ルーム選択時
 export async function setCurrentRoomId({ commit, rootGetters }, id) {
@@ -118,70 +214,6 @@ export async function postMessage({ commit, rootGetters }, { message }) {
       }
     )
     .then((response) => {})
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-//メッセージ受信時
-export async function messageRecieved(
-  { commit, getters, rootGetters },
-  { data }
-) {
-  commit("changeLastMessage", data);
-  if (getters.getCurrentRoomId !== data.message.room_id) {
-    commit("addNotRead", data);
-  } else {
-    if (rootGetters["user/getUser"].id != data.message.user_id) {
-      commit("addMessage", data);
-      console.log(data.message.id);
-      await axios
-        .post(
-          process.env.API + "/api/message/read",
-          {
-            id: data.message.id,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
-            },
-          }
-        )
-        .then((response) => {})
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }
-}
-
-//友達追加
-export async function addFriend({ commit, state, rootGetters }) {
-  await axios
-    .post(
-      process.env.API + "/api/friendship",
-      {
-        friend_id: state.focused_user_id,
-        profile_id: rootGetters["profile/getCurrentProfileId"],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
-        },
-      }
-    )
-    .then((response) => {
-      const main_profile_id = Object.keys(
-        rootGetters["profile/getProfiles"]
-      )[0];
-      commit("addFriendship", {
-        data: response.data.friendship,
-        id: response.data.profile_id,
-        main_profile_id: main_profile_id,
-      });
-      commit("addRoom", response.data.room);
-      commit("state/switchMainContent", "main", { root: true });
-    })
     .catch((error) => {
       console.log(error);
     });
@@ -266,6 +298,114 @@ export async function permitProfile({ commit, state, rootGetters }, list) {
     )
     .then((response) => {
       commit("permitProfile", list);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+//メッセージ受信時
+export async function messageRecieved(
+  { commit, getters, rootGetters },
+  { data }
+) {
+  commit("changeLastMessage", data);
+  if (getters.getCurrentRoomId !== data.message.room_id) {
+    commit("addNotRead", data);
+  } else {
+    if (rootGetters["user/getUser"].id != data.message.user_id) {
+      commit("addMessage", data);
+      console.log(data.message.id);
+      await axios
+        .post(
+          process.env.API + "/api/message/read",
+          {
+            id: data.message.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+            },
+          }
+        )
+        .then((response) => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+}
+export async function getImage({ commit, getters, rootGetters }, { image }) {
+  try {
+    const response = await axios.get(process.env.API + "/api/profile/image", {
+      headers: {
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+      },
+      params: {
+        image: image,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+export async function friendshipCreated({ commit, rootState }, data) {
+  commit("addProfiles", data.profiles);
+  commit("addFriendship", {
+    data: data.friendship,
+    profile_id: rootState.profile.main_profile_id,
+  });
+  commit("addRoom", data.room);
+}
+export async function profileUpdated(
+  { commit, getters, rootGetters },
+  { data }
+) {
+  await axios
+    .get(process.env.API + "/api/profile/image", {
+      headers: {
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+      },
+      params: {
+        image: data.profile.image,
+      },
+    })
+    .then((response) => {
+      data.profile.image = response.data;
+      commit("addProfile", data.profile);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+export async function permitionUpdated(
+  { commit, getters, rootGetters },
+  data
+) {
+  commit("permitionUpdated", data);
+}
+export async function profileDeleted(
+  { commit, getters, rootGetters },
+  { data }
+) {
+  if (!data.profile.is_main) {
+    commit("deleteProfile", data.profile);
+    return;
+  }
+  await axios
+    .get(process.env.API + "/api/profile/image", {
+      headers: {
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+      },
+      params: {
+        image: data.profile.image,
+      },
+    })
+    .then((response) => {
+      data.profile.image = response.data;
+      commit("addProfile", data.profile);
     })
     .catch((error) => {
       console.log(error);

@@ -1,5 +1,5 @@
 import axios from "axios";
-export async function fetchProfiles({ commit, rootGetters }) {
+export async function fetchProfiles({ commit, state, rootGetters }) {
   await axios
     .get(process.env.API + "/api/user/profiles", {
       headers: {
@@ -8,15 +8,14 @@ export async function fetchProfiles({ commit, rootGetters }) {
     })
     .then((response) => {
       commit("setProfiles", response.data);
-      commit("setCurrentProfileId", parseInt(Object.keys(response.data)[0]));
-      commit("room/setFocusedUserId", Object.values(response.data)[0].user_id, {
+      commit("setMainProfileId");
+      commit("setCurrentProfileId", state.main_profile_id);
+      commit("room/setFocusedUserId", state.current_profile.user_id, {
         root: true,
       });
-      commit(
-        "room/setFocusedProfileId",
-        parseInt(Object.keys(response.data)[0]),
-        { root: true }
-      );
+      commit("room/setFocusedProfileId", state.current_profile_id, {
+        root: true,
+      });
     })
     .catch((error) => {
       console.log(error);
@@ -56,39 +55,6 @@ export async function createProfile(
     });
 }
 
-export async function findProfile({ commit, rootGetters }, { email }) {
-  commit("state/switchProfilePanel", "loading", { root: true });
-  await axios
-    .get(process.env.API + "/api/profile", {
-      headers: {
-        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
-      },
-      params: {
-        email: email,
-      },
-    })
-    .then((response) => {
-      console.log(response.data);
-      commit("room/addProfile", response.data, { root: true });
-      commit("room/setFocusedUserId", response.data.user_id, {
-        root: true,
-      });
-      commit("room/setFocusedProfileId", response.data.id, {
-        root: true,
-      });
-
-      commit("state/switchProfilePanel", "profile", { root: true });
-    })
-    .catch((error) => {
-      commit("state/switchProfilePanel", "find_profile", { root: true });
-      console.log(error);
-    });
-}
-
-export function setCurrentProfileId({ commit }, id) {
-  commit("setCurrentProfileId", id);
-}
-
 export async function updateProfile(
   { commit, rootGetters },
   { file, show_birthday, name, account_type, caption }
@@ -121,4 +87,8 @@ export async function updateProfile(
   } catch (error) {
     console.error(error);
   }
+}
+
+export function setCurrentProfileId({ commit }, id) {
+  commit("setCurrentProfileId", id);
 }

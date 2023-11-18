@@ -1,10 +1,12 @@
 <template>
-  <div style="display: flex; flex-direction: column; height: 100vh;width: 100%;">
+  <div
+    style="display: flex; flex-direction: column; height: 100vh; width: 100%"
+  >
     <q-card class="chat-scroll-area" flat>
       <q-scroll-area
         :thumb-style="thumbStyle"
         class="q-px-md"
-        style="height: 100%; width: 100%;"
+        style="height: 100%; width: 100%"
         ref="scrollRef"
       >
         <div v-for="(message, index) in room.messages" v-bind:key="message.id">

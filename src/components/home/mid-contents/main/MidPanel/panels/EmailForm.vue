@@ -22,7 +22,7 @@ export default defineComponent({
     const store = useStore();
     const email = ref(null);
     const onClick = () => {
-      store.dispatch("profile/findProfile", { email: email.value });
+      store.dispatch("room/findProfile", { email: email.value });
     };
     return {
       email,

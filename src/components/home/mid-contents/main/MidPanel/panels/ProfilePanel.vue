@@ -63,8 +63,19 @@
       >
       <q-btn
         flat
-        v-show="details.state == 'unaccepted' || details.state === 'not_friend'"
-        @click="store.dispatch('room/addFriend')"
+        v-show="details.state == 'unaccepted'"
+        @click="store.dispatch('room/acceptFriend')"
+        >accept</q-btn
+      >
+      <q-btn
+        flat
+        v-show="details.state === 'not_friend'"
+        @click="
+          () => {
+            store.dispatch('room/addFriend');
+            store.dispatch('room/permitProfile', { [store.getters['profile/getCurrentProfileId']]: true });
+          }
+        "
         >add</q-btn
       >
       <q-btn

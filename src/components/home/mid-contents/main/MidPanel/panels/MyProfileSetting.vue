@@ -33,7 +33,7 @@
             flat
             color="primary"
             label="set your birthday"
-            @click="store.dispatch('state/switchMiddleContent', 'main')"
+            @click="store.dispatch('state/switchMiddleContent', 'setting')"
           />
         </div>
         <q-input
@@ -132,6 +132,7 @@ export default defineComponent({
       }
     };
     return {
+      store,
       profile,
       preview,
       file,

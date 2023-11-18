@@ -1,24 +1,28 @@
 //profiles
 export function getFocusedUser(state, getters, rootState) {
-  const main_profile_id = Object.keys(rootState.profile.profiles)[0];
-  let state_value = null;
-  if (rootState.user.user.id == state.focused_user_id) state_value = "mine";
-  else if (state.friendship[main_profile_id][state.focused_user_id])
-    state_value =
+  const main_profile_id = rootState.profile.main_profile_id;
+  const details = {
+    room_id: "",
+    state: "",
+  };
+  if (rootState.user.user.id == state.focused_user_id) {
+    details.state = "mine";
+  } else if (state.focused_user_id in state.friendship[main_profile_id]) {
+    details.room_id =
+      state.friendship[main_profile_id][state.focused_user_id].room_id;
+    details.state =
       state.friendship[main_profile_id][state.focused_user_id].state;
-  else state_value = "not_friend";
+  } else {
+    details.state = "not_friend";
+  }
   const response = {
     profiles: state.profiles[state.focused_user_id],
     top_profile_id: state.focused_profile_id,
-    details: {
-      room_id: state.friendship[main_profile_id][state.focused_user_id]
-        ? state.friendship[main_profile_id][state.focused_user_id].room_id
-        : "",
-      state: state_value,
-    },
+    details: details,
   };
   return response;
 }
+
 
 //friends
 export function getFriends(state, getters, rootState) {

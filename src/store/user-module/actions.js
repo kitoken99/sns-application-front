@@ -63,7 +63,6 @@ export async function updatePassword(
         },
       }
     );
-    console.log(response.data);
     commit("setUser", response.data.user);
     return response.status;
   } catch (error) {
@@ -79,7 +78,8 @@ export async function deleteAccount({ commit, rootGetters }) {
         Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },
     });
-    console.log(response);
+    commit("resetUser");
+    commit("resetProfile", null, { root: true });
     return response.status;
   } catch (error) {
     console.log(error);

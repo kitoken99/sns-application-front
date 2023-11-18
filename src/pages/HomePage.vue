@@ -32,9 +32,42 @@ export default {
     var pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY, {
       cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     });
-
     const pusherDisConnect = (room_id) => {
       var channel = pusher.unsubscribe(`channel-${room_id}`);
+    };
+    const pusherUserConnect = (user_id) => {
+      var channel = pusher.subscribe(`user-${user_id}`);
+      channel.bind("App\\Events\\ProfileUpdated", function (data) {
+        store.dispatch("room/profileUpdated", { data: data });
+      });
+      channel.bind("App\\Events\\FriendshipCreated", async function (data) {
+        data.room.image = await store.dispatch("room/getImage", {
+              image: data.room.image,
+            });
+        await Promise.all(
+          Object.values(data.profiles).map(async (profile) => {
+            profile.image = await store.dispatch("room/getImage", {
+              image: profile.image,
+            });
+          })
+        );
+        store.dispatch("room/friendshipCreated", data);
+        });
+        channel.bind("App\\Events\\PermitionUpdated", async function (data) {
+        console.log(data)
+        await Promise.all(
+          Object.values(data.profiles).map(async (profile) => {
+            profile.image = await store.dispatch("room/getImage", {
+              image: profile.image,
+            });
+          })
+        );
+        store.dispatch("room/permitionUpdated", data);
+      });
+      channel.bind("App\\Events\\ProfileDeleted", function (data) {
+        console.log(data);
+        store.dispatch("room/profileDeleted", { data: data });
+      });
     };
     const pusherConnect = (room_id) => {
       var channel = pusher.subscribe(`channel-${room_id}`);
@@ -64,6 +97,7 @@ export default {
       store.dispatch("room/fetchFriendship");
       store.dispatch("room/fetchGroups");
       await store.dispatch("room/fetchRooms");
+      pusherUserConnect(store.getters["user/getUser"].id);
       store.dispatch("state/switchIsFetched", true);
     });
     q.loading.show({

@@ -12,7 +12,41 @@ export function setRooms(state, rooms) {
   state.rooms = rooms;
 }
 
-//アバタークリック時
+//友達追加
+export function addProfile(state, profile) {
+  if (!state.profiles[profile.user_id]) state.profiles[profile.user_id] = {};
+  state.profiles[profile.user_id][profile.id] = profile;
+}
+export function addProfiles(state, profiles) {
+  Object.values(profiles).forEach((profile) => {
+    if (!state.profiles[profile.user_id]) state.profiles[profile.user_id] = {};
+    state.profiles[profile.user_id][profile.id] = profile;
+  });
+}
+export function addFriendship(state, { data, profile_id }) {
+  if (!state.friendship[profile_id]) {
+    state.friendship[profile_id] = {};
+  }
+  const friendship = {
+    profile_id: data.profile_id,
+    state: data.state,
+    room_id: data.room_id,
+  };
+  state.friendship[profile_id][data.friend_user_id] = friendship;
+}
+export function addRoom(state, data) {
+  if (!state.rooms) {
+    state.rooms = {};
+  }
+  state.rooms[data.room_id] = data;
+}
+export function acceptFriend(state, friend_id) {
+  Object.values(state.friendships).forEach($friendships => {
+    if($friendships[friend_id]) $friendship.state = "accepted"
+  })
+}
+
+//表示プロファイル変更時
 export function setFocusedUserId(state, user_id) {
   state.focused_user_id = user_id;
 }
@@ -63,25 +97,6 @@ export function addGroupsForProfile(state, id) {
   state.groups[id] = {};
 }
 
-//友達追加
-export function addProfile(state, profile) {
-  console.log(profile);
-  if (!state.profiles[profile.user_id]) state.profiles[profile.user_id] = {};
-  state.profiles[profile.user_id][profile.id] = profile;
-}
-export function addFriendship(state, { data, id, main_profile_id }) {
-  const friendship = {
-    profile_id: data.profile_id,
-    state: data.state,
-    room_id: data.room_id,
-  };
-  state.friendship[id][data.friend_user_id] = friendship;
-  state.friendship[main_profile_id][data.friend_user_id] = friendship;
-}
-export function addRoom(state, data) {
-  state.rooms[data.room_id] = data;
-}
-
 //グループ作成時
 export function addGroup(state, { group, profile_id }) {
   profile_id.forEach((id) => {
@@ -106,4 +121,12 @@ export function permitProfile(state, list) {
       delete state.friendship[key][state.focused_user_id];
     }
   });
+}
+
+export function deleteProfile(state, profile) {
+  if (state.profiles[profile.user_id][profile.id])
+    delete state.profiles[profile.user_id][profile.id];
+}
+export function permitionUpdated(state, data){
+  state.profiles[data.user_id]=data.profiles;
 }
