@@ -149,3 +149,12 @@ export async function permitionUpdated(
 ) {
   commit("permitionUpdated", data);
 }
+
+
+//リアルタイム更新
+export function addProfiles({ commit }, profiles ) {
+  commit("addProfiles", profiles)
+}
+export function addUserProfiles({ commit }, { user_id, profiles }) {
+  commit("addUserProfiles", {"user_id": user_id, "profiles": profiles})
+}

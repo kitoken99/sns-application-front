@@ -129,3 +129,12 @@ export async function profileDeleted(
       console.log(error);
     });
 }
+
+
+//リアルタイム更新
+export function addRoom({commit}, room){
+  commit("room/addRoom", room, {root: true});
+}
+export function memberUpdated({ commit }, {room_id, members}) {
+  commit("memberUpdated", {"room_id": room_id, "members":members})
+}

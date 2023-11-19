@@ -51,8 +51,67 @@ export async function createGroup(
     });
 }
 
+export function setFocusedGroup(
+  { commit },
+  { group_id, isShow }
+) {
+  commit("setFocusedGroupId", group_id);
+  commit("state/switchProfilePanel", "group", { root: true });
+  if (isShow) {
+    commit("state/showProfile", null, { root: true });
+  }
+}
 
 
+//状態変更
+export async function acceptGroup({ commit, state, rootState, rootGetters }){
+  const group_id = state.focused_group_id;
+  await axios
+    .patch(
+      process.env.API + "/api/group/accept",
+      {
+        group_id: group_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      commit("acceptGroup", group_id)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+export async function switchProfile({ commit, state, rootState, rootGetters }){
+  const profile_id = rootState.profile.current_profile_id;
+  const group_id = state.focused_group_id;
+  await axios
+    .patch(
+      process.env.API + "/api/group/profile",
+      {
+        group_id: group_id,
+        profile_id: profile_id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      commit("switchProfile", {user_id: rootGetters["user/getUserId"], profile_id: profile_id, group_id: group_id});
+      const room_id = state.groups[profile_id][group_id].room_id;
+      commit("room/switchProfile", {user_id: rootGetters["user/getUserId"], profile_id: profile_id, room_id: room_id}, {root: true})
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+//リアルタイム更新
 export async function getImage({ commit, getters, rootGetters }, { image }) {
   try {
     const response = await axios.get(process.env.API + "/api/group/image", {
@@ -68,12 +127,12 @@ export async function getImage({ commit, getters, rootGetters }, { image }) {
     console.error(error);
   }
 }
-export async function groupCreated({ commit, rootState }, data) {
-  commit("profile/addProfiles", data.profiles, {root: true});
-
+export async function addGroup({ commit, rootState }, group) {
   commit("addGroup", {
-    group: data.group,
+    group: group,
     profile_id: rootState.profile.main_profile_id,
   });
-  commit("room/addRoom", data.room, {root: true});
+}
+export function memberUpdated({ commit }, {group_id, members}) {
+  commit("memberUpdated", {"group_id": group_id, "members":members})
 }

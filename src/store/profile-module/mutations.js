@@ -34,14 +34,21 @@ export function addProfile(state, profile) {
   if(!state.profiles[profile.user_id])state.profiles[profile.user_id]={}
   state.profiles[profile.user_id][profile.id] = profile;
 }
+
+
+//リアルタイム更新
 export function addProfiles(state, profiles) {
   Object.values(profiles).forEach((profile) => {
     if (!state.profiles[profile.user_id]) state.profiles[profile.user_id] = {};
     state.profiles[profile.user_id][profile.id] = profile;
   });
 }
+export function addUserProfiles(state, {user_id, profiles}){
+  state.profiles[user_id] = profiles;
+}
 
-//再登録
+
+
 export function permitionUpdated(state, data){
   state.profiles[data.user_id]=data.profiles;
 }

@@ -66,12 +66,14 @@ export default {
         );
         store.dispatch("friendship/friendshipCreated", data);
       });
-      channel.bind("App\\Events\\GroupCreated", async function (data) {
-        
+
+      //グループ
+      channel.bind("App\\Events\\Group\\GroupCreated", async function (data) {
+        console.log(data)
         data.room.image = await store.dispatch("group/getImage", {
               image: data.room.image,
             });
-            
+
         data.group.image = data.room.image;
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {
@@ -80,8 +82,22 @@ export default {
             });
           })
         );
-        
-        store.dispatch("group/groupCreated", data);
+        store.dispatch("profile/addProfiles", data.profiles);
+        store.dispatch("group/addGroup", data.group);
+        store.dispatch("room/addRoom", data.room)
+      });
+      channel.bind("App\\Events\\Group\\MemberUpdated", async function (data) {
+        console.log(data)
+        await Promise.all(
+          Object.values(data.profiles).map(async (profile) => {
+            profile.image = await store.dispatch("profile/getImage", {
+              image: profile.image,
+            });
+          })
+        );
+        store.dispatch("profile/addUserProfiles", {"user_id": data.user_id, "profiles": data.profiles});
+        store.dispatch("group/memberUpdated", {"group_id": data.group_id, "members": data.members});
+        store.dispatch("room/memberUpdated", {"room_id": data.room_id, "members": data.members});
       });
       channel.bind("App\\Events\\ProfileDeleted", function (data) {
         store.dispatch("room/profileDeleted", { data: data });

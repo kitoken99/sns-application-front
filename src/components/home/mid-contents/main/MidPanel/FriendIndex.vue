@@ -5,7 +5,11 @@
         <q-tab-panel name="profile">
           <ProfilePanel
             class="panel"
-            v-show="store.getters['state/getProfilePanel'] == 'profile'"
+            v-if="store.getters['state/getProfilePanel'] == 'profile'"
+          />
+          <GroupPanel
+            class="panel"
+            v-if="store.getters['state/getProfilePanel'] == 'group'"
           />
           <!-- my profile setting -->
           <MyProfileSetting
@@ -56,6 +60,7 @@
 import { defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
 import ProfilePanel from "./panels/ProfilePanel.vue";
+import GroupPanel from "./panels/GroupPanel.vue";
 import MyProfileSetting from "./panels/MyProfileSetting.vue";
 import FriendSetting from "./panels/FriendSetting.vue";
 import EmailForm from "./panels/EmailForm.vue";
@@ -65,6 +70,7 @@ export default defineComponent({
   name: "FriendIndex",
   components: {
     FriendPanel,
+    GroupPanel,
     MyProfileSetting,
     FriendSetting,
     EmailForm,

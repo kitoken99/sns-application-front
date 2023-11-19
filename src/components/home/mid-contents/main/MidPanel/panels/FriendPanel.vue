@@ -18,9 +18,36 @@
             v-for="(group, index) in store.getters['group/getCurrentGroups']"
             v-bind:key="group.id"
           >
-            <MemberBar :member="group" />
+            <MemberBar :member="group" @click="onGroup(group)"/>
             <q-separator
               v-if="index < store.getters['group/getCurrentGroups'].length"
+              inset="item"
+            />
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-expansion-item>
+    <q-expansion-item style="max-width: 318px">
+      <template v-slot:header>
+        <q-item-section avatar>
+          <q-avatar icon="group" color="grey-4" text-color="white" />
+        </q-item-section>
+        <q-item-section> Unaccepted Groups</q-item-section>
+        <q-item-section side>
+          <div class="row items-center">
+            {{ store.getters["group/getUnAcceptedGroups"].length }}
+          </div>
+        </q-item-section>
+      </template>
+      <q-card style="max-width: 318px">
+        <q-card-section>
+          <div
+            v-for="(group, index) in store.getters['group/getUnAcceptedGroups']"
+            v-bind:key="group.id"
+          >
+            <MemberBar :member="group" @click="onGroup(group)"/>
+            <q-separator
+              v-if="index < store.getters['group/getUnAcceptedGroups'].length"
               inset="item"
             />
           </div>
@@ -96,6 +123,12 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const onGroup = (group) => {
+      store.dispatch("group/setFocusedGroup", {
+        group_id: group.id,
+        isShow: true,
+      })
+    }
     const onAvatar = (profile) => {
       store.dispatch("profile/setFocusedUser", {
         user_id: profile.user_id,
@@ -105,6 +138,7 @@ export default defineComponent({
     };
     return {
       onAvatar,
+      onGroup,
       store,
       thumbStyle: {
         right: "2px",

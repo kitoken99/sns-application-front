@@ -44,7 +44,9 @@ export function addMessage(state, data) {
   state.messages.push(data.message);
 }
 
-
+export function switchProfile(state, {user_id, profile_id, room_id}) {
+  state.rooms[room_id]["members"][user_id] = profile_id;
+}
 
 
 
@@ -54,3 +56,11 @@ export function deleteProfile(state, profile) {
     delete state.profiles[profile.user_id][profile.id];
 }
 
+
+//リアルタイム更新
+export function memberUpdated(state, {room_id,members}){
+  console.log(state.rooms);
+  console.log(state.rooms[room_id]);
+  console.log(members)
+  state.rooms[room_id]["members"] = members;
+}

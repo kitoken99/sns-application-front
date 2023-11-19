@@ -40,8 +40,11 @@ export function getCurrentRoom(state, getters, rootState) {
   const members_info = state.rooms[state.current_room_id].members;
   const members = {};
   Object.keys(members_info).forEach((user_id) => {
-    if (members_info[user_id])
+    if (members_info[user_id]){
       members[user_id] = rootState.profile.profiles[user_id][members_info[user_id]];
+    }
+
+
     else {
       if (rootState.friendship.friendship[rootState.profile.current_profile_id][user_id]) {
         members[user_id] =
