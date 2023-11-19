@@ -64,7 +64,10 @@
       <q-btn
         flat
         v-show="details.state == 'unaccepted'"
-        @click="store.dispatch('room/acceptFriend')"
+        @click="() => {
+            store.dispatch('friendship/acceptFriend');
+            store.dispatch('friendship/permitProfile', { [store.getters['profile/getCurrentProfileId']]: true });
+          }"
         >accept</q-btn
       >
       <q-btn
@@ -72,8 +75,8 @@
         v-show="details.state === 'not_friend'"
         @click="
           () => {
-            store.dispatch('room/addFriend');
-            store.dispatch('room/permitProfile', { [store.getters['profile/getCurrentProfileId']]: true });
+            store.dispatch('friendship/addFriend');
+            store.dispatch('friendship/permitProfile', { [store.getters['profile/getCurrentProfileId']]: true });
           }
         "
         >add</q-btn
@@ -98,15 +101,15 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const profiles = ref(store.getters["room/getFocusedUser"].profiles);
-    const slide = ref(store.getters["room/getFocusedUser"].top_profile_id);
-    const details = ref(store.getters["room/getFocusedUser"].details);
+    const profiles = ref(store.getters["profile/getFocusedUser"].profiles);
+    const slide = ref(store.getters["profile/getFocusedUser"].top_profile_id);
+    const details = ref(store.getters["profile/getFocusedUser"].details);
     watch(
-      () => ref(store.getters["room/getFocusedUser"]),
+      () => ref(store.getters["profile/getFocusedUser"]),
       () => {
-        profiles.value = store.getters["room/getFocusedUser"].profiles;
-        slide.value = store.getters["room/getFocusedUser"].top_profile_id;
-        details.value = store.getters["room/getFocusedUser"].details;
+        profiles.value = store.getters["profile/getFocusedUser"].profiles;
+        slide.value = store.getters["profile/getFocusedUser"].top_profile_id;
+        details.value = store.getters["profile/getFocusedUser"].details;
       }
     );
     const onMyProfileSetting = (id) => {

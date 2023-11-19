@@ -37,35 +37,53 @@ export default {
     };
     const pusherUserConnect = (user_id) => {
       var channel = pusher.subscribe(`user-${user_id}`);
-      channel.bind("App\\Events\\ProfileUpdated", function (data) {
-        store.dispatch("room/profileUpdated", { data: data });
+      channel.bind("App\\Events\\ProfileUpdated", async function (data) {
+        data.profile.image = await store.dispatch("profile/getImage", {
+              image: data.profile.image,
+            });
+        store.dispatch("profile/profileUpdated", { data: data });
+      });
+      channel.bind("App\\Events\\PermitionUpdated", async function (data) {
+        await Promise.all(
+          Object.values(data.profiles).map(async (profile) => {
+            profile.image = await store.dispatch("profile/getImage", {
+              image: profile.image,
+            });
+          })
+        );
+        store.dispatch("profile/permitionUpdated", data);
       });
       channel.bind("App\\Events\\FriendshipCreated", async function (data) {
-        data.room.image = await store.dispatch("room/getImage", {
+        data.room.image = await store.dispatch("profile/getImage", {
               image: data.room.image,
             });
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {
-            profile.image = await store.dispatch("room/getImage", {
+            profile.image = await store.dispatch("profile/getImage", {
               image: profile.image,
             });
           })
         );
-        store.dispatch("room/friendshipCreated", data);
-        });
-        channel.bind("App\\Events\\PermitionUpdated", async function (data) {
-        console.log(data)
+        store.dispatch("friendship/friendshipCreated", data);
+      });
+      channel.bind("App\\Events\\GroupCreated", async function (data) {
+        
+        data.room.image = await store.dispatch("group/getImage", {
+              image: data.room.image,
+            });
+            
+        data.group.image = data.room.image;
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {
-            profile.image = await store.dispatch("room/getImage", {
+            profile.image = await store.dispatch("profile/getImage", {
               image: profile.image,
             });
           })
         );
-        store.dispatch("room/permitionUpdated", data);
+        
+        store.dispatch("group/groupCreated", data);
       });
       channel.bind("App\\Events\\ProfileDeleted", function (data) {
-        console.log(data);
         store.dispatch("room/profileDeleted", { data: data });
       });
     };
@@ -93,9 +111,8 @@ export default {
       await store.dispatch("profile/fetchProfiles");
       q.loading.hide();
       store.dispatch("state/switchIsAuthorized", true);
-      await store.dispatch("room/fetchProfiles");
-      store.dispatch("room/fetchFriendship");
-      store.dispatch("room/fetchGroups");
+      store.dispatch("friendship/fetchFriendship");
+      store.dispatch("group/fetchGroups");
       await store.dispatch("room/fetchRooms");
       pusherUserConnect(store.getters["user/getUser"].id);
       store.dispatch("state/switchIsFetched", true);

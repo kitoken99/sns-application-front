@@ -4,6 +4,8 @@ import createPersistedState from "vuex-persistedstate";
 import auth from "./auth";
 import user from "./user-module";
 import profile from "./profile-module";
+import friendship from "./friendship-module";
+import group from "./group-module";
 import room from "./room-module";
 import state from "./show-state-module";
 
@@ -32,6 +34,8 @@ export default store(function (/* { ssrContext } */) {
       auth,
       user,
       profile,
+      friendship,
+      group,
       room,
       state,
     },

@@ -1,102 +1,7 @@
-//profiles
-export function getFocusedUser(state, getters, rootState) {
-  const main_profile_id = rootState.profile.main_profile_id;
-  const details = {
-    room_id: "",
-    state: "",
-  };
-  if (rootState.user.user.id == state.focused_user_id) {
-    details.state = "mine";
-  } else if (state.focused_user_id in state.friendship[main_profile_id]) {
-    details.room_id =
-      state.friendship[main_profile_id][state.focused_user_id].room_id;
-    details.state =
-      state.friendship[main_profile_id][state.focused_user_id].state;
-  } else {
-    details.state = "not_friend";
-  }
-  const response = {
-    profiles: state.profiles[state.focused_user_id],
-    top_profile_id: state.focused_profile_id,
-    details: details,
-  };
-  return response;
-}
-
-
-//friends
-export function getFriends(state, getters, rootState) {
-  const main_profile_id = Object.keys(rootState.profile.profiles)[0];
-  if (!state.friendship[main_profile_id]) {
-    return [];
-  }
-  const friendship = state.friendship[main_profile_id];
-  const friends = [];
-  Object.keys(friendship).forEach((key) => {
-    if (friendship[key].state != "deleted") {
-      friends.push(state.profiles[key][friendship[key].profile_id]);
-    }
-  });
-  return friends;
-}
-export function getCurrentFriends(state, getters, rootState) {
-  const profile_id = rootState.profile.current_profile_id;
-  if (!state.friendship[profile_id]) {
-    return [];
-  }
-  const friendship = state.friendship[profile_id];
-  const friends = [];
-  Object.keys(friendship).forEach((key) => {
-    if (friendship[key].state == "accepted") {
-      friends.push(state.profiles[key][friendship[key].profile_id]);
-    }
-  });
-  return friends;
-}
-export function getUnAcceptedFriends(state, getters, rootState) {
-  const profile_id = Object.keys(rootState.profile.profiles)[0];
-  if (!state.friendship[profile_id]) {
-    return [];
-  }
-  const friendship = state.friendship[profile_id];
-  const friends = [];
-  Object.keys(friendship).forEach((key) => {
-    if (friendship[key].state == "unaccepted") {
-      friends.push(state.profiles[key][friendship[key].profile_id]);
-    }
-  });
-  return friends;
-}
-
-//groups
-export function getGroups(state, getters, rootState) {
-  const main_profile_id = Object.keys(rootState.profile.profiles)[0];
-  if (!state.groups[main_profile_id]) {
-    return [];
-  }
-  const groups = state.groups[main_profile_id];
-  const response = [];
-  Object.values(groups).forEach((value) => {
-    response.push(value);
-  });
-  return response;
-}
-export function getCurrentGroups(state, getters, rootState) {
-  const profile_id = rootState.profile.current_profile_id;
-  if (!state.groups[profile_id]) {
-    return [];
-  }
-  const groups = state.groups[profile_id];
-  const response = [];
-  Object.values(groups).forEach((value) => {
-    response.push(value);
-  });
-  return response;
-}
 
 //Rooms
 export function getRooms(state, getters, rootState) {
-  const profile_id = parseInt(Object.keys(rootState.profile.profiles)[0]);
+  const profile_id = rootState.profile.current_profile_id;
   const rooms = Object.values(state.rooms).filter((room) =>
     Object.values(room.profile_id).includes(profile_id)
   );
@@ -136,18 +41,18 @@ export function getCurrentRoom(state, getters, rootState) {
   const members = {};
   Object.keys(members_info).forEach((user_id) => {
     if (members_info[user_id])
-      members[user_id] = state.profiles[user_id][members_info[user_id]];
+      members[user_id] = rootState.profile.profiles[user_id][members_info[user_id]];
     else {
-      if (state.friendship[rootState.profile.current_profile_id][user_id]) {
+      if (rootState.friendship.friendship[rootState.profile.current_profile_id][user_id]) {
         members[user_id] =
-          state.profiles[user_id][
-            state.friendship[rootState.profile.current_profile_id][
+          rootState.profile.profiles[user_id][
+            rootState.friendship.friendship[rootState.profile.current_profile_id][
               user_id
             ].profile_id
           ];
       } else {
         members[user_id] =
-          state.profiles[user_id][rootState.profile.current_profile_id];
+          rootState.profile.profiles[user_id][rootState.profile.current_profile_id];
       }
     }
   });
@@ -212,10 +117,4 @@ export function getCurrentRoom(state, getters, rootState) {
 }
 
 //friendship
-export function getPermittedProfiles(state) {
-  const list = {};
-  Object.keys(state.friendship).forEach((key) => {
-    list[key] = state.friendship[key][state.focused_user_id] !== undefined;
-  });
-  return list;
-}
+

@@ -8,19 +8,19 @@
         <q-item-section> Groups</q-item-section>
         <q-item-section side>
           <div class="row items-center">
-            {{ store.getters["room/getCurrentGroups"].length }}
+            {{ store.getters["group/getCurrentGroups"].length }}
           </div>
         </q-item-section>
       </template>
       <q-card style="max-width: 318px">
         <q-card-section>
           <div
-            v-for="(group, index) in store.getters['room/getCurrentGroups']"
+            v-for="(group, index) in store.getters['group/getCurrentGroups']"
             v-bind:key="group.id"
           >
             <MemberBar :member="group" />
             <q-separator
-              v-if="index < store.getters['room/getCurrentGroups'].length"
+              v-if="index < store.getters['group/getCurrentGroups'].length"
               inset="item"
             />
           </div>
@@ -35,19 +35,19 @@
         <q-item-section> Friends</q-item-section>
         <q-item-section side>
           <div class="row items-center">
-            {{ store.getters["room/getCurrentFriends"].length }}
+            {{ store.getters["friendship/getCurrentFriends"].length }}
           </div>
         </q-item-section>
       </template>
       <q-card style="max-width: 318px">
         <q-card-section>
           <div
-            v-for="(friend, index) in store.getters['room/getCurrentFriends']"
+            v-for="(friend, index) in store.getters['friendship/getCurrentFriends']"
             v-bind:key="friend.id"
           >
             <MemberBar :member="friend" @click="onAvatar(friend)" />
             <q-separator
-              v-if="index < store.getters['room/getCurrentFriends'].length"
+              v-if="index < store.getters['friendship/getCurrentFriends'].length"
               inset="item"
             />
           </div>
@@ -62,7 +62,7 @@
         <q-item-section> Unaccepted friends</q-item-section>
         <q-item-section side>
           <div class="row items-center">
-            {{ store.getters["room/getUnAcceptedFriends"].length }}
+            {{ store.getters["friendship/getUnAcceptedFriends"].length }}
           </div>
         </q-item-section>
       </template>
@@ -70,13 +70,13 @@
         <q-card-section>
           <div
             v-for="(friend, index) in store.getters[
-              'room/getUnAcceptedFriends'
+              'friendship/getUnAcceptedFriends'
             ]"
             v-bind:key="friend.id"
           >
             <MemberBar :member="friend" @click="onAvatar(friend)" />
             <q-separator
-              v-if="index < store.getters['room/getUnAcceptedFriends'].length"
+              v-if="index < store.getters['friendship/getUnAcceptedFriends'].length"
               inset="item"
             />
           </div>
@@ -97,7 +97,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const onAvatar = (profile) => {
-      store.dispatch("room/setFocusedUser", {
+      store.dispatch("profile/setFocusedUser", {
         user_id: profile.user_id,
         profile_id: profile.id,
         isShow: true,

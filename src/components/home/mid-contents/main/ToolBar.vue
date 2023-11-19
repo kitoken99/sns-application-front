@@ -43,7 +43,7 @@ export default defineComponent({
     const store = useStore();
     const profile = ref(store.getters["profile/getCurrentProfile"]);
     const onAvatar = () => {
-      store.dispatch("room/setFocusedUser", {
+      store.dispatch("profile/setFocusedUser", {
         user_id: profile.value.user_id,
         profile_id: profile.value.id,
         isShow: true,

@@ -87,15 +87,10 @@ export default defineComponent({
     const file = ref(null);
     const preview = ref(null);
     const profile = ref({ ...store.getters["profile/getCurrentProfile"] });
-    if (profile.value.show_birthday == 1) profile.value.show_birthday = true;
-    else profile.value.show_birthday = false;
     watch(
       () => store.getters["profile/getCurrentProfile"],
       () => {
         profile.value = { ...store.getters["profile/getCurrentProfile"] };
-        if (profile.value.show_birthday == 1)
-          profile.value.show_birthday = true;
-        else profile.value.show_birthday = false;
       }
     );
     const onImageUploaded = (e) => {

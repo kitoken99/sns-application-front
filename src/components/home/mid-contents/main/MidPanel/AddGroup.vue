@@ -20,7 +20,7 @@
         style="height: calc(100vh - 357px)"
       >
         <div
-          v-for="profile in store.getters['profile/getProfiles']"
+          v-for="profile in store.getters['profile/getMyProfiles']"
           v-bind:key="profile.id"
         >
           <q-item
@@ -61,7 +61,7 @@
         style="width: 100%; height: calc(100vh - 357px)"
       >
         <div
-          v-for="friend in store.getters['room/getFriends']"
+          v-for="friend in store.getters['friendship/getFriends']"
           v-bind:key="friend.id"
         >
           <q-item
@@ -168,10 +168,10 @@ export default defineComponent({
       selected_friend_list.value[id] = !selected_friend_list.value[id];
     };
     watch(
-      () => store.getters["room/getFriends"],
+      () => store.getters["friendship/getFriends"],
       () => {
         const list = {};
-        store.getters["room/getFriends"].forEach((friend) => {
+        store.getters["friendship/getFriends"].forEach((friend) => {
           list[friend.user_id] = false;
         });
         selected_friend_list.value = list;
@@ -200,7 +200,7 @@ export default defineComponent({
       Object.keys(selected_friend_list.value).forEach((key) => {
         if (selected_friend_list.value[key]) ids.push(key);
       });
-      await store.dispatch("room/createGroup", {
+      await store.dispatch("group/createGroup", {
         file: file.value,
         name: name.value,
         caption: caption.value,

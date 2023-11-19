@@ -7,7 +7,7 @@
         <div class="permitted-profile-list">
           <div
             v-for="profile in Object.values(
-              store.getters['room/getFocusedUser'].profiles
+              store.getters['profile/getFocusedUser'].profiles
             )"
             v-bind:key="profile.id"
           >
@@ -44,12 +44,12 @@
         <p class="text-grey">This Friend can see your selected profile</p>
         <div class="permitted-profile-list">
           <div
-            v-for="profile in store.getters['profile/getProfiles']"
+            v-for="profile in store.getters['profile/getMyProfiles']"
             v-bind:key="profile.id"
           >
             <q-item
               v-ripple
-              :clickable="Object.keys(permitted_profile_list)[0] != profile.id"
+              :clickable="!profile.is_main "
               :active="permitted_profile_list[profile.id]"
               @click="switchPermittedProfileId(profile.id)"
               active-class="selected-profile"
@@ -103,10 +103,10 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const permitted_profile_list = ref(
-      store.getters["room/getPermittedProfiles"]
+      store.getters["friendship/getPermittedProfileList"]
     );
     const selected_profile_id = ref(
-      store.getters["room/getFocusedUser"].top_profile_id
+      store.getters["profile/getFocusedUser"].top_profile_id
     );
     const setSelectedProfileId = (id) => {
       selected_profile_id.value = id;
@@ -117,23 +117,23 @@ export default defineComponent({
       }
     };
     const onSelected = () => {
-      store.dispatch("room/featuredProfile", selected_profile_id.value);
+      store.dispatch("friendship/featuredProfile", selected_profile_id.value);
     };
     const onClick = () => {
-      store.dispatch("room/permitProfile", permitted_profile_list.value);
+      store.dispatch("friendship/permitProfile", permitted_profile_list.value);
     };
     watch(
-      () => ref(store.getters["room/getFocusedUser"]),
+      () => ref(store.getters["profile/getFocusedUser"]),
       () => {
         selected_profile_id.value =
-          store.getters["room/getFocusedUser"].top_profile_id;
+          store.getters["profile/getFocusedUser"].top_profile_id;
       }
     );
     watch(
-      () => store.getters["room/getPermittedProfiles"],
+      () => store.getters["friendship/getPermittedProfileList"],
       () => {
         permitted_profile_list.value =
-          store.getters["room/getPermittedProfiles"];
+          store.getters["friendship/getPermittedProfileList"];
       }
     );
     return {

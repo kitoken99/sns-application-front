@@ -38,6 +38,7 @@ export async function updateUser(
       }
     );
     commit("setUser", response.data);
+    commit("profile/setBirthday", response.data, {root: true});
     return response.status;
   } catch (error) {
     console.log(error);
@@ -63,7 +64,6 @@ export async function updatePassword(
         },
       }
     );
-    commit("setUser", response.data.user);
     return response.status;
   } catch (error) {
     console.log(error);
@@ -79,7 +79,7 @@ export async function deleteAccount({ commit, rootGetters }) {
       },
     });
     commit("resetUser");
-    commit("resetProfile", null, { root: true });
+    commit("profile/resetProfile", null, { root: true });
     return response.status;
   } catch (error) {
     console.log(error);
