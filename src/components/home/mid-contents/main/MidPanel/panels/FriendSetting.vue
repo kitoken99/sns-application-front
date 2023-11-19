@@ -118,6 +118,7 @@ export default defineComponent({
     };
     const onSelected = () => {
       store.dispatch("friendship/featuredProfile", selected_profile_id.value);
+      store.dispatch("room/featuredProfile", selected_profile_id.value);
     };
     const onClick = () => {
       store.dispatch("friendship/permitProfile", permitted_profile_list.value);

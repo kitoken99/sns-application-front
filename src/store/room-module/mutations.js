@@ -58,6 +58,9 @@ export function deleteProfile(state, profile) {
 
 
 //リアルタイム更新
+export function featuredProfile(state, {room_id, user_id, profile_id}) {
+  state.rooms[room_id]["members"][user_id] = profile_id;
+}
 export function memberUpdated(state, {room_id,members}){
   console.log(state.rooms);
   console.log(state.rooms[room_id]);

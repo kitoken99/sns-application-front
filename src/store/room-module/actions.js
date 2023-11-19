@@ -132,6 +132,14 @@ export async function profileDeleted(
 
 
 //リアルタイム更新
+export async function featuredProfile({ commit, state, rootState, rootGetters }, id) {
+      commit("featuredProfile", {
+        room_id: rootState.friendship.friendship[rootGetters["profile/getCurrentProfileId"]][rootState.profile.focused_user_id].room_id,
+        user_id: rootState.profile.focused_user_id,
+        profile_id: id,
+      });
+
+}
 export function addRoom({commit}, room){
   commit("room/addRoom", room, {root: true});
 }
