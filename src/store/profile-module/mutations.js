@@ -10,16 +10,16 @@ export function setMainProfileId(state, user_id) {
 export function setCurrentProfileId(state, profile_id) {
   state.current_profile_id = profile_id;
 }
-export function setBirthday(state, user){
-  if(user.birthday){
-    Object.values(state.profiles[user.id]).forEach(profile => {
-      profile.birthday = user.birthday
-    })
-  }else{
-    Object.values(state.profiles[user.id]).forEach(profile => {
+export function setBirthday(state, user) {
+  if (user.birthday) {
+    Object.values(state.profiles[user.id]).forEach((profile) => {
+      profile.birthday = user.birthday;
+    });
+  } else {
+    Object.values(state.profiles[user.id]).forEach((profile) => {
       profile.birthday = null;
       profile.show_birthday = false;
-    })
+    });
   }
 }
 export function setFocusedUserId(state, user_id) {
@@ -29,28 +29,22 @@ export function setFocusedProfileId(state, profile_id) {
   state.focused_profile_id = profile_id;
 }
 
-//追加
+//リアルタイム更新
 export function addProfile(state, profile) {
-  if(!state.profiles[profile.user_id])state.profiles[profile.user_id]={}
+  if (!state.profiles[profile.user_id]) state.profiles[profile.user_id] = {};
   state.profiles[profile.user_id][profile.id] = profile;
 }
-
-
-//リアルタイム更新
 export function addProfiles(state, profiles) {
   Object.values(profiles).forEach((profile) => {
     if (!state.profiles[profile.user_id]) state.profiles[profile.user_id] = {};
     state.profiles[profile.user_id][profile.id] = profile;
   });
 }
-export function addUserProfiles(state, {user_id, profiles}){
+export function addUserProfiles(state, { user_id, profiles }) {
   state.profiles[user_id] = profiles;
 }
-
-
-
-export function permitionUpdated(state, data){
-  state.profiles[data.user_id]=data.profiles;
+export function deleteProfile(state, { user_id, profile_id }) {
+  delete state.profiles[user_id][profile_id];
 }
 
 //初期化
@@ -58,7 +52,6 @@ export function resetProfile(state) {
   state.profiles = null;
   state.main_profile_id = null;
   state.current_profile_id = null;
-  state.focused_user_id= null;
-  state.focused_profile_id= null;
+  state.focused_user_id = null;
+  state.focused_profile_id = null;
 }
-

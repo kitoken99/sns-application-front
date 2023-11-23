@@ -1,23 +1,8 @@
 import axios from "axios";
-//データ初期取得
-export async function fetchRooms({ commit, rootGetters }) {
-  await axios
-    .get(process.env.API + "/api/rooms", {
-      headers: {
-        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
-      },
-    })
-    .then((response) => {
-      commit("setRooms", response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
 
 
 //表示ルーム選択時
-export async function setCurrentRoomId({ commit, rootGetters }, id) {
+export async function setCurrentRoomId({ commit, getters, rootGetters }, id) {
   if (id == rootGetters["room/getCurrentRoomId"]) return;
   commit("setCurrentRoomId", id);
   await axios
@@ -28,7 +13,13 @@ export async function setCurrentRoomId({ commit, rootGetters }, id) {
     })
     .then((response) => {
       commit("setMessages", response.data);
-      commit("readContent", id);
+      const rooms = getters["rooms"];
+      if(rooms[rootGetters["room/getCurrentRoomId"]]["friendship_id"]){
+          commit("friendship/readContent", rooms[rootGetters["room/getCurrentRoomId"]]["friendship_id"], {root: true})
+      }
+      if(rooms[rootGetters["room/getCurrentRoomId"]]["group_id"]){
+        commit("group/readContent", rooms[rootGetters["room/getCurrentRoomId"]]["group_id"], {root: true})
+      }
     })
     .catch((error) => {
       console.log(error);
@@ -36,15 +27,20 @@ export async function setCurrentRoomId({ commit, rootGetters }, id) {
 }
 
 //メッセージ送信時
-export function addMessage({ commit, rootGetters }, { message }) {
+export function addMessage({ commit, getters, rootGetters }, { message }) {
   if (!message) return;
   const newMessage = {
     body: message,
     room_id: rootGetters["room/getCurrentRoomId"],
-    user_id: rootGetters["user/getUser"].id,
+    user_id: rootGetters["user/getUserId"],
     created_at: new Date().toISOString(),
   };
   commit("setNewMessage", newMessage);
+  const rooms = getters["rooms"];
+  if(rooms[rootGetters["room/getCurrentRoomId"]]["friendship_id"])
+    commit("friendship/changeLastMessage", {message: newMessage, id: rooms[rootGetters["room/getCurrentRoomId"]]["friendship_id"]}, {root: true})
+  if(rooms[rootGetters["room/getCurrentRoomId"]]["group_id"])
+    commit("group/changeLastMessage", {message: newMessage, id: rooms[rootGetters["room/getCurrentRoomId"]]["group_id"]}, {root: true})
 }
 export async function postMessage({ commit, rootGetters }, { message }) {
   if (!message) return;
@@ -74,18 +70,28 @@ export async function messageRecieved(
   { commit, getters, rootGetters },
   { data }
 ) {
-  commit("changeLastMessage", data);
-  if (getters.getCurrentRoomId !== data.message.room_id) {
-    commit("addNotRead", data);
-  } else {
-    if (rootGetters["user/getUser"].id != data.message.user_id) {
+  const rooms = getters["rooms"];
+  console.log(data)
+  console.log(rooms[data.room_id])
+  if(rooms[data.room_id]["friendship_id"]){
+    commit("friendship/changeLastMessage", {message: data, id: rooms[data.room_id]["friendship_id"]}, {root: true})
+    if (getters.getCurrentRoomId !== data.room_id)
+      commit("friendship/addNotRead", rooms[data.room_id]["friendship_id"], {root: true})
+  }
+
+  if(rooms[data.room_id]["group_id"]){
+    commit("group/changeLastMessage", {message: data, id: rooms[data.room_id]["group_id"]}, {root: true})
+    if (getters.getCurrentRoomId !== data.room_id)
+      commit("group/addNotRead", rooms[data.room_id]["group_id"], {root: true})
+  }
+
+if (getters.getCurrentRoomId === data.room_id && rootGetters["user/getUserId"] != data.user_id) {
       commit("addMessage", data);
-      console.log(data.message.id);
       await axios
         .post(
           process.env.API + "/api/message/read",
           {
-            id: data.message.id,
+            id: data.id,
           },
           {
             headers: {
@@ -98,51 +104,7 @@ export async function messageRecieved(
           console.log(error);
         });
     }
-  }
-}
-
-
-
-
-export async function profileDeleted(
-  { commit, getters, rootGetters },
-  { data }
-) {
-  if (!data.profile.is_main) {
-    commit("deleteProfile", data.profile);
-    return;
-  }
-  await axios
-    .get(process.env.API + "/api/profile/image", {
-      headers: {
-        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
-      },
-      params: {
-        image: data.profile.image,
-      },
-    })
-    .then((response) => {
-      data.profile.image = response.data;
-      commit("addProfile", data.profile);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-
-//リアルタイム更新
-export async function featuredProfile({ commit, state, rootState, rootGetters }, id) {
-      commit("featuredProfile", {
-        room_id: rootState.friendship.friendship[rootGetters["profile/getCurrentProfileId"]][rootState.profile.focused_user_id].room_id,
-        user_id: rootState.profile.focused_user_id,
-        profile_id: id,
-      });
 
 }
-export function addRoom({commit}, room){
-  commit("room/addRoom", room, {root: true});
-}
-export function memberUpdated({ commit }, {room_id, members}) {
-  commit("memberUpdated", {"room_id": room_id, "members":members})
-}
+
+

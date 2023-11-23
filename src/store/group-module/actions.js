@@ -13,12 +13,21 @@ export async function fetchGroups({ commit, rootGetters }) {
       console.log(error);
     });
 }
+export function setFocusedGroup({ commit }, { group_id, isShow }) {
+  commit("setFocusedGroupId", group_id);
+  commit("state/switchProfilePanel", "group", { root: true });
+  if (isShow) {
+    commit("state/showProfile", null, { root: true });
+  }
+}
 
-//グループ作成時
+
+//リアルタイム更新
 export async function createGroup(
   { commit, rootGetters },
   { file, name, caption, profile_id, ids }
 ) {
+  console.log(profile_id);
   await axios
     .post(
       process.env.API + "/api/group",
@@ -37,40 +46,21 @@ export async function createGroup(
       }
     )
     .then((response) => {
-      response.data.profile_id.forEach(id=>{
-        commit("addGroup", {
-          group: response.data.group,
-          profile_id: id,
-        });
-      })
-      commit("room/addRoom", response.data.room, { root: true });
+      commit("addGroup", response.data);
       commit("state/switchMainContent", "main", { root: true });
     })
     .catch((error) => {
       console.log(error);
     });
 }
-
-export function setFocusedGroup(
-  { commit },
-  { group_id, isShow }
-) {
-  commit("setFocusedGroupId", group_id);
-  commit("state/switchProfilePanel", "group", { root: true });
-  if (isShow) {
-    commit("state/showProfile", null, { root: true });
-  }
-}
-
-
-//状態変更
-export async function acceptGroup({ commit, state, rootState, rootGetters }){
+export async function switchState({ commit, state, rootState, rootGetters }, status) {
   const group_id = state.focused_group_id;
   await axios
     .patch(
-      process.env.API + "/api/group/accept",
+      process.env.API + "/api/group/state",
       {
         group_id: group_id,
+        state: status
       },
       {
         headers: {
@@ -79,13 +69,13 @@ export async function acceptGroup({ commit, state, rootState, rootGetters }){
       }
     )
     .then((response) => {
-      commit("acceptGroup", group_id)
+      commit("switchState", {group_id:group_id, status: status});
     })
     .catch((error) => {
       console.log(error);
     });
 }
-export async function switchProfile({ commit, state, rootState, rootGetters }){
+export async function switchProfile({ commit, state, rootState, rootGetters }) {
   const profile_id = rootState.profile.current_profile_id;
   const group_id = state.focused_group_id;
   await axios
@@ -93,7 +83,7 @@ export async function switchProfile({ commit, state, rootState, rootGetters }){
       process.env.API + "/api/group/profile",
       {
         group_id: group_id,
-        profile_id: profile_id
+        profile_id: profile_id,
       },
       {
         headers: {
@@ -102,16 +92,20 @@ export async function switchProfile({ commit, state, rootState, rootGetters }){
       }
     )
     .then((response) => {
-      commit("switchProfile", {user_id: rootGetters["user/getUserId"], profile_id: profile_id, group_id: group_id});
-      const room_id = state.groups[profile_id][group_id].room_id;
-      commit("room/switchProfile", {user_id: rootGetters["user/getUserId"], profile_id: profile_id, room_id: room_id}, {root: true})
+      commit("switchMemberProfile", {
+        user_id: rootGetters["user/getUserId"],
+        profile_id: profile_id,
+        group_id: group_id,
+      });
+      commit("switchProfile", {
+        profile_id: profile_id,
+        group_id: group_id,
+      });
     })
     .catch((error) => {
       console.log(error);
     });
 }
-
-//リアルタイム更新
 export async function getImage({ commit, getters, rootGetters }, { image }) {
   try {
     const response = await axios.get(process.env.API + "/api/group/image", {
@@ -128,11 +122,11 @@ export async function getImage({ commit, getters, rootGetters }, { image }) {
   }
 }
 export async function addGroup({ commit, rootState }, group) {
-  commit("addGroup", {
-    group: group,
-    profile_id: rootState.profile.main_profile_id,
-  });
+  commit("addGroup", group);
 }
-export function memberUpdated({ commit }, {group_id, members}) {
-  commit("memberUpdated", {"group_id": group_id, "members":members})
+export function memberUpdated({ commit }, { group_id, members }) {
+  commit("memberUpdated", { group_id: group_id, members: members });
+}
+export function profileDeleted({ commit }, { user_id, profile_id , main_profile_id }) {
+  commit("deletedProfile", {user_id: user_id, profile_id: profile_id, main_profile_id: main_profile_id});
 }

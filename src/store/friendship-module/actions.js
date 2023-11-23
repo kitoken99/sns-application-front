@@ -13,7 +13,12 @@ export async function fetchFriendship({ commit, rootGetters }) {
       console.log(error);
     });
 }
-export async function featuredProfile({ commit, state, rootState, rootGetters }, id) {
+
+//表示設定
+export async function featuredProfile(
+  { commit, state, rootState, rootGetters },
+  id
+) {
   const friend_id = rootState.profile.focused_user_id;
   await axios
     .patch(
@@ -38,9 +43,12 @@ export async function featuredProfile({ commit, state, rootState, rootGetters },
       console.log(error);
     });
 }
-export async function permitProfile({ commit, state, rootState, rootGetters }, list) {
-  if(list[rootState.profile.main_profile_id]==false)return;
-  const friend_id = rootState.profile.focused_user_id
+export async function permitProfile(
+  { commit, state, rootState, rootGetters },
+  list
+) {
+  list[rootState.profile.main_profile_id] = true
+  const friend_id = rootState.profile.focused_user_id;
   await axios
     .post(
       process.env.API + "/api/friendship/permit",
@@ -55,19 +63,16 @@ export async function permitProfile({ commit, state, rootState, rootGetters }, l
       }
     )
     .then((response) => {
-      commit("permitProfile", {list:list, user_id: friend_id} );
+      commit("permitProfile", { list: list, user_id: friend_id });
     })
     .catch((error) => {
       console.log(error);
     });
 }
 
-
-
-//友達との関係性
-
+//リアルタイム更新
 export async function addFriend({ commit, state, rootState, rootGetters }) {
-  const friend_id = rootState.profile.focused_user_id
+  const friend_id = rootState.profile.focused_user_id;
   await axios
     .post(
       process.env.API + "/api/friendship",
@@ -81,26 +86,22 @@ export async function addFriend({ commit, state, rootState, rootGetters }) {
       }
     )
     .then((response) => {
-      const main_profile_id = rootGetters["profile/getMainProfileId"];
-      commit("profile/addProfiles", response.data.profiles, {root: true});
-      commit("addFriend", {
-        data: response.data.friendship,
-        profile_id: rootState.profile.main_profile_id,
-      });
-      commit("room/addRoom", response.data.room, {root: true});
+      commit("profile/addProfile", response.data.profile, { root: true });
+      commit("addFriend", response.data.friendship);
       commit("state/switchMainContent", "main", { root: true });
     })
     .catch((error) => {
       console.log(error);
     });
 }
-export async function acceptFriend({ commit, state, rootState, rootGetters }) {
-  const friend_id = rootState.profile.focused_user_id
+export async function switchState({ commit, state, rootState, rootGetters }, status) {
+  const friend_id = rootState.profile.focused_user_id;
   await axios
     .patch(
-      process.env.API + "/api/friendship/accept",
+      process.env.API + "/api/friendship/state",
       {
         friend_id: friend_id,
+        state: status,
       },
       {
         headers: {
@@ -109,40 +110,16 @@ export async function acceptFriend({ commit, state, rootState, rootGetters }) {
       }
     )
     .then((response) => {
-      commit("acceptFriend", friend_id)
+      commit("switchState", {friend_id:friend_id, status:status});
     })
     .catch((error) => {
       console.log(error);
     });
 }
-export async function blockFriend({ commit, state, rootState, rootGetters }) {
-  const friend_id = state.focused_user_id;
-  await axios
-    .patch(
-      process.env.API + "/api/friendship/block",
-      {
-        friend_id: friend_id,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
-        },
-      }
-    )
-    .then((response) => {
-      commit("blockFriend", friend_id)
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-
 export async function friendshipCreated({ commit, rootState }, data) {
-  commit("profile/addProfiles", data.profiles, {root: true});
-  commit("addFriend", {
-    data: data.friendship,
-    profile_id: rootState.profile.main_profile_id,
-  });
-  commit("room/addRoom", data.room, {root: true});
+  commit("profile/addProfiles", data.profiles, { root: true });
+  commit("addFriend", data.friendship);
+}
+export function profileDeleted({ commit }, { user_id, profile_id , main_profile_id }) {
+  commit("deletedProfile", {user_id: user_id, profile_id: profile_id, main_profile_id: main_profile_id});
 }

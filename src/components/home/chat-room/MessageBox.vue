@@ -18,7 +18,7 @@
           :image="sender.image"
           size="42px"
           @click="
-            store.dispatch('room/setFocusedUser', {
+            store.dispatch('profile/setFocusedUser', {
               user_id: sender.user_id,
               profile_id: sender.id,
               isShow: true,

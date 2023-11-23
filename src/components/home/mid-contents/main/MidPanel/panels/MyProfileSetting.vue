@@ -1,7 +1,10 @@
 <template>
   <q-scroll-area>
-    <div style="display: flex; align-items: center">
+    <div class="column justify-center q-gutter-y-lg">
+
+
       <div class="text-center q-gutter-y-md q-mx-auto q-mt-lg">
+
         <div style="width: 8em; height: 8em; margin: 0 auto">
           <q-btn style="width: 8em; height: 8em; border-radius: 50%">
             <label>
@@ -67,6 +70,9 @@
           style="width: 200px"
         />
       </div>
+      <div class="text-center">
+        <DeleteProfileBtn />
+      </div>
     </div>
   </q-scroll-area>
 </template>
@@ -76,10 +82,12 @@ import { defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
 import AvatarIcon from "src/components/home/icons/AvatarIcon.vue";
+import DeleteProfileBtn from "./btn/DeleteProfileBtn.vue";
 export default defineComponent({
   name: "MyProfileSetting",
   components: {
     AvatarIcon,
+    DeleteProfileBtn,
   },
   setup() {
     const store = useStore();
@@ -91,6 +99,7 @@ export default defineComponent({
       () => store.getters["profile/getCurrentProfile"],
       () => {
         profile.value = { ...store.getters["profile/getCurrentProfile"] };
+        preview.value = null;
       }
     );
     const onImageUploaded = (e) => {

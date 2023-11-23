@@ -24,9 +24,9 @@
             <div>
               <p class="text-h5">{{ profile.name }}</p>
             </div>
-            <div>
+            <div style="height: 21px;">
               <p>
-                <span v-show="profile.show_barthday">{{
+                <span v-show="profile.show_birthday">{{
                   profile.birthday
                 }}</span>
               </p>
@@ -64,19 +64,25 @@
       <q-btn
         flat
         v-show="details.state == 'unaccepted'"
-        @click="() => {
-            store.dispatch('friendship/acceptFriend');
-            store.dispatch('friendship/permitProfile', { [store.getters['profile/getCurrentProfileId']]: true });
-          }"
+        @click="
+          () => {
+            store.dispatch('friendship/switchState', 'accepted');
+            store.dispatch('friendship/permitProfile', {
+              [store.getters['profile/getCurrentProfileId']]: true,
+            });
+          }
+        "
         >accept</q-btn
       >
       <q-btn
         flat
         v-show="details.state === 'not_friend'"
         @click="
-          () => {
-            store.dispatch('friendship/addFriend');
-            store.dispatch('friendship/permitProfile', { [store.getters['profile/getCurrentProfileId']]: true });
+          async () => {
+            await store.dispatch('friendship/addFriend');
+            store.dispatch('friendship/permitProfile', {
+              [store.getters['profile/getCurrentProfileId']]: true,
+            });
           }
         "
         >add</q-btn
@@ -84,9 +90,10 @@
       <q-btn
         flat
         v-show="details.state === 'unaccepted' || details.state === 'accepted'"
+        @click="store.dispatch('friendship/switchState', details.state=='accepted'?'blocked-accepted':'blocked-unaccepted')"
         >block</q-btn
       >
-      <q-btn flat v-show="details.state === 'blocked'">unblock</q-btn>
+      <q-btn flat v-show="/^blocked/.test(details.state)" @click="store.dispatch('friendship/switchState', details.state=='blocked-accepted'?'accepted':'unaccepted')">unblock</q-btn>
     </q-card-actions>
   </q-card>
 </template>

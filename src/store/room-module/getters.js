@@ -1,10 +1,52 @@
-
-//Rooms
-export function getRooms(state, getters, rootState) {
-  const profile_id = rootState.profile.current_profile_id;
-  const rooms = Object.values(state.rooms).filter((room) =>
-    Object.values(room.profile_id).includes(profile_id)
-  );
+// Rooms
+export function rooms(state, getters, rootState, rootGetters) {
+  const rooms = {};
+  const profiles = rootState.profile.profiles;
+  const friendships = rootState.friendship.friendship;
+  Object.values(friendships).forEach((friendship) => {
+    if(/^blocked/.test(friendship.state)) return;
+    const profile = profiles[friendship.user_id][friendship.profile_id];
+    const last_message = {
+      body: "",
+      name: "",
+    };
+    if (friendship.last_message) {
+      const user_id = friendship.last_message.user_id;
+      let profile_id = "";
+      if(rootGetters["user/getUserId"] == user_id){
+        profile_id = rootState.profile.current_profile_id;
+      }else{
+        profile_id = friendship.profile_id;
+      }
+      last_message.body = friendship.last_message.body;
+      last_message.name = profiles[user_id][profile_id].name;
+    }
+    rooms[friendship.room_id] = {
+      caption: profile.caption,
+      image: profile.image,
+      last_message: last_message,
+      last_updated_at: friendship.last_updated_at,
+      members: {
+        [rootGetters["user/getUserId"]]: null,
+        [profile.user_id]: profile.id
+      },
+      name: profile.name,
+      not_read: friendship.not_read,
+      friendship_id: friendship.user_id,
+      profile_ids: friendship.profile_ids,
+      room_id: friendship.room_id,
+    };
+  });
+  const groups = rootState.group.groups;
+  Object.values(groups).forEach((group) => {
+    const {id, ...others} = group;
+    rooms[group.room_id] = others;
+    rooms[group.room_id]["group_id"] = id;
+  });
+  return rooms;
+}
+export function getRooms(state, getters) {
+  const rooms = Object.values(getters.rooms)
   rooms.sort((a, b) => {
     const dateA = new Date(a.last_updated_at);
     const dateB = new Date(b.last_updated_at);
@@ -12,10 +54,10 @@ export function getRooms(state, getters, rootState) {
   });
   return rooms;
 }
-export function getCurrentRooms(state, getters, rootState, rootGetters) {
+export function getCurrentRooms(state, getters, rootState) {
   const profile_id = rootState.profile.current_profile_id;
-  const rooms = Object.values(state.rooms).filter((room) =>
-    Object.values(room.profile_id).includes(profile_id)
+  const rooms = Object.values(getters.rooms).filter((room) =>
+    Object.values(room.profile_ids).includes(profile_id)
   );
   rooms.sort((a, b) => {
     const dateA = new Date(a.last_updated_at);
@@ -30,34 +72,25 @@ export function getCurrentRoomId(state) {
   return state.current_room_id;
 }
 export function getCurrentRoom(state, getters, rootState) {
-  if (!state.rooms[state.current_room_id]) {
+  if (!getters.rooms[state.current_room_id]) {
     return {
       messages: null,
       members: {},
     };
   }
   //メンバー処理
-  const members_info = state.rooms[state.current_room_id].members;
+  const members_info = getters.rooms[state.current_room_id].members;
   const members = {};
   Object.keys(members_info).forEach((user_id) => {
-    if (members_info[user_id]){
-      members[user_id] = rootState.profile.profiles[user_id][members_info[user_id]];
-    }
-
-
-    else {
-      if (rootState.friendship.friendship[rootState.profile.current_profile_id][user_id]) {
+    if (members_info[user_id]) {
+      members[user_id] =
+        rootState.profile.profiles[user_id][members_info[user_id]];
+    } else {
         members[user_id] =
           rootState.profile.profiles[user_id][
-            rootState.friendship.friendship[rootState.profile.current_profile_id][
-              user_id
-            ].profile_id
+            rootState.profile.current_profile_id
           ];
-      } else {
-        members[user_id] =
-          rootState.profile.profiles[user_id][rootState.profile.current_profile_id];
       }
-    }
   });
   //メッセージ処理
   const messages = [];
@@ -119,5 +152,4 @@ export function getCurrentRoom(state, getters, rootState) {
   return response;
 }
 
-//friendship
 

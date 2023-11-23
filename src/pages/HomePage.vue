@@ -37,13 +37,28 @@ export default {
     };
     const pusherUserConnect = (user_id) => {
       var channel = pusher.subscribe(`user-${user_id}`);
-      channel.bind("App\\Events\\ProfileUpdated", async function (data) {
+      //プロファイル
+      channel.bind("App\\Events\\Profile\\ProfileUpdated", async function (data) {
         data.profile.image = await store.dispatch("profile/getImage", {
-              image: data.profile.image,
-            });
+          image: data.profile.image,
+        });
         store.dispatch("profile/profileUpdated", { data: data });
       });
-      channel.bind("App\\Events\\PermitionUpdated", async function (data) {
+      channel.bind("App\\Events\\Profile\\ProfileDeleted", async function (data) {
+        console.log(data)
+        if(data.profile_id == data.main_profile_id) {
+          data.profile.image = await store.dispatch("profile/getImage", {
+          image: data.profile.image,
+          });
+          store.dispatch("profile/addProfiles", [data.profile]);
+          return ;
+        }
+        store.dispatch("friendship/profileDeleted", { user_id:data.user_id, profile_id:data.profile_id, main_profile_id:data.main_profile_id});
+        store.dispatch("group/profileDeleted", { user_id:data.user_id, profile_id:data.profile_id, main_profile_id:data.main_profile_id});
+        store.dispatch("profile/profileDeleted", { user_id:data.user_id, profile_id:data.profile_id});
+      });
+      //表示設定
+      channel.bind("App\\Events\\Permission\\PermissionUpdated", async function (data) {
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {
             profile.image = await store.dispatch("profile/getImage", {
@@ -51,12 +66,13 @@ export default {
             });
           })
         );
-        store.dispatch("profile/permitionUpdated", data);
+        store.dispatch("profile/addUserProfiles", {
+          user_id: data.user_id,
+          profiles: data.profiles,
+        });
       });
-      channel.bind("App\\Events\\FriendshipCreated", async function (data) {
-        data.room.image = await store.dispatch("profile/getImage", {
-              image: data.room.image,
-            });
+      //フレンド
+      channel.bind("App\\Events\\Friendship\\FriendshipCreated", async function (data) {
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {
             profile.image = await store.dispatch("profile/getImage", {
@@ -69,12 +85,9 @@ export default {
 
       //グループ
       channel.bind("App\\Events\\Group\\GroupCreated", async function (data) {
-        console.log(data)
-        data.room.image = await store.dispatch("group/getImage", {
-              image: data.room.image,
-            });
-
-        data.group.image = data.room.image;
+        data.group.image = await store.dispatch("group/getImage", {
+          image: data.group.image,
+        });
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {
             profile.image = await store.dispatch("profile/getImage", {
@@ -84,10 +97,8 @@ export default {
         );
         store.dispatch("profile/addProfiles", data.profiles);
         store.dispatch("group/addGroup", data.group);
-        store.dispatch("room/addRoom", data.room)
       });
       channel.bind("App\\Events\\Group\\MemberUpdated", async function (data) {
-        console.log(data)
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {
             profile.image = await store.dispatch("profile/getImage", {
@@ -95,18 +106,20 @@ export default {
             });
           })
         );
-        store.dispatch("profile/addUserProfiles", {"user_id": data.user_id, "profiles": data.profiles});
-        store.dispatch("group/memberUpdated", {"group_id": data.group_id, "members": data.members});
-        store.dispatch("room/memberUpdated", {"room_id": data.room_id, "members": data.members});
-      });
-      channel.bind("App\\Events\\ProfileDeleted", function (data) {
-        store.dispatch("room/profileDeleted", { data: data });
+        store.dispatch("profile/addUserProfiles", {
+          user_id: data.user_id,
+          profiles: data.profiles,
+        });
+        store.dispatch("group/memberUpdated", {
+          group_id: data.group_id,
+          members: data.members,
+        });
       });
     };
     const pusherConnect = (room_id) => {
       var channel = pusher.subscribe(`channel-${room_id}`);
       channel.bind("App\\Events\\MessageRecieved", function (data) {
-        store.dispatch("room/messageRecieved", { data: data });
+        store.dispatch("room/messageRecieved", { data: data.message });
       });
     };
     watch(
@@ -128,8 +141,7 @@ export default {
       q.loading.hide();
       store.dispatch("state/switchIsAuthorized", true);
       store.dispatch("friendship/fetchFriendship");
-      store.dispatch("group/fetchGroups");
-      await store.dispatch("room/fetchRooms");
+      await store.dispatch("group/fetchGroups");
       pusherUserConnect(store.getters["user/getUser"].id);
       store.dispatch("state/switchIsFetched", true);
     });

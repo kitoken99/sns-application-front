@@ -38,7 +38,7 @@ export async function updateUser(
       }
     );
     commit("setUser", response.data);
-    commit("profile/setBirthday", response.data, {root: true});
+    commit("profile/setBirthday", response.data, { root: true });
     return response.status;
   } catch (error) {
     console.log(error);
@@ -78,8 +78,11 @@ export async function deleteAccount({ commit, rootGetters }) {
         Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },
     });
-    commit("resetUser");
+    commit("user/resetUser", null, { root: true });
     commit("profile/resetProfile", null, { root: true });
+    commit("friendship/resetFriendship", null, { root: true });
+    commit("group/resetGroup", null, { root: true });
+    commit("room/resetRoom", null, { root: true });
     return response.status;
   } catch (error) {
     console.log(error);

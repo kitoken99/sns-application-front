@@ -18,7 +18,7 @@
             v-for="(group, index) in store.getters['group/getCurrentGroups']"
             v-bind:key="group.id"
           >
-            <MemberBar :member="group" @click="onGroup(group)"/>
+            <MemberBar :member="group" @click="onGroup(group)" />
             <q-separator
               v-if="index < store.getters['group/getCurrentGroups'].length"
               inset="item"
@@ -45,7 +45,7 @@
             v-for="(group, index) in store.getters['group/getUnAcceptedGroups']"
             v-bind:key="group.id"
           >
-            <MemberBar :member="group" @click="onGroup(group)"/>
+            <MemberBar :member="group" @click="onGroup(group)" />
             <q-separator
               v-if="index < store.getters['group/getUnAcceptedGroups'].length"
               inset="item"
@@ -69,12 +69,16 @@
       <q-card style="max-width: 318px">
         <q-card-section>
           <div
-            v-for="(friend, index) in store.getters['friendship/getCurrentFriends']"
+            v-for="(friend, index) in store.getters[
+              'friendship/getCurrentFriends'
+            ]"
             v-bind:key="friend.id"
           >
             <MemberBar :member="friend" @click="onAvatar(friend)" />
             <q-separator
-              v-if="index < store.getters['friendship/getCurrentFriends'].length"
+              v-if="
+                index < store.getters['friendship/getCurrentFriends'].length
+              "
               inset="item"
             />
           </div>
@@ -103,7 +107,9 @@
           >
             <MemberBar :member="friend" @click="onAvatar(friend)" />
             <q-separator
-              v-if="index < store.getters['friendship/getUnAcceptedFriends'].length"
+              v-if="
+                index < store.getters['friendship/getUnAcceptedFriends'].length
+              "
               inset="item"
             />
           </div>
@@ -127,8 +133,8 @@ export default defineComponent({
       store.dispatch("group/setFocusedGroup", {
         group_id: group.id,
         isShow: true,
-      })
-    }
+      });
+    };
     const onAvatar = (profile) => {
       store.dispatch("profile/setFocusedUser", {
         user_id: profile.user_id,

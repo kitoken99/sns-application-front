@@ -8,9 +8,9 @@ export async function fetchProfiles({ commit, state, rootGetters }) {
     })
     .then((response) => {
       commit("setProfiles", response.data);
-      commit("setMainProfileId", rootGetters['user/getUserId']);
+      commit("setMainProfileId", rootGetters["user/getUserId"]);
       commit("setCurrentProfileId", state.main_profile_id);
-      commit("setFocusedUserId", rootGetters['user/getUserId']);
+      commit("setFocusedUserId", rootGetters["user/getUserId"]);
       commit("setFocusedProfileId", state.main_profile_id);
     })
     .catch((error) => {
@@ -39,8 +39,6 @@ export async function createProfile(
     )
     .then((response) => {
       commit("addProfile", response.data);
-      commit("friendship/addFriendshipForProfile", response.data.id, { root: true });
-      commit("group/addGroupsForProfile", response.data.id, { root: true });
       commit("setCurrentProfileId", response.data.id);
       commit("state/switchMiddleContent", "main", { root: true });
     })
@@ -80,7 +78,6 @@ export async function updateProfile(
   }
 }
 
-
 export function setCurrentProfileId({ commit }, id) {
   commit("setCurrentProfileId", id);
 }
@@ -88,14 +85,14 @@ export function setFocusedUser(
   { commit, rootGetters },
   { user_id, profile_id, isShow }
 ) {
+  commit("state/switchProfilePanel", "profile", { root: true });
   commit("setFocusedUserId", user_id);
   commit("setFocusedProfileId", profile_id);
-  commit("state/switchProfilePanel", "profile", { root: true });
+
   if (isShow) {
     commit("state/showProfile", null, { root: true });
   }
 }
-
 
 export async function findProfile({ commit, rootGetters }, { email }) {
   commit("state/switchProfilePanel", "loading", { root: true });
@@ -119,8 +116,31 @@ export async function findProfile({ commit, rootGetters }, { email }) {
       console.log(error);
     });
 }
+export async function deleteProfile({ commit, state, rootGetters }) {
+  const profile_id = rootGetters["profile/getCurrentProfileId"]
+  await axios
+    .delete(process.env.API +
+      "/api/profile/" +
+      profile_id, {
+      headers: {
+        Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+      },
+    })
+    .then((response) => {
+      commit("setCurrentProfileId", state.main_profile_id);
+      commit("setFocusedProfileId", state.main_profile_id);
+      commit("deleteProfile", {user_id: rootGetters['user/getUserId'], profile_id: profile_id});
+      commit("friendship/deleteProfile", profile_id, {root: true});
+      commit("group/deleteProfile", {user_id: rootGetters['user/getUserId'], profile_id: profile_id, main_profile_id: state.main_profile_id}, {root: true});
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
 
+
+//リアルタイム更新
 export async function getImage({ commit, getters, rootGetters }, { image }) {
   try {
     const response = await axios.get(process.env.API + "/api/profile/image", {
@@ -137,24 +157,15 @@ export async function getImage({ commit, getters, rootGetters }, { image }) {
     console.error(error);
   }
 }
-export async function profileUpdated(
-  { commit },
-  { data }
-) {
-    commit("addProfile", data.profile);
+export async function profileUpdated({ commit }, { data }) {
+  commit("addProfile", data.profile);
 }
-export async function permitionUpdated(
-  { commit, getters, rootGetters },
-  data
-) {
-  commit("permitionUpdated", data);
-}
-
-
-//リアルタイム更新
-export function addProfiles({ commit }, profiles ) {
-  commit("addProfiles", profiles)
+export function addProfiles({ commit }, profiles) {
+  commit("addProfiles", profiles);
 }
 export function addUserProfiles({ commit }, { user_id, profiles }) {
-  commit("addUserProfiles", {"user_id": user_id, "profiles": profiles})
+  commit("addUserProfiles", { user_id: user_id, profiles: profiles });
+}
+export function profileDeleted({ commit }, { user_id, profile_id }) {
+  commit("deleteProfile", {user_id: user_id, profile_id: profile_id});
 }

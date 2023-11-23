@@ -1,43 +1,43 @@
 <template>
   <q-card flat style="max-width: 318px">
     <q-card-section>
-          <div class="text-center q-gutter-y-md">
-            <AvatarIcon :image="group.image" size="8em" />
-            <div>
-              <p class="text-h5">{{ group.name }}</p>
+      <div class="text-center q-gutter-y-md">
+        <AvatarIcon :image="group.image" size="8em" />
+        <div>
+          <p class="text-h5">{{ group.name }}</p>
+        </div>
+        <div>
+          <q-scroll-area style="height: 7em; width: 200px">
+            <div style="overflow-wrap: break-word; width: 200px">
+              {{ group.caption }}
             </div>
-            <div>
-              <q-scroll-area style="height: 7em; width: 200px">
-                <div style="overflow-wrap: break-word; width: 200px">
-                  {{ group.caption }}
-                </div>
-              </q-scroll-area>
-            </div>
-          </div>
-
-
+          </q-scroll-area>
+        </div>
+      </div>
     </q-card-section>
     <q-card-actions align="around">
       <q-btn
         flat
-        v-show="group.state == 'accepted'"
+        v-show="group.state == 'joined'"
         @click="store.dispatch('room/setCurrentRoomId', group.room_id)"
         >talk</q-btn
       >
       <q-btn
         flat
-        v-show="group.state == 'accepted'"
+        v-show="group.state == 'joined'"
         @click="onFriendSetting(slide)"
         >setting</q-btn
       >
       <q-btn
         flat
-        v-show="group.state == 'unaccepted'"
-        @click="() => {
-            store.dispatch('group/acceptGroup');
+        v-show="group.state == 'invited'"
+        @click="
+          () => {
+            store.dispatch('group/switchState', 'joined');
             store.dispatch('group/switchProfile');
-          }"
-        >accept</q-btn
+          }
+        "
+        >join</q-btn
       >
     </q-card-actions>
   </q-card>
