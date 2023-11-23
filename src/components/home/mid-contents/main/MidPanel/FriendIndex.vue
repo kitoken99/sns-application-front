@@ -16,6 +16,11 @@
             class="panel"
             v-if="store.getters['state/getProfilePanel'] == 'my_setting'"
           />
+          <!-- group setting -->
+          <GroupSetting
+            class="panel"
+            v-if="store.getters['state/getProfilePanel'] == 'group_setting'"
+          />
           <FriendSetting
             class="panel"
             v-if="store.getters['state/getProfilePanel'] == 'friend_setting'"
@@ -66,6 +71,7 @@ import FriendSetting from "./panels/FriendSetting.vue";
 import EmailForm from "./panels/EmailForm.vue";
 import FriendPanel from "./panels/FriendPanel.vue";
 import TalkPanel from "./panels/TalkPanel.vue";
+import GroupSetting from "./panels/GroupSetting.vue";
 export default defineComponent({
   name: "FriendIndex",
   components: {
@@ -76,6 +82,7 @@ export default defineComponent({
     EmailForm,
     TalkPanel,
     ProfilePanel,
+    GroupSetting,
   },
   setup() {
     const store = useStore();

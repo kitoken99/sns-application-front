@@ -25,7 +25,7 @@
       <q-btn
         flat
         v-show="group.state == 'joined'"
-        @click="onFriendSetting(slide)"
+        @click="store.dispatch('state/switchProfilePanel', 'group_setting');"
         >setting</q-btn
       >
       <q-btn

@@ -98,6 +98,12 @@ export default {
         store.dispatch("profile/addProfiles", data.profiles);
         store.dispatch("group/addGroup", data.group);
       });
+      channel.bind("App\\Events\\Group\\GroupUpdated", async function (data) {
+        data.group.image = await store.dispatch("group/getImage", {
+          image: data.group.image,
+        });
+        store.dispatch("group/addGroup", data.group);
+      });
       channel.bind("App\\Events\\Group\\MemberUpdated", async function (data) {
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {

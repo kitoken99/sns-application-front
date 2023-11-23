@@ -20,7 +20,34 @@ export function setFocusedGroup({ commit }, { group_id, isShow }) {
     commit("state/showProfile", null, { root: true });
   }
 }
-
+export async function updateGroup(
+  { commit, state , rootGetters },
+  { file, name, caption }
+) {
+  try {
+    if (!caption) caption = "";
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("caption", caption);
+    formData.append("image", file);
+    const response = await axios.post(
+      process.env.API +
+        "/api/group/" +
+        state.focused_group_id,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
+    commit("addGroup", response.data);
+    return response.status;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 //リアルタイム更新
 export async function createGroup(
