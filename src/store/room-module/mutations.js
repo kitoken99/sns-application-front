@@ -17,3 +17,7 @@ export function setNewMessage(state, newMessage) {
 export function addMessage(state, data) {
   state.messages.push(data);
 }
+export function resetRoom(state){
+  state.current_room_id= ""
+  state.messages= [];
+}

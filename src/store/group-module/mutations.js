@@ -51,3 +51,7 @@ export function addNotRead(state, id) {
     state.groups[id].not_read++;
   }
 }
+export function resetGroup(state){
+  state.groups={}
+  state.focused_group_id=""
+}

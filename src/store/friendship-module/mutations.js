@@ -55,3 +55,6 @@ export function addNotRead(state, id) {
     state.friendship[id].not_read++;
   }
 }
+export function resetFriendship(state){
+  state.friendship={}
+}
