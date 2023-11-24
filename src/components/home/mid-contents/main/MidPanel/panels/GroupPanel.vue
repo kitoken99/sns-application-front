@@ -25,7 +25,7 @@
       <q-btn
         flat
         v-show="group.state == 'joined'"
-        @click="store.dispatch('state/switchProfilePanel', 'group_setting');"
+        @click="store.dispatch('state/switchProfilePanel', 'group_setting')"
         >setting</q-btn
       >
       <q-btn
@@ -34,7 +34,10 @@
         @click="
           () => {
             store.dispatch('group/switchState', 'joined');
-            store.dispatch('group/switchProfile');
+            store.dispatch(
+              'group/switchProfile',
+              store.getters['profile/getCurrentProfileId']
+            );
           }
         "
         >join</q-btn
@@ -55,18 +58,11 @@ export default defineComponent({
     const store = useStore();
     const group = ref(store.getters["group/getFocusedGroup"]);
     watch(
-      () => ref(store.getters["profile/getFocusedGroup"]),
+      () => ref(store.getters["group/getFocusedGroup"]),
       () => {
-        group.value = store.getters["profile/getFocusedGroup"];
+        group.value = store.getters["group/getFocusedGroup"];
       }
     );
-    // const onMyProfileSetting = (id) => {
-    //   store.dispatch("profile/setCurrentProfileId", id);
-    //   store.dispatch("state/switchProfilePanel", "my_setting");
-    // };
-    // const onFriendSetting = (id) => {
-    //   store.dispatch("state/switchProfilePanel", "friend_setting");
-    // };
 
     return {
       store,

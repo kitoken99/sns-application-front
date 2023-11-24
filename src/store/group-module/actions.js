@@ -21,7 +21,7 @@ export function setFocusedGroup({ commit }, { group_id, isShow }) {
   }
 }
 export async function updateGroup(
-  { commit, state , rootGetters },
+  { commit, state, rootGetters },
   { file, name, caption }
 ) {
   try {
@@ -31,9 +31,7 @@ export async function updateGroup(
     formData.append("caption", caption);
     formData.append("image", file);
     const response = await axios.post(
-      process.env.API +
-        "/api/group/" +
-        state.focused_group_id,
+      process.env.API + "/api/group/" + state.focused_group_id,
       formData,
       {
         headers: {
@@ -48,7 +46,29 @@ export async function updateGroup(
     console.error(error);
   }
 }
-
+export async function inviteFriends({ commit, state, rootGetters }, ids) {
+  const group_id = state.focused_group_id;
+  await axios
+    .patch(
+      process.env.API + "/api/group/" + group_id + "/invite",
+      {
+        ids: ids
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response.data)
+      commit("profile/addProfiles", response.data.profiles, {root: true});
+      commit("memberUpdated", { group_id: group_id, members: response.data.members });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 //リアルタイム更新
 export async function createGroup(
   { commit, rootGetters },
@@ -80,14 +100,17 @@ export async function createGroup(
       console.log(error);
     });
 }
-export async function switchState({ commit, state, rootState, rootGetters }, status) {
+export async function switchState(
+  { commit, state, rootState, rootGetters },
+  status
+) {
   const group_id = state.focused_group_id;
   await axios
     .patch(
       process.env.API + "/api/group/state",
       {
         group_id: group_id,
-        state: status
+        state: status,
       },
       {
         headers: {
@@ -96,14 +119,16 @@ export async function switchState({ commit, state, rootState, rootGetters }, sta
       }
     )
     .then((response) => {
-      commit("switchState", {group_id:group_id, status: status});
+      commit("switchState", { group_id: group_id, status: status });
     })
     .catch((error) => {
       console.log(error);
     });
 }
-export async function switchProfile({ commit, state, rootState, rootGetters }) {
-  const profile_id = rootState.profile.current_profile_id;
+export async function switchProfile(
+  { commit, state, rootState, rootGetters },
+  profile_id
+) {
   const group_id = state.focused_group_id;
   await axios
     .patch(
@@ -154,6 +179,13 @@ export async function addGroup({ commit, rootState }, group) {
 export function memberUpdated({ commit }, { group_id, members }) {
   commit("memberUpdated", { group_id: group_id, members: members });
 }
-export function profileDeleted({ commit }, { user_id, profile_id , main_profile_id }) {
-  commit("deletedProfile", {user_id: user_id, profile_id: profile_id, main_profile_id: main_profile_id});
+export function profileDeleted(
+  { commit },
+  { user_id, profile_id, main_profile_id }
+) {
+  commit("deletedProfile", {
+    user_id: user_id,
+    profile_id: profile_id,
+    main_profile_id: main_profile_id,
+  });
 }

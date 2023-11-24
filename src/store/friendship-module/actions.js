@@ -47,7 +47,7 @@ export async function permitProfile(
   { commit, state, rootState, rootGetters },
   list
 ) {
-  list[rootState.profile.main_profile_id] = true
+  list[rootState.profile.main_profile_id] = true;
   const friend_id = rootState.profile.focused_user_id;
   await axios
     .post(
@@ -94,7 +94,10 @@ export async function addFriend({ commit, state, rootState, rootGetters }) {
       console.log(error);
     });
 }
-export async function switchState({ commit, state, rootState, rootGetters }, status) {
+export async function switchState(
+  { commit, state, rootState, rootGetters },
+  status
+) {
   const friend_id = rootState.profile.focused_user_id;
   await axios
     .patch(
@@ -110,7 +113,7 @@ export async function switchState({ commit, state, rootState, rootGetters }, sta
       }
     )
     .then((response) => {
-      commit("switchState", {friend_id:friend_id, status:status});
+      commit("switchState", { friend_id: friend_id, status: status });
     })
     .catch((error) => {
       console.log(error);
@@ -120,6 +123,13 @@ export async function friendshipCreated({ commit, rootState }, data) {
   commit("profile/addProfiles", data.profiles, { root: true });
   commit("addFriend", data.friendship);
 }
-export function profileDeleted({ commit }, { user_id, profile_id , main_profile_id }) {
-  commit("deletedProfile", {user_id: user_id, profile_id: profile_id, main_profile_id: main_profile_id});
+export function profileDeleted(
+  { commit },
+  { user_id, profile_id, main_profile_id }
+) {
+  commit("deletedProfile", {
+    user_id: user_id,
+    profile_id: profile_id,
+    main_profile_id: main_profile_id,
+  });
 }

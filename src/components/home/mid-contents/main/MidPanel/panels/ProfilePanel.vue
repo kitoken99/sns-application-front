@@ -24,7 +24,7 @@
             <div>
               <p class="text-h5">{{ profile.name }}</p>
             </div>
-            <div style="height: 21px;">
+            <div style="height: 21px">
               <p>
                 <span v-show="profile.show_birthday">{{
                   profile.birthday
@@ -90,10 +90,27 @@
       <q-btn
         flat
         v-show="details.state === 'unaccepted' || details.state === 'accepted'"
-        @click="store.dispatch('friendship/switchState', details.state=='accepted'?'blocked-accepted':'blocked-unaccepted')"
+        @click="
+          store.dispatch(
+            'friendship/switchState',
+            details.state == 'accepted'
+              ? 'blocked-accepted'
+              : 'blocked-unaccepted'
+          )
+        "
         >block</q-btn
       >
-      <q-btn flat v-show="/^blocked/.test(details.state)" @click="store.dispatch('friendship/switchState', details.state=='blocked-accepted'?'accepted':'unaccepted')">unblock</q-btn>
+      <q-btn
+        flat
+        v-show="/^blocked/.test(details.state)"
+        @click="
+          store.dispatch(
+            'friendship/switchState',
+            details.state == 'blocked-accepted' ? 'accepted' : 'unaccepted'
+          )
+        "
+        >unblock</q-btn
+      >
     </q-card-actions>
   </q-card>
 </template>

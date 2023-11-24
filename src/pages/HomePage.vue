@@ -38,50 +38,73 @@ export default {
     const pusherUserConnect = (user_id) => {
       var channel = pusher.subscribe(`user-${user_id}`);
       //プロファイル
-      channel.bind("App\\Events\\Profile\\ProfileUpdated", async function (data) {
-        data.profile.image = await store.dispatch("profile/getImage", {
-          image: data.profile.image,
-        });
-        store.dispatch("profile/profileUpdated", { data: data });
-      });
-      channel.bind("App\\Events\\Profile\\ProfileDeleted", async function (data) {
-        console.log(data)
-        if(data.profile_id == data.main_profile_id) {
+      channel.bind(
+        "App\\Events\\Profile\\ProfileUpdated",
+        async function (data) {
           data.profile.image = await store.dispatch("profile/getImage", {
-          image: data.profile.image,
+            image: data.profile.image,
           });
-          store.dispatch("profile/addProfiles", [data.profile]);
-          return ;
+          store.dispatch("profile/profileUpdated", { data: data });
         }
-        store.dispatch("friendship/profileDeleted", { user_id:data.user_id, profile_id:data.profile_id, main_profile_id:data.main_profile_id});
-        store.dispatch("group/profileDeleted", { user_id:data.user_id, profile_id:data.profile_id, main_profile_id:data.main_profile_id});
-        store.dispatch("profile/profileDeleted", { user_id:data.user_id, profile_id:data.profile_id});
-      });
+      );
+      channel.bind(
+        "App\\Events\\Profile\\ProfileDeleted",
+        async function (data) {
+          console.log(data);
+          if (data.profile_id == data.main_profile_id) {
+            data.profile.image = await store.dispatch("profile/getImage", {
+              image: data.profile.image,
+            });
+            store.dispatch("profile/addProfiles", [data.profile]);
+            return;
+          }
+          store.dispatch("friendship/profileDeleted", {
+            user_id: data.user_id,
+            profile_id: data.profile_id,
+            main_profile_id: data.main_profile_id,
+          });
+          store.dispatch("group/profileDeleted", {
+            user_id: data.user_id,
+            profile_id: data.profile_id,
+            main_profile_id: data.main_profile_id,
+          });
+          store.dispatch("profile/profileDeleted", {
+            user_id: data.user_id,
+            profile_id: data.profile_id,
+          });
+        }
+      );
       //表示設定
-      channel.bind("App\\Events\\Permission\\PermissionUpdated", async function (data) {
-        await Promise.all(
-          Object.values(data.profiles).map(async (profile) => {
-            profile.image = await store.dispatch("profile/getImage", {
-              image: profile.image,
-            });
-          })
-        );
-        store.dispatch("profile/addUserProfiles", {
-          user_id: data.user_id,
-          profiles: data.profiles,
-        });
-      });
+      channel.bind(
+        "App\\Events\\Permission\\PermissionUpdated",
+        async function (data) {
+          await Promise.all(
+            Object.values(data.profiles).map(async (profile) => {
+              profile.image = await store.dispatch("profile/getImage", {
+                image: profile.image,
+              });
+            })
+          );
+          store.dispatch("profile/addUserProfiles", {
+            user_id: data.user_id,
+            profiles: data.profiles,
+          });
+        }
+      );
       //フレンド
-      channel.bind("App\\Events\\Friendship\\FriendshipCreated", async function (data) {
-        await Promise.all(
-          Object.values(data.profiles).map(async (profile) => {
-            profile.image = await store.dispatch("profile/getImage", {
-              image: profile.image,
-            });
-          })
-        );
-        store.dispatch("friendship/friendshipCreated", data);
-      });
+      channel.bind(
+        "App\\Events\\Friendship\\FriendshipCreated",
+        async function (data) {
+          await Promise.all(
+            Object.values(data.profiles).map(async (profile) => {
+              profile.image = await store.dispatch("profile/getImage", {
+                image: profile.image,
+              });
+            })
+          );
+          store.dispatch("friendship/friendshipCreated", data);
+        }
+      );
 
       //グループ
       channel.bind("App\\Events\\Group\\GroupCreated", async function (data) {
@@ -95,6 +118,7 @@ export default {
             });
           })
         );
+        console.log(data)
         store.dispatch("profile/addProfiles", data.profiles);
         store.dispatch("group/addGroup", data.group);
       });
@@ -116,6 +140,21 @@ export default {
           user_id: data.user_id,
           profiles: data.profiles,
         });
+        store.dispatch("group/memberUpdated", {
+          group_id: data.group_id,
+          members: data.members,
+        });
+      });
+      channel.bind("App\\Events\\Group\\MemberInvited", async function (data) {
+        console.log(data)
+        await Promise.all(
+          Object.values(data.profiles).map(async (profile) => {
+            profile.image = await store.dispatch("profile/getImage", {
+              image: profile.image,
+            });
+          })
+        );
+        store.dispatch("profile/addProfiles",data.profiles,);
         store.dispatch("group/memberUpdated", {
           group_id: data.group_id,
           members: data.members,

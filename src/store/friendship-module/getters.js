@@ -31,6 +31,21 @@ export function getUnAcceptedFriends(state, getters, rootState) {
   });
   return friends;
 }
+export function getFriendsForGroup(state, getters, rootState, rootGetters) {
+  const profiles = rootState.profile.profiles;
+  const group = rootGetters["group/getFocusedGroup"];
+  if (!group) return [];
+  const keys_group = Object.keys(group.members);
+  const friends = [];
+
+  Object.values(state.friendship).forEach((friendship) => {
+    if (friendship.state != "deleted" && friendship.state != "blocked") {
+      if (!keys_group.includes(friendship.user_id.toString()))
+        friends.push(profiles[friendship.user_id][friendship.profile_id]);
+    }
+  });
+  return friends;
+}
 export function getPermittedProfileList(
   state,
   getters,
@@ -39,7 +54,7 @@ export function getPermittedProfileList(
 ) {
   const profiles = rootGetters["profile/getMyProfiles"];
   const friendship = state.friendship[rootState.profile.focused_user_id];
-  if(!friendship)return {};
+  if (!friendship) return {};
   const list = {};
   Object.values(profiles).forEach((profile) => {
     list[profile.id] = friendship.profile_ids.includes(profile.id);

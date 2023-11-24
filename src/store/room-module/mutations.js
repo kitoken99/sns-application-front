@@ -8,7 +8,6 @@ export function setMessages(state, messages) {
   state.messages = messages;
 }
 
-
 //メッセージ送信時
 export function setNewMessage(state, newMessage) {
   state.messages.push(newMessage);
@@ -18,5 +17,3 @@ export function setNewMessage(state, newMessage) {
 export function addMessage(state, data) {
   state.messages.push(data);
 }
-
-

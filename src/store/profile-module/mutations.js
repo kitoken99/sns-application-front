@@ -37,6 +37,7 @@ export function addProfile(state, profile) {
 export function addProfiles(state, profiles) {
   Object.values(profiles).forEach((profile) => {
     if (!state.profiles[profile.user_id]) state.profiles[profile.user_id] = {};
+    console.log(profile.id, profile.user_id)
     state.profiles[profile.user_id][profile.id] = profile;
   });
 }

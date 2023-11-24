@@ -1,10 +1,7 @@
 <template>
   <q-scroll-area>
     <div class="column justify-center q-gutter-y-lg">
-
-
       <div class="text-center q-gutter-y-md q-mx-auto q-mt-lg">
-
         <div style="width: 8em; height: 8em; margin: 0 auto">
           <q-btn style="width: 8em; height: 8em; border-radius: 50%">
             <label>

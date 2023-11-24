@@ -1,33 +1,33 @@
 <template>
-    <q-btn
-      push
-      label="Delete this Profile"
-      color="negative"
-      style="width: 200px"
-      @click="confirm = true"
-    >
-    </q-btn>
-    <q-dialog v-model="confirm" persistent>
-      <q-card class="q-pa-md">
-        <q-card-section class="row items-center">
-          <q-avatar icon="priority_high" color="negative" text-color="white" />
-          <div class="q-ml-md">
-            <div class="text-weight-bold">Are you sure?</div>
-            <div class="text-grey">You can not use this profile anymore</div>
-          </div>
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn
-            flat
-            label="Delete this profile"
-            color="negative"
-            v-close-popup
-            @click="onDelete"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+  <q-btn
+    push
+    label="Delete this Profile"
+    color="negative"
+    style="width: 200px"
+    @click="confirm = true"
+  >
+  </q-btn>
+  <q-dialog v-model="confirm" persistent>
+    <q-card class="q-pa-md">
+      <q-card-section class="row items-center">
+        <q-avatar icon="priority_high" color="negative" text-color="white" />
+        <div class="q-ml-md">
+          <div class="text-weight-bold">Are you sure?</div>
+          <div class="text-grey">You can not use this profile anymore</div>
+        </div>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn
+          flat
+          label="Delete this profile"
+          color="negative"
+          v-close-popup
+          @click="onDelete"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>

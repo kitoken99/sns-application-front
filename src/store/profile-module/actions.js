@@ -117,11 +117,9 @@ export async function findProfile({ commit, rootGetters }, { email }) {
     });
 }
 export async function deleteProfile({ commit, state, rootGetters }) {
-  const profile_id = rootGetters["profile/getCurrentProfileId"]
+  const profile_id = rootGetters["profile/getCurrentProfileId"];
   await axios
-    .delete(process.env.API +
-      "/api/profile/" +
-      profile_id, {
+    .delete(process.env.API + "/api/profile/" + profile_id, {
       headers: {
         Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },
@@ -129,16 +127,25 @@ export async function deleteProfile({ commit, state, rootGetters }) {
     .then((response) => {
       commit("setCurrentProfileId", state.main_profile_id);
       commit("setFocusedProfileId", state.main_profile_id);
-      commit("deleteProfile", {user_id: rootGetters['user/getUserId'], profile_id: profile_id});
-      commit("friendship/deleteProfile", profile_id, {root: true});
-      commit("group/deleteProfile", {user_id: rootGetters['user/getUserId'], profile_id: profile_id, main_profile_id: state.main_profile_id}, {root: true});
+      commit("deleteProfile", {
+        user_id: rootGetters["user/getUserId"],
+        profile_id: profile_id,
+      });
+      commit("friendship/deleteProfile", profile_id, { root: true });
+      commit(
+        "group/deleteProfile",
+        {
+          user_id: rootGetters["user/getUserId"],
+          profile_id: profile_id,
+          main_profile_id: state.main_profile_id,
+        },
+        { root: true }
+      );
     })
     .catch((error) => {
       console.log(error);
     });
 }
-
-
 
 //リアルタイム更新
 export async function getImage({ commit, getters, rootGetters }, { image }) {
@@ -167,5 +174,5 @@ export function addUserProfiles({ commit }, { user_id, profiles }) {
   commit("addUserProfiles", { user_id: user_id, profiles: profiles });
 }
 export function profileDeleted({ commit }, { user_id, profile_id }) {
-  commit("deleteProfile", {user_id: user_id, profile_id: profile_id});
+  commit("deleteProfile", { user_id: user_id, profile_id: profile_id });
 }
