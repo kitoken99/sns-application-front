@@ -15,6 +15,7 @@
 import { onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
 import Pusher from "pusher-js";
 import SideBar from "src/components/home/SideBar.vue";
 import MidContent from "src/components/home/MidContent.vue";
@@ -27,6 +28,7 @@ export default {
     ChatRoom,
   },
   setup() {
+    const router = useRouter();
     const store = useStore();
     const q = useQuasar();
     var pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY, {
@@ -179,7 +181,10 @@ export default {
 
     onMounted(async () => {
       store.dispatch("state/initState");
-      store.dispatch("user/fetchUser");
+      const status = await store.dispatch("user/fetchUser");
+      if(status == "401"){
+        router.push("/login");
+      }
       await store.dispatch("profile/fetchProfiles");
       q.loading.hide();
       store.dispatch("state/switchIsAuthorized", true);
