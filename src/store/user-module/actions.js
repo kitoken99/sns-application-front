@@ -1,7 +1,7 @@
 import axios from "axios";
 export async function fetchUser({ commit, rootGetters }) {
   try{
-  await axios
+   const response = await axios
     .get(process.env.API + "/api/user", {
       headers: {
         Authorization: `Bearer ${rootGetters["auth/getToken"]}`,

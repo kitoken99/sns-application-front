@@ -182,7 +182,6 @@ export default {
     onMounted(async () => {
       store.dispatch("state/initState");
       const status = await store.dispatch("user/fetchUser");
-      console.log(status);
       if(status != 200 && status != 201){
         router.push("/login");
       }
