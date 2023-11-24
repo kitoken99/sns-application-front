@@ -1,17 +1,17 @@
 import axios from "axios";
 export async function fetchUser({ commit, rootGetters }) {
+  try{
   await axios
     .get(process.env.API + "/api/user", {
       headers: {
         Authorization: `Bearer ${rootGetters["auth/getToken"]}`,
       },
     })
-    .then((response) => {
-      commit("setUser", response.data);
-    })
-    .catch((error) => {
-
-    });
+     commit("setUser", response.data);
+     return response.status;
+  }catch{error => {
+    return error.response.status
+  }};
 }
 
 export async function updateUser(
