@@ -118,7 +118,7 @@ export default {
             });
           })
         );
-        console.log(data)
+        console.log(data);
         store.dispatch("profile/addProfiles", data.profiles);
         store.dispatch("group/addGroup", data.group);
       });
@@ -146,7 +146,7 @@ export default {
         });
       });
       channel.bind("App\\Events\\Group\\MemberInvited", async function (data) {
-        console.log(data)
+        console.log(data);
         await Promise.all(
           Object.values(data.profiles).map(async (profile) => {
             profile.image = await store.dispatch("profile/getImage", {
@@ -154,7 +154,7 @@ export default {
             });
           })
         );
-        store.dispatch("profile/addProfiles",data.profiles,);
+        store.dispatch("profile/addProfiles", data.profiles);
         store.dispatch("group/memberUpdated", {
           group_id: data.group_id,
           members: data.members,

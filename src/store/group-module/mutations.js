@@ -51,4 +51,3 @@ export function addNotRead(state, id) {
     state.groups[id].not_read++;
   }
 }
-

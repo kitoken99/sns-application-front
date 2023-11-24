@@ -1,6 +1,9 @@
 <template>
   <q-scroll-area>
-    <div class="column justify-center q-gutter-y-lg q-mx-auto" style="width: 265px;">
+    <div
+      class="column justify-center q-gutter-y-lg q-mx-auto"
+      style="width: 265px"
+    >
       <div class="text-center q-gutter-y-md q-mx-auto q-mt-lg">
         <div class="q-mx-auto" style="width: 8em; height: 8em">
           <q-btn style="width: 8em; height: 8em; border-radius: 50%">
@@ -85,41 +88,44 @@
       <div class="q-gutter-y-md q-mt-lg">
         <p class="text-h6">Invite your friends</p>
         <q-scroll-area
-        :style="{ height: `${Math.min(500, verticalSize)}px`, width: '200px'}"
-        class="q-mx-auto"
-        ref="scrollArea"
-      >
-        <div
-          v-for="friend in store.getters['friendship/getFriendsForGroup']"
-          v-bind:key="friend.id"
-          style="width: 200px;"
+          :style="{
+            height: `${Math.min(500, verticalSize)}px`,
+            width: '200px',
+          }"
+          class="q-mx-auto"
+          ref="scrollArea"
         >
-          <q-item
-            v-ripple
-            clickable
-            :active="selected_friend_list[friend.user_id]"
-            @click="switchSelectedFriend(friend.user_id)"
-            active-class="selected-item"
+          <div
+            v-for="friend in store.getters['friendship/getFriendsForGroup']"
+            v-bind:key="friend.id"
+            style="width: 200px"
           >
-            <q-item-section avatar>
-              <AvatarIcon :image="friend.image" size="40px" />
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label lines="1">{{ friend.name }}</q-item-label>
-            </q-item-section>
-            <Transition>
+            <q-item
+              v-ripple
+              clickable
+              :active="selected_friend_list[friend.user_id]"
+              @click="switchSelectedFriend(friend.user_id)"
+              active-class="selected-item"
+            >
               <q-item-section avatar>
-                <q-checkbox
-                  v-model="selected_friend_list[friend.user_id]"
-                  checked-icon="check"
-                  unchecked-icon="none"
-                  indeterminate-icon="none"
-                />
+                <AvatarIcon :image="friend.image" size="40px" />
               </q-item-section>
-            </Transition>
-          </q-item>
-        </div>
+
+              <q-item-section>
+                <q-item-label lines="1">{{ friend.name }}</q-item-label>
+              </q-item-section>
+              <Transition>
+                <q-item-section avatar>
+                  <q-checkbox
+                    v-model="selected_friend_list[friend.user_id]"
+                    checked-icon="check"
+                    unchecked-icon="none"
+                    indeterminate-icon="none"
+                  />
+                </q-item-section>
+              </Transition>
+            </q-item>
+          </div>
         </q-scroll-area>
         <div class="q-mt-md q-px-md text-center">
           <q-btn
@@ -160,15 +166,15 @@ export default defineComponent({
     const switchSelectedFriend = (id) => {
       selected_friend_list.value[id] = !selected_friend_list.value[id];
     };
-    onMounted(()=>{
+    onMounted(() => {
       verticalSize.value = scrollArea.value.getScroll().verticalSize;
-      console.log(scrollArea.value.getScroll())
+      console.log(scrollArea.value.getScroll());
       nextTick(() => {
-        console.log(scrollArea.value.getScroll())
-        console.log(scrollArea.value.getScroll().verticalSize)
-  })
-      console.log(scrollArea.value)
-    })
+        console.log(scrollArea.value.getScroll());
+        console.log(scrollArea.value.getScroll().verticalSize);
+      });
+      console.log(scrollArea.value);
+    });
     watch(
       () => store.getters["group/getFocusedGroup"],
       () => {
@@ -227,7 +233,7 @@ export default defineComponent({
         if (selected_friend_list.value[key]) ids.push(key);
       });
       store.dispatch("group/inviteFriends", ids);
-    }
+    };
     return {
       store,
       group,

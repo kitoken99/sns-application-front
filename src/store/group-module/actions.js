@@ -52,7 +52,7 @@ export async function inviteFriends({ commit, state, rootGetters }, ids) {
     .patch(
       process.env.API + "/api/group/" + group_id + "/invite",
       {
-        ids: ids
+        ids: ids,
       },
       {
         headers: {
@@ -61,9 +61,12 @@ export async function inviteFriends({ commit, state, rootGetters }, ids) {
       }
     )
     .then((response) => {
-      console.log(response.data)
-      commit("profile/addProfiles", response.data.profiles, {root: true});
-      commit("memberUpdated", { group_id: group_id, members: response.data.members });
+      console.log(response.data);
+      commit("profile/addProfiles", response.data.profiles, { root: true });
+      commit("memberUpdated", {
+        group_id: group_id,
+        members: response.data.members,
+      });
     })
     .catch((error) => {
       console.log(error);
